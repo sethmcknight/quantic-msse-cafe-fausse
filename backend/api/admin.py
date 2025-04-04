@@ -8,7 +8,7 @@ from models.menu_item import MenuItem
 from models.category import Category
 from models.reservation import Reservation
 from models.customer import Customer
-from models.newsletter import NewsletterSubscriber
+from models.newsletter import Newsletter
 from extensions import db
 from datetime import datetime, timedelta, date
 
@@ -51,7 +51,7 @@ def get_dashboard_data():
         menu_items_count = MenuItem.query.count()
         categories_count = Category.query.count()
         customers_count = Customer.query.count()
-        newsletter_count = NewsletterSubscriber.query.count()
+        newsletter_count = Newsletter.query.count()
         
         # Get today's reservations count
         today_reservations_count = Reservation.query.filter(

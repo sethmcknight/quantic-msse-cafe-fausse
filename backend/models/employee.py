@@ -2,10 +2,10 @@ from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
 
-from models.base import BaseModel
+from models.base import Base
 from extensions import db
 
-class Employee(UserMixin, BaseModel):
+class Employee(UserMixin, Base):
     """
     Employee model for cafe staff, managers, and admins
     """

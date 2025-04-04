@@ -9,6 +9,7 @@ class Base(db.Model):
     """Base model class that includes common columns and methods"""
     __abstract__ = True
 
+    id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

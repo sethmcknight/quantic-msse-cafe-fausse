@@ -10,6 +10,7 @@ from models.menu_item import MenuItem
 from models.customer import Customer
 from models.reservation import Reservation
 from models.newsletter import Newsletter
+from models.employee import Employee
 from datetime import datetime, timedelta
 
 def init_db():
@@ -208,6 +209,32 @@ def init_db():
         )
         
         db.session.add_all([reservation1, reservation2])
+        db.session.commit()
+        
+        # Create admin test user
+        print("Creating admin test user...")
+        admin = Employee(
+            username="admin",
+            email="admin@cafefausse.com",
+            first_name="Admin",
+            last_name="User",
+            password="admin123",
+            role="admin",
+            is_active=True
+        )
+        
+        # Create manager test user
+        manager = Employee(
+            username="manager",
+            email="manager@cafefausse.com",
+            first_name="Manager",
+            last_name="User",
+            password="manager123",
+            role="manager",
+            is_active=True
+        )
+        
+        db.session.add_all([admin, manager])
         db.session.commit()
         
         print("Database initialization complete!")
