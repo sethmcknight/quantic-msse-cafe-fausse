@@ -66,10 +66,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             error: null,
           });
         } else {
-          setAuthState({
-            ...authState,
+          setAuthState((prev) => ({
+            ...prev,
             isLoading: false,
-          });
+          }));
         }
       } catch (error) {
         setAuthState({
