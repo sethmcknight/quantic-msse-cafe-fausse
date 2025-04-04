@@ -29,15 +29,25 @@ def create_app(config_name='development'):
     from api.menu import menu_bp
     from api.reservations import reservations_bp
     from api.newsletter import newsletter_bp
+    from api.admin import admin_bp
+    from api.auth import auth_bp
     
     app.register_blueprint(menu_bp, url_prefix='/api/menu')
     app.register_blueprint(reservations_bp, url_prefix='/api/reservations')
     app.register_blueprint(newsletter_bp, url_prefix='/api/newsletter')
+    app.register_blueprint(admin_bp, url_prefix='/api/admin')
+    app.register_blueprint(auth_bp, url_prefix='/api/auth')
     
     # Initialize extensions with the app
-    from extensions import db, migrate
+    from extensions import db, migrate, login_manager
     db.init_app(app)
     migrate.init_app(app, db)
+    login_manager.init_app(app)
+    
+    # Configure session for login manager
+    login_manager.session_protection = "strong"
+    login_manager.login_view = "auth.login"
+    login_manager.login_message_category = "info"
     
     return app
 
