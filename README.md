@@ -14,6 +14,7 @@ A full-stack web application for Café Fausse, an elegant fine-dining establishm
   - [Frontend Setup](#frontend-setup)
   - [Backend Setup](#backend-setup)
   - [Environment Variables](#environment-variables)
+  - [Test Login Credentials](#test-login-credentials)
 - [Project Structure](#project-structure)
 - [API Documentation](#api-documentation)
 - [UI/UX Design](#uiux-design)
@@ -150,6 +151,22 @@ FLASK_ENV=development
 DATABASE_URL=postgresql://localhost/cafe_fausse_dev
 SECRET_KEY=your_secret_key_here
 ```
+
+### Test Login Credentials
+
+After running the database initialization, you can use these credentials to log into the admin panel:
+
+#### Admin User
+- **Username**: admin
+- **Password**: admin123
+- **Role**: admin (full access to all admin features)
+
+#### Manager User
+- **Username**: manager
+- **Password**: manager123
+- **Role**: manager (access to management features)
+
+To access the admin panel, navigate to: `http://localhost:3000/admin/login`
 
 ## 📁 Project Structure
 

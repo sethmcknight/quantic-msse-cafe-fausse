@@ -5,9 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const container = document.getElementById('root');
+const root = ReactDOM.createRoot(container!); // The '!' is a TypeScript non-null assertion
 root.render(
   <React.StrictMode>
     <App />
