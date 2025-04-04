@@ -15,15 +15,17 @@ from datetime import datetime, timedelta, date
 admin_bp = Blueprint('admin', __name__, url_prefix='/api/admin')
 
 # Helper function to check if user is admin
+from functools import wraps
+
 def admin_required(func):
     """Decorator to require admin role"""
+    @wraps(func)
     def decorated_view(*args, **kwargs):
         if not current_user.is_authenticated:
             return jsonify({'error': 'Authentication required'}), 401
         if not current_user.is_admin:
             return jsonify({'error': 'Admin privileges required'}), 403
         return func(*args, **kwargs)
-    decorated_view.__name__ = func.__name__
     return decorated_view
 
 # Helper function to check if user is manager
