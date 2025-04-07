@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { reservationApi } from '../utils/api';
 import InlineNotification from '../components/InlineNotification';
@@ -179,6 +179,13 @@ const ReservationsPage: React.FC = () => {
         });
         setAvailabilityChecked(false);
         setIsAvailable(false);
+
+        if (submissionSuccess && reservationDetails) {
+          const confirmationElement = document.querySelector('.reservation-confirmation');
+          if (confirmationElement) {
+            confirmationElement.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
       } else {
         displayNotification(response.message || 'Error creating reservation.', 'error');
       }
@@ -204,6 +211,15 @@ const ReservationsPage: React.FC = () => {
     }
     return options;
   };
+
+  useEffect(() => {
+    if (submissionSuccess && reservationDetails) {
+      const confirmationElement = document.querySelector('.reservation-confirmation');
+      if (confirmationElement) {
+        confirmationElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [submissionSuccess, reservationDetails]);
 
   return (
     <div className="reservations-page">
@@ -327,66 +343,66 @@ const ReservationsPage: React.FC = () => {
               )}
             </div>
             
-            <div className="form-group">
-              <label htmlFor="name">Full Name *</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                disabled={!availabilityChecked || !isAvailable}
-              />
-            </div>
-            
-            <div className="form-group">
-              <label htmlFor="email">Email Address *</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                disabled={!availabilityChecked || !isAvailable}
-              />
-            </div>
-            
-            <div className="form-group">
-              <label htmlFor="phone">Phone Number</label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder="Optional"
-                disabled={!availabilityChecked || !isAvailable}
-              />
-            </div>
-            
-            <div className="form-group">
-              <label htmlFor="specialRequests">Special Requests</label>
-              <textarea
-                id="specialRequests"
-                name="specialRequests"
-                value={formData.specialRequests}
-                onChange={handleChange}
-                rows={4}
-                placeholder="Allergies, special occasions, seating preferences, etc."
-                disabled={!availabilityChecked || !isAvailable}
-              />
-            </div>
-            
-            <div className="form-submit">
-              <button 
-                type="submit" 
-                disabled={!availabilityChecked || !isAvailable || isSubmitting || !formData.name || !formData.email}
-              >
-                {isSubmitting ? 'Submitting...' : 'Complete Reservation'}
-              </button>
-            </div>
+            {availabilityChecked && isAvailable && (
+            <>
+              <div className="form-group">
+                <label htmlFor="name">Full Name *</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="email">Email Address *</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="phone">Phone Number</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="Optional"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="specialRequests">Special Requests</label>
+                <textarea
+                  id="specialRequests"
+                  name="specialRequests"
+                  value={formData.specialRequests}
+                  onChange={handleChange}
+                  rows={4}
+                  placeholder="Allergies, special occasions, seating preferences, etc."
+                />
+              </div>
+
+              <div className="form-submit">
+                <button 
+                  type="submit" 
+                  disabled={!availabilityChecked || !isAvailable || isSubmitting || !formData.name || !formData.email}
+                >
+                  {isSubmitting ? 'Submitting...' : 'Complete Reservation'}
+                </button>
+              </div>
+            </>
+            )}
           </form>
           
           <div className="reservation-info">
