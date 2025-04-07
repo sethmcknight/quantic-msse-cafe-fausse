@@ -15,7 +15,8 @@ const ReservationsPage: React.FC = () => {
     date: '',
     time: '',
     guests: 2,
-    specialRequests: ''
+    specialRequests: '',
+    newsletterOptIn: false
   });
   
   // Availability check state
@@ -175,7 +176,8 @@ const ReservationsPage: React.FC = () => {
           date: '',
           time: '',
           guests: 2,
-          specialRequests: ''
+          specialRequests: '',
+          newsletterOptIn: false
         });
         setAvailabilityChecked(false);
         setIsAvailable(false);
@@ -397,6 +399,24 @@ const ReservationsPage: React.FC = () => {
                   rows={4}
                   placeholder="Allergies, special occasions, seating preferences, etc."
                 />
+              </div>
+
+              <div className="form-group newsletter-opt-in">
+                <input
+                  type="checkbox"
+                  id="newsletterOptIn"
+                  name="newsletterOptIn"
+                  checked={formData.newsletterOptIn || false}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      newsletterOptIn: e.target.checked,
+                    }))
+                  }
+                />
+                <label htmlFor="newsletterOptIn" className="checkbox-label">
+                I want to receive updates on special events and promotions!
+                </label>
               </div>
 
               <div className="form-submit">
