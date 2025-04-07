@@ -221,6 +221,12 @@ const ReservationsPage: React.FC = () => {
     }
   }, [submissionSuccess, reservationDetails]);
 
+  useEffect(() => {
+    if (submissionSuccess) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [submissionSuccess]);
+
   return (
     <div className="reservations-page">
       <h1>Make a Reservation</h1>
