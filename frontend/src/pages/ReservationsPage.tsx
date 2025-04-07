@@ -150,18 +150,22 @@ const ReservationsPage: React.FC = () => {
       
       if (response.success) {
         setSubmissionSuccess(true);
-        setReservationDetails({
-          reservationId: response.reservationId || response.reservation_id, // Handle both camelCase and snake_case
-          tableNumber: response.tableNumber || response.table_number,      // Handle both camelCase and snake_case
-            name: response.name,
-            email: response.email,
-            phone: response.phone,
-            date: new Date(response.date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }), // Format as "Monday, January 1, 2023"
-            time: new Date(`1970-01-01T${response.time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }), // Convert to 12-hour AM/PM format
+
+        const normalizeResponse = (response: any) => ({
+          reservationId: response.reservationId || response.reservation_id,
+          tableNumber: response.tableNumber || response.table_number,
+          name: response.name,
+          email: response.email,
+          phone: response.phone,
+          date: new Date(response.date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+          time: new Date(`1970-01-01T${response.time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
           guests: response.guests,
           specialRequests: response.specialRequests,
           message: response.message,
         });
+
+        const normalizedDetails = normalizeResponse(response);
+        setReservationDetails(normalizedDetails);
 
         // Reset form
         setFormData({
