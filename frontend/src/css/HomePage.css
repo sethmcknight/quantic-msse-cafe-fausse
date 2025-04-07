@@ -114,10 +114,6 @@
     transition: transform 0.3s;
   }
   
-  .highlight-item:hover {
-    transform: scale(1.03);
-  }
-  
   .highlight-image {
     width: 100%;
     height: 200px;

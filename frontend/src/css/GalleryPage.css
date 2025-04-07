@@ -68,6 +68,17 @@
     border-radius: 8px;
     text-align: center;
   }
+
+  .awards-section ul, 
+.awards-section ol {
+  list-style: none; /* Remove bullets or numbers */
+  padding: 0; /* Remove default padding */
+  margin: 0; /* Remove default margin */
+}
+
+.awards-section li {
+  margin-bottom: 0.5rem; /* Optional: Add spacing between list items */
+}
   
   .awards-section h2 {
     font-family: 'Playfair Display', serif;
@@ -80,6 +91,7 @@
     background-color: #f7f7f7;
     padding: 1.5rem;
     border-radius: 8px;
+    text-align: center;
   }
   
   .reviews-section h2 {
@@ -96,7 +108,7 @@
   
   .testimonial span {
     display: block;
-    text-align: right;
+    text-align: center;
     font-weight: bold;
     margin-top: 0.5rem;
   }

@@ -28,19 +28,19 @@ const HomePage: React.FC = () => {
         <div className="highlights-grid">
           <div className="highlight-item">
             <div className="highlight-image" id="menu-highlight">
-              {/* TODO: Replace with featured menu item image */}
+              {/* image in HomePage.css */}
             </div>
             <div className="highlight-caption">Gourmet Menu</div>
           </div>
           <div className="highlight-item">
             <div className="highlight-image" id="ambiance-highlight">
-              {/* TODO: Replace with ambiance image */}
+              {/* image in HomePage.css */}
             </div>
             <div className="highlight-caption">Elegant Ambiance</div>
           </div>
           <div className="highlight-item">
             <div className="highlight-image" id="chef-highlight">
-              {/* TODO: Replace with chef spotlight image */}
+              {/* image in HomePage.css */}
             </div>
             <div className="highlight-caption">Chef’s Masterpieces</div>
           </div>
@@ -53,19 +53,19 @@ const HomePage: React.FC = () => {
         <div className="links-grid">
           <Link to="/menu" className="quick-link">
             <div className="link-image menu-image">
-              {/* TODO: Add menu image */}
+              {/* image in HomePage.css */}
             </div>
             <h3>Our Menu</h3>
           </Link>
           <Link to="/reservations" className="quick-link">
             <div className="link-image reservation-image">
-              {/* TODO: Add reservation image */}
+              {/* image in HomePage.css */}
             </div>
             <h3>Make a Reservation</h3>
           </Link>
           <Link to="/gallery" className="quick-link">
             <div className="link-image gallery-image">
-              {/* TODO: Add gallery image */}
+              {/* image in HomePage.css */}
             </div>
             <h3>Gallery</h3>
           </Link>
