@@ -315,7 +315,7 @@ const ReservationsPage: React.FC = () => {
                 onChange={handleChange}
                 required
               >
-                {[...Array(20)].map((_, i) => (
+                {[...Array(8)].map((_, i) => (
                   <option key={i + 1} value={i + 1}>
                     {i + 1} {i === 0 ? 'Guest' : 'Guests'}
                   </option>
