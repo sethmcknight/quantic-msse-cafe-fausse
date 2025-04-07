@@ -28,8 +28,16 @@ const ReservationsPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
   const [reservationDetails, setReservationDetails] = useState<{
-    reservation_id?: number;
-    table_number?: number;
+    reservationId?: number;
+    tableNumber?: number;
+    name?: string;
+    email?: string;
+    phone?: string;
+    date?: string;
+    time?: string;
+    guests?: number;
+    specialRequests?: string;
+    message?: string;
   } | null>(null);
 
   // Notification state
@@ -143,10 +151,18 @@ const ReservationsPage: React.FC = () => {
       if (response.success) {
         setSubmissionSuccess(true);
         setReservationDetails({
-          reservation_id: response.reservationId,
-          table_number: response.tableNumber
+          reservationId: response.reservationId || response.reservation_id, // Handle both camelCase and snake_case
+          tableNumber: response.tableNumber || response.table_number,      // Handle both camelCase and snake_case
+            name: response.name,
+            email: response.email,
+            phone: response.phone,
+            date: new Date(response.date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }), // Format as "Monday, January 1, 2023"
+            time: new Date(`1970-01-01T${response.time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }), // Convert to 12-hour AM/PM format
+          guests: response.guests,
+          specialRequests: response.specialRequests,
+          message: response.message,
         });
-        
+
         // Reset form
         setFormData({
           name: '',
@@ -201,13 +217,35 @@ const ReservationsPage: React.FC = () => {
       {submissionSuccess && reservationDetails ? (
         <div className="reservation-confirmation">
           <h2>Reservation Confirmed!</h2>
-          <p>Thank you for your reservation. We look forward to seeing you!</p>
+          <p>{reservationDetails.message}</p>
           <div className="confirmation-details">
-            <p><strong>Reservation ID:</strong> {reservationDetails.reservation_id}</p>
-            <p><strong>Table Number:</strong> {reservationDetails.table_number}</p>
-            <p><strong>Date:</strong> {formData.date}</p>
-            <p><strong>Time:</strong> {formData.time}</p>
-            <p><strong>Party Size:</strong> {formData.guests}</p>
+            {reservationDetails.reservationId && (
+              <p><strong>Reservation ID:</strong> {reservationDetails.reservationId}</p>
+            )}
+            {reservationDetails.tableNumber && (
+              <p><strong>Table Number:</strong> {reservationDetails.tableNumber}</p>
+            )}
+            {reservationDetails.name && (
+              <p><strong>Name:</strong> {reservationDetails.name}</p>
+            )}
+            {reservationDetails.email && (
+              <p><strong>Email:</strong> {reservationDetails.email}</p>
+            )}
+            {reservationDetails.phone && (
+              <p><strong>Phone:</strong> {reservationDetails.phone}</p>
+            )}
+            {reservationDetails.date && (
+              <p><strong>Date:</strong> {reservationDetails.date}</p>
+            )}
+            {reservationDetails.time && (
+              <p><strong>Time:</strong> {reservationDetails.time}</p>
+            )}
+            {reservationDetails.guests && (
+              <p><strong>Guests:</strong> {reservationDetails.guests}</p>
+            )}
+            {reservationDetails.specialRequests && (
+              <p><strong>Special Requests:</strong> {reservationDetails.specialRequests}</p>
+            )}
           </div>
           <button 
             className="make-new-reservation"
