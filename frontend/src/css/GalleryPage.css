@@ -53,15 +53,13 @@
     z-index: 1000;
   }
   
-  .lightbox-content {
-    max-width: 90%;
-    max-height: 90%;
-  }
-  
-  .lightbox-content img {
-    width: 100%;
-    height: auto;
-  }
+  /* Ensure images in the lightbox fit within the viewport */
+.lightbox-content img {
+  max-width: 95vw; /* Maximum width is 95% of the viewport width */
+  max-height: 95vh; /* Maximum height is 95% of the viewport height */
+  width: auto; /* Maintain aspect ratio */
+  height: auto; /* Maintain aspect ratio */
+}
   
   /* Awards Section */
   .awards-section {
