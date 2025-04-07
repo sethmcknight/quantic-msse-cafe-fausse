@@ -159,3 +159,12 @@ def cancel_reservation(reservation_id):
         'message': 'Reservation has been canceled',
         'reservation_id': reservation_id
     })
+
+@reservations_bp.route('/all', methods=['GET'])
+def get_reservations():
+    """Get all reservations"""
+    reservations = Reservation.query.all()
+    return jsonify({
+        'success': True,
+        'reservations': [reservation.to_dict() for reservation in reservations]
+    })

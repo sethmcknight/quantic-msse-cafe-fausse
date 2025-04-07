@@ -8,6 +8,7 @@ from extensions import db
 class MenuItem(Base):
     """MenuItem model representing items on the menu"""
     __tablename__ = 'menu_items'
+    __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -23,6 +24,7 @@ class MenuItem(Base):
     
     # Foreign key to category
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
+    category = db.relationship('backend.models.categories.Category', back_populates='menu_items')
 
     def __repr__(self):
         return f'<MenuItem {self.name}>'

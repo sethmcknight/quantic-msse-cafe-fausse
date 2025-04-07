@@ -9,6 +9,7 @@ from datetime import datetime
 class Reservation(Base):
     """Reservation model representing table bookings"""
     __tablename__ = 'reservations'
+    __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'), nullable=False)
