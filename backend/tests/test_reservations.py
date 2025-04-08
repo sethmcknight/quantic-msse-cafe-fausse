@@ -14,10 +14,11 @@ def client():
 def init_database():
     app = create_app('testing')
     with app.app_context():
-        init_db(app)
+        from backend.init_db import drop_db
+        drop_db()  # Reset the database before initializing
+        init_db(app)  # Initialize the database
     yield
     # Teardown the database after testing
-    from backend.init_db import drop_db
     drop_db()
 
 def test_create_reservation(client, init_database):
@@ -38,7 +39,7 @@ def test_create_reservation(client, init_database):
         "name": "Jane Doe"
     })
     assert response.status_code == 400
-    assert "error" in response.json
+    assert "error" in response.json  # Verify the "error" key is present
 
 def test_get_reservations(client, init_database):
     # Test retrieving reservations (should be empty initially)

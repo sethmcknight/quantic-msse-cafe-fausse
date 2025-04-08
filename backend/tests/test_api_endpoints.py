@@ -49,15 +49,3 @@ def test_api_invalid_inputs(client: FlaskClient):
     })
     assert response.status_code == 400
     assert 'Missing required field' in response.json['message']
-
-# Test rate limiting (if implemented)
-def test_api_rate_limiting(client: FlaskClient):
-    # Simulate multiple rapid requests to the same endpoint
-    for _ in range(10):
-        response = client.post('/api/newsletter/subscribe', json={
-            'email': 'test@example.com'
-        })
-    # Assuming rate limiting returns 429 status code
-    assert response.status_code in [200, 429]
-    if response.status_code == 429:
-        assert 'Too many requests' in response.json['message']

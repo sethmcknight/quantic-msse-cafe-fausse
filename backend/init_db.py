@@ -16,6 +16,9 @@ def init_db(app):
     print("Initializing database...")
 
     with app.app_context():
+        # Log the database URI for debugging
+        print(f"Database URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
+
         # Drop all tables if they exist
         print("Dropping all existing tables...")
         db.drop_all()
