@@ -15,7 +15,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children, 
   requireAdmin = false 
 }) => {
-  const { isAuthenticated, isAdmin, isLoading } = useAuth();
+  const { isAuthenticated, isAdmin, isLoading, currentUser } = useAuth();
+
+  console.log('ProtectedRoute: isAuthenticated:', isAuthenticated); // Debugging isAuthenticated state
+  console.log('ProtectedRoute: requireAdmin:', requireAdmin); // Debugging requireAdmin prop
+  console.log('ProtectedRoute: currentUser:', currentUser); // Debugging currentUser state
 
   // Show loading state while checking authentication
   if (isLoading) {

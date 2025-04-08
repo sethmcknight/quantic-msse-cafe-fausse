@@ -18,6 +18,10 @@ const AdminLoginPage: React.FC = () => {
 
   // If already authenticated, redirect to dashboard
   useEffect(() => {
+    console.log('isAuthenticated:', isAuthenticated); // Debugging isAuthenticated state
+    console.log('from:', from); // Debugging redirection path
+    console.log('LoginPage: isAuthenticated:', isAuthenticated); // Debugging isAuthenticated state
+    console.log('LoginPage: from:', from); // Debugging redirection path
     if (isAuthenticated) {
       navigate(from, { replace: true });
     }
