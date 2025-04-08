@@ -1,75 +1,76 @@
+/* Default Styles (Large Screens) */
 .gallery-page {
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    font-family: 'Montserrat', sans-serif;
-    color: #2c2c2c;
-    display: grid;
-    gap: 2rem;
-  }
-  
-  .gallery-page h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.5rem;
-    text-align: center;
-  }
-  
-  /* Gallery Grid Layout */
-  .gallery-grid {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  }
-  
-  .gallery-item {
-    cursor: pointer;
-    overflow: hidden;
-    border-radius: 8px;
-  }
-  
-  /* Ensure all images are the same size */
-  .gallery-item img {
-    width: 100%;
-    height: 250px;         /* Fixed height so all images are uniform */
-    object-fit: cover;     /* Crops images to fill the container while preserving aspect ratio */
-    transition: transform 0.3s ease;
-  }
-  
-  .gallery-item:hover img {
-    transform: scale(1.05);
-  }
-  
-  /* Lightbox Modal */
-  .lightbox {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-  }
-  
-  /* Ensure images in the lightbox fit within the viewport */
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Montserrat', sans-serif;
+  color: #2c2c2c;
+  display: grid;
+  gap: 2rem;
+}
+
+.gallery-page h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+/* Gallery Grid Layout */
+.gallery-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid layout */
+}
+
+.gallery-item {
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+/* Ensure all images are the same size */
+.gallery-item img {
+  width: 100%;
+  height: 250px; /* Fixed height for uniformity */
+  object-fit: cover; /* Crop images to fill the container while preserving aspect ratio */
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+/* Lightbox Modal */
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Ensure images in the lightbox fit within the viewport */
 .lightbox-content img {
   max-width: 95vw; /* Maximum width is 95% of the viewport width */
   max-height: 95vh; /* Maximum height is 95% of the viewport height */
   width: auto; /* Maintain aspect ratio */
   height: auto; /* Maintain aspect ratio */
 }
-  
-  /* Awards Section */
-  .awards-section {
-    background-color: #f7f7f7;
-    padding: 1.5rem;
-    border-radius: 8px;
-    text-align: center;
-  }
 
-  .awards-section ul, 
+/* Awards Section */
+.awards-section {
+  background-color: #f7f7f7;
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.awards-section ul,
 .awards-section ol {
   list-style: none; /* Remove bullets or numbers */
   padding: 0; /* Remove default padding */
@@ -79,46 +80,95 @@
 .awards-section li {
   margin-bottom: 0.5rem; /* Optional: Add spacing between list items */
 }
-  
-  .awards-section h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    margin-bottom: 1rem;
-  }
-  
-  /* Reviews Section / Customer Testimonials */
-  .reviews-section {
-    background-color: #f7f7f7;
-    padding: 1.5rem;
-    border-radius: 8px;
-    text-align: center;
-  }
-  
-  .reviews-section h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    text-align: center;
-    margin-bottom: 1rem;
-  }
-  
-  .testimonial {
-    margin-bottom: 1rem;
-    font-style: italic;
-  }
-  
-  .testimonial span {
-    display: block;
-    text-align: center;
-    font-weight: bold;
-    margin-top: 0.5rem;
-  }
-  
-  /* Responsive Adjustments */
-  @media (max-width: 600px) {
-    .gallery-page {
+
+.awards-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Reviews Section / Customer Testimonials */
+.reviews-section {
+  background-color: #f7f7f7;
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.reviews-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.testimonial {
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.testimonial span {
+  display: block;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+/* Responsive Adjustments */
+
+/* Small Screens (≤600px) */
+@media (max-width: 600px) {
+  .gallery-page {
       padding: 1rem;
-    }
-    .gallery-page h1 {
-      font-size: 2rem;
-    }
   }
+
+  .gallery-page h1 {
+      font-size: 2rem;
+  }
+
+  .gallery-grid {
+      grid-template-columns: 1fr; /* Stack items vertically */
+  }
+
+  .gallery-item img {
+      height: 200px; /* Reduce image height for smaller screens */
+  }
+
+  .awards-section h2,
+  .reviews-section h2 {
+      font-size: 1.8rem;
+  }
+
+  .testimonial {
+      font-size: 0.9rem;
+  }
+}
+
+/* Medium Screens (601px–1199px) */
+@media (min-width: 601px) and (max-width: 1199px) {
+  .gallery-page {
+      padding: 1.5rem;
+  }
+
+  .gallery-page h1 {
+      font-size: 2.2rem;
+  }
+
+  .gallery-grid {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust grid for medium screens */
+      gap: 1.5rem; /* Increase spacing between items */
+  }
+
+  .gallery-item img {
+      height: 225px; /* Adjust image height */
+  }
+
+  .awards-section h2,
+  .reviews-section h2 {
+      font-size: 1.9rem;
+  }
+
+  .testimonial {
+      font-size: 1rem;
+  }
+}
