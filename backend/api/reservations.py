@@ -24,7 +24,7 @@ def create_reservation():
     required_fields = ['name', 'email', 'date', 'time', 'guests']
     for field in required_fields:
         if field not in data:
-            return jsonify({'success': False, 'message': f'Missing required field: {field}'}), 400
+            return jsonify({'success': False, 'error': 'Validation Error', 'message': f'Missing required field: {field}'}), 400
     
     try:
         # Parse date and time

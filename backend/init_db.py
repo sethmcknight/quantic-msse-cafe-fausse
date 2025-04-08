@@ -11,8 +11,8 @@ from .models.reservation import Reservation
 from .models.newsletter import Newsletter
 from datetime import datetime, timedelta
 
-def init_db(app):
-    """Initialize the database with sample data"""
+def init_db(app, populate_sample_data=True):
+    """Initialize the database with optional sample data"""
     print("Initializing database...")
 
     with app.app_context():
@@ -23,9 +23,16 @@ def init_db(app):
         print("Dropping all existing tables...")
         db.drop_all()
 
+        # Debug log to confirm schema creation
+        print("Executing db.create_all() to create tables...")
+
         # Create all tables
         print("Creating tables...")
         db.create_all()
+
+        if not populate_sample_data:
+            print("Skipping sample data population.")
+            return
 
         # Create categories
         print("Creating menu categories...")
