@@ -74,10 +74,17 @@ def create_reservation():
         
         return jsonify({
             'success': True, 
-            'message': 'Reservation confirmed!',
+            'message': 'Thank you for your reservation. We look forward to serving you!',
             'reservation_id': reservation.id,
             'table_number': reservation.table_number,
-            'time_slot': reservation.time_slot.isoformat()
+            'time_slot': reservation.time_slot.isoformat(),
+            'name': customer.name,
+            'email': customer.email,
+            'phone': customer.phone,
+            'date': data['date'],
+            'time': data['time'],
+            'guests': data['guests'],
+            'specialRequests': data.get('special_requests', '')
         }), 201
         
     except ValueError as e:
