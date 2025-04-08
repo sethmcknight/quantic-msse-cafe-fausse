@@ -3,9 +3,9 @@ Reservations API Blueprint for Café Fausse
 """
 from flask import Blueprint, jsonify, request
 from datetime import datetime, timedelta
-from extensions import db
-from models.reservation import Reservation
-from models.customer import Customer
+from ..extensions import db
+from ..models.reservation import Reservation
+from ..models.customer import Customer
 import random
 
 reservations_bp = Blueprint('reservations', __name__)
@@ -74,7 +74,7 @@ def create_reservation():
         
         return jsonify({
             'success': True, 
-            'message': 'Reservation confirmed!',
+            'message': 'Reservation created successfully.',
             'reservation_id': reservation.id,
             'table_number': reservation.table_number,
             'time_slot': reservation.time_slot.isoformat()
@@ -168,3 +168,8 @@ def get_reservations():
         'success': True,
         'reservations': [reservation.to_dict() for reservation in reservations]
     })
+
+@reservations_bp.route('', methods=['GET'])
+@reservations_bp.route('/', methods=['GET'])
+def get_all_reservations():
+    return get_reservations()

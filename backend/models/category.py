@@ -1,8 +1,8 @@
 """
 Category model for the Café Fausse application
 """
-from models.base import Base
-from extensions import db
+from .base import Base
+from ..extensions import db
 
 
 class Category(Base):

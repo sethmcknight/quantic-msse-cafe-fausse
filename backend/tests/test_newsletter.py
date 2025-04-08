@@ -9,6 +9,8 @@ def client():
     app = create_app('testing')
     app.config['TESTING'] = True
     with app.test_client() as client:
+        with app.app_context():
+            init_db(app)  # Initialize the database with sample data
         yield client
 
 @pytest.fixture

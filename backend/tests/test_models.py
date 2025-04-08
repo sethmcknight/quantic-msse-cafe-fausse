@@ -1,4 +1,5 @@
 import pytest
+from datetime import datetime
 from ..models.category import Category
 from ..models.customer import Customer
 from ..models.menu_item import MenuItem
@@ -16,6 +17,8 @@ def client():
 
 @pytest.fixture
 def setup_database():
+    app = create_app('testing')
+    app.app_context().push()  # Push application context
     db.create_all()
     yield
     db.session.remove()
@@ -68,13 +71,13 @@ def test_reservation_model(setup_database):
     db.session.add(customer)
     db.session.commit()
 
-    reservation = Reservation(customer_id=customer.id, date="2025-04-15", time="19:00", guests=4, table_number=5)
+    time_slot = datetime.strptime("2025-04-15 19:00", "%Y-%m-%d %H:%M")
+    reservation = Reservation(customer_id=customer.id, time_slot=time_slot, guests=4, table_number=5)
     db.session.add(reservation)
     db.session.commit()
 
     assert reservation.id is not None
     assert reservation.customer_id == customer.id
-    assert reservation.date == "2025-04-15"
-    assert reservation.time == "19:00"
+    assert reservation.time_slot == time_slot
     assert reservation.guests == 4
     assert reservation.table_number == 5

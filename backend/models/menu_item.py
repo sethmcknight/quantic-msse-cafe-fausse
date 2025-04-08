@@ -1,8 +1,9 @@
 """
 MenuItem model for the Café Fausse application
 """
-from models.base import Base
-from extensions import db
+from .base import Base
+from ..extensions import db
+from .category import Category  # Explicitly import the Category model
 
 
 class MenuItem(Base):
@@ -24,7 +25,7 @@ class MenuItem(Base):
     
     # Foreign key to category
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
-    category = db.relationship('backend.models.categories.Category', back_populates='menu_items')
+    category = db.relationship('Category', back_populates='menu_items')  # Use the correct reference
 
     def __repr__(self):
         return f'<MenuItem {self.name}>'

@@ -2,7 +2,7 @@
 Base model for SQLAlchemy models
 """
 from datetime import datetime
-from extensions import db
+from ..extensions import db
 
 
 class Base(db.Model):
