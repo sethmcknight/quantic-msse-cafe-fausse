@@ -55,7 +55,7 @@
 .newsletter-section {
   background: transparent;
   margin: 0 auto; /* Center the section horizontally */
-  padding: 0; /* Remove extra padding */
+  padding: 1 rem; /* Remove extra padding */
   display: flex;
   flex-direction: column;
   align-items: flex-start; /* Align content to the left */
