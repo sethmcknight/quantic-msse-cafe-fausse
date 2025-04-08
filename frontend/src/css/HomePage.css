@@ -10,7 +10,7 @@
 .hero-section {
   position: relative;
   height: 70vh;
-  background-image: url('../assets/gallery-cafe-interior.jpg');
+  background-image: url('../assets/home-cafe-fausse.jpg');
   background-size: cover;
   background-position: center;
   display: grid;
@@ -168,6 +168,44 @@
 .newsletter-section {
   padding: 2rem;
   background-color: #fff;
+}
+
+/* Highlight Images */
+#menu-highlight {
+  background-image: url('../assets/menu-item.jpg'); /* Replace with the actual path to your image */
+  background-size: cover;
+  background-position: center;
+}
+
+#ambiance-highlight {
+  background-image: url('../assets/gallery-special-event.jpg'); /* Replace with the actual path to your image */
+  background-size: cover;
+  background-position: center;
+}
+
+#chef-highlight {
+  background-image: url('../assets/chef-masterpiece.jpg'); /* Replace with the actual path to your image */
+  background-size: cover;
+  background-position: center;
+}
+
+/* Quick Link Images */
+.gallery-image {
+  background-image: url('../assets/gallery-cafe-interior.jpg'); /* Replace with the actual path to your image */
+  background-size: cover;
+  background-position: center;
+}
+
+.menu-image {
+  background-image: url('../assets/gallery-ribeye-steak.jpg'); /* Replace with the actual path to your image */
+  background-size: cover;
+  background-position: center;
+}
+
+.reservation-image {
+  background-image: url('../assets/waiter-reservation.jpg'); /* Replace with the actual path to your image */
+  background-size: cover;
+  background-position: center;
 }
 
 /* Responsive Adjustments */
