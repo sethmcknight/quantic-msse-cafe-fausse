@@ -1,185 +1,236 @@
 /* Global HomePage Styles */
 .home-page {
-    display: grid;
-    gap: 2rem;
-    font-family: 'Montserrat', sans-serif;
-    color: #2c2c2c;
-  }
-  
-  /* Hero Section in HomePage.css */
+  display: grid;
+  gap: 2rem;
+  font-family: 'Montserrat', sans-serif;
+  color: #2c2c2c;
+}
+
+/* Hero Section */
 .hero-section {
-    position: relative;
-    height: 70vh;
-    background-image: url('../assets/gallery-cafe-interior.jpg');
-    background-size: cover;
-    background-position: center;
-    display: grid;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .hero-overlay {
-    background: rgba(0, 0, 0, 0.5);
-    padding: 2rem;
-    border-radius: 8px;
-    text-align: center;
-  }
-  
-  .hero-overlay h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 3rem;
-    color: #fff;
-    margin: 0;
-  }
-  
-  .tagline {
-    font-size: 1.5rem;
-    color: #eee;
-  }
-  
-  /* Info Section */
-  .info-section {
-    padding: 2rem;
-    background-color: #f7f7f7;
-    display: grid;
-    gap: 2rem;
-  }
-  
-  .info-section h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
-  }
-  
-  .contact-info,
-  .hours-info {
-    padding: 1rem;
-  }
-  
-  /* Highlights Section */
-  .highlights-section {
-    padding: 2rem;
-    text-align: center;
-  }
-  
-  .highlights-section h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-  }
-  
+  position: relative;
+  height: 70vh;
+  background-image: url('../assets/gallery-cafe-interior.jpg');
+  background-size: cover;
+  background-position: center;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.hero-overlay h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3rem); /* Responsive font size */
+  color: #fff;
+  margin: 0;
+}
+
+.tagline {
+  font-size: clamp(1rem, 3vw, 1.5rem); /* Responsive font size */
+  color: #eee;
+}
+
+/* Info Section */
+.info-section {
+  padding: 2rem;
+  background-color: #f7f7f7;
+  display: grid;
+  gap: 2rem;
+}
+
+.info-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.contact-info,
+.hours-info {
+  padding: 1rem;
+}
+
+/* Highlights Section */
+.highlights-section {
+  padding: 2rem;
+  text-align: center;
+}
+
+.highlights-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.highlights-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr; /* Default single column for small screens */
+}
+
+@media (min-width: 600px) and (max-width: 1199px) {
   .highlights-grid {
-    display: grid;
-    gap: 1rem;
+      grid-template-columns: repeat(2, 1fr); /* Two columns for medium screens */
   }
-
-  #menu-highlight {
-    background-image: url('../assets/gallery-ribeye-steak.jpg');
 }
 
-#ambiance-highlight {
-    background-image: url('../assets/gallery-special-event.jpg');
-}
-/* ChatGPT Prompt for  image - "Can you generate an image of a gourmet meal" */
-
-#chef-highlight {
-  background-image: url('../assets/chef-masterpiece.jpg');
+@media (min-width: 1200px) {
+  .highlights-grid {
+      grid-template-columns: repeat(3, 1fr); /* Three columns for large screens */
+  }
 }
 
-/* ChatGPT Prompt for image - "can you generate an image of a cover of a generic fancy restaurant menu for Cafe Fausse on a table" */
-.menu-image {
-  background-image: url('../assets/menu-item.jpg');
+.highlight-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  transition: transform 0.3s;
 }
 
-/* ChatGPT Prompt for image - "Can you generate an image of a wait staff member in a tuxedo taking a phone call for a reservation?" */
-.reservation-image {
-  background-image: url('../assets/waiter-reservation.jpg');
+.highlight-image {
+  width: 100%;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  background-color: #ccc; /* Fallback color */
 }
-  
 
-.gallery-image {
-    background-image: url('../assets/gallery-cafe-interior.jpg');
-  }
-  
-  @media (min-width: 768px) {
-    .highlights-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-  
-  .highlight-item {
-    position: relative;
-    overflow: hidden;
-    border-radius: 8px;
-    transition: transform 0.3s;
-  }
-  
-  .highlight-image {
-    width: 100%;
-    height: 200px;
-    background-size: cover;
-    background-position: center;
-    background-color: #ccc; /* Fallback color */
-  }
-  
-  .highlight-caption {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 0.75rem;
-    background: rgba(0, 0, 0, 0.6);
-    color: #fff;
-    font-size: 1.1rem;
-    text-align: center;
-  }
-  
-  /* Quick Links Section */
-  .quick-links {
-    padding: 2rem;
-    background-color: #f7f7f7;
-    text-align: center;
-  }
-  
-  .quick-links h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-  }
-  
+.highlight-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+/* Quick Links Section */
+.quick-links {
+  padding: 2rem;
+  background-color: #f7f7f7;
+  text-align: center;
+}
+
+.quick-links h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.links-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr; /* Default single column for small screens */
+}
+
+@media (min-width: 600px) and (max-width: 1199px) {
   .links-grid {
-    display: grid;
-    gap: 1rem;
+      grid-template-columns: repeat(2, 1fr); /* Two columns for medium screens */
   }
-  
-  @media (min-width: 768px) {
-    .links-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
+}
+
+@media (min-width: 1200px) {
+  .links-grid {
+      grid-template-columns: repeat(3, 1fr); /* Three columns for large screens */
   }
-  
-  .quick-link {
-    text-decoration: none;
-    color: #2c2c2c;
-    transition: transform 0.3s;
+}
+
+.quick-link {
+  text-decoration: none;
+  color: #2c2c2c;
+  transition: transform 0.3s;
+}
+
+.quick-link:hover {
+  transform: translateY(-5px);
+}
+
+.link-image {
+  width: 100%;
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  background-color: #ccc; /* Fallback color */
+}
+
+/* Newsletter Section */
+.newsletter-section {
+  padding: 2rem;
+  background-color: #fff;
+}
+
+/* Responsive Adjustments */
+
+/* Small Screens (≤600px) */
+@media (max-width: 600px) {
+  .hero-section {
+      height: 50vh; /* Reduce height for small screens */
   }
-  
-  .quick-link:hover {
-    transform: translateY(-5px);
+
+  .info-section h2,
+  .highlights-section h2,
+  .quick-links h2 {
+      font-size: 1.5rem; /* Reduce heading size */
   }
-  
+
+  .highlight-image {
+      height: 150px; /* Reduce highlight image height */
+  }
+
   .link-image {
-    width: 100%;
-    height: 150px;
-    background-size: cover;
-    background-position: center;
-    border-radius: 8px;
-    margin-bottom: 0.75rem;
-    background-color: #ccc; /* Fallback color */
+      height: 120px; /* Reduce link image height */
   }
-  
-  /* Newsletter Section */
-  .newsletter-section {
-    padding: 2rem;
-    background-color: #fff;
+}
+
+/* Medium Screens (601px–1199px) */
+@media (min-width: 601px) and (max-width: 1199px) {
+  .hero-section {
+      height: 60vh; /* Adjust height for medium screens */
   }
+
+  .info-section h2,
+  .highlights-section h2,
+  .quick-links h2 {
+      font-size: 1.8rem; /* Adjust heading size */
+  }
+
+  .highlight-image {
+      height: 180px; /* Adjust highlight image height */
+  }
+
+  .link-image {
+      height: 140px; /* Adjust link image height */
+  }
+}
+
+/* Large Screens (≥1200px) */
+@media (min-width: 1200px) {
+  .hero-section {
+      height: 70vh; /* Default height for large screens */
+  }
+
+  .info-section h2,
+  .highlights-section h2,
+  .quick-links h2 {
+      font-size: 2rem; /* Default heading size */
+  }
+
+  .highlight-image {
+      height: 200px; /* Default highlight image height */
+  }
+
+  .link-image {
+      height: 150px; /* Default link image height */
+  }
+}
