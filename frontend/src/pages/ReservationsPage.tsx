@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { reservationApi } from '../utils/api';
 import InlineNotification from '../components/InlineNotification';
@@ -15,7 +15,8 @@ const ReservationsPage: React.FC = () => {
     date: '',
     time: '',
     guests: 2,
-    specialRequests: ''
+    specialRequests: '',
+    newsletterOptIn: false
   });
   
   // Availability check state
@@ -28,8 +29,16 @@ const ReservationsPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
   const [reservationDetails, setReservationDetails] = useState<{
-    reservation_id?: number;
-    table_number?: number;
+    reservationId?: number;
+    tableNumber?: number;
+    name?: string;
+    email?: string;
+    phone?: string;
+    date?: string;
+    time?: string;
+    guests?: number;
+    specialRequests?: string;
+    message?: string;
   } | null>(null);
 
   // Notification state
@@ -142,11 +151,23 @@ const ReservationsPage: React.FC = () => {
       
       if (response.success) {
         setSubmissionSuccess(true);
-        setReservationDetails({
-          reservation_id: response.reservationId,
-          table_number: response.tableNumber
+
+        const normalizeResponse = (response: any) => ({
+          reservationId: response.reservationId || response.reservation_id,
+          tableNumber: response.tableNumber || response.table_number,
+          name: response.name,
+          email: response.email,
+          phone: response.phone,
+          date: new Date(response.date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+          time: new Date(`1970-01-01T${response.time}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }),
+          guests: response.guests,
+          specialRequests: response.specialRequests,
+          message: response.message,
         });
-        
+
+        const normalizedDetails = normalizeResponse(response);
+        setReservationDetails(normalizedDetails);
+
         // Reset form
         setFormData({
           name: '',
@@ -155,10 +176,18 @@ const ReservationsPage: React.FC = () => {
           date: '',
           time: '',
           guests: 2,
-          specialRequests: ''
+          specialRequests: '',
+          newsletterOptIn: false
         });
         setAvailabilityChecked(false);
         setIsAvailable(false);
+
+        if (submissionSuccess && reservationDetails) {
+          const confirmationElement = document.querySelector('.reservation-confirmation');
+          if (confirmationElement) {
+            confirmationElement.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
       } else {
         displayNotification(response.message || 'Error creating reservation.', 'error');
       }
@@ -185,6 +214,21 @@ const ReservationsPage: React.FC = () => {
     return options;
   };
 
+  useEffect(() => {
+    if (submissionSuccess && reservationDetails) {
+      const confirmationElement = document.querySelector('.reservation-confirmation');
+      if (confirmationElement) {
+        confirmationElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [submissionSuccess, reservationDetails]);
+
+  useEffect(() => {
+    if (submissionSuccess) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [submissionSuccess]);
+
   return (
     <div className="reservations-page">
       <h1>Make a Reservation</h1>
@@ -201,13 +245,35 @@ const ReservationsPage: React.FC = () => {
       {submissionSuccess && reservationDetails ? (
         <div className="reservation-confirmation">
           <h2>Reservation Confirmed!</h2>
-          <p>Thank you for your reservation. We look forward to seeing you!</p>
+          <p>{reservationDetails.message}</p>
           <div className="confirmation-details">
-            <p><strong>Reservation ID:</strong> {reservationDetails.reservation_id}</p>
-            <p><strong>Table Number:</strong> {reservationDetails.table_number}</p>
-            <p><strong>Date:</strong> {formData.date}</p>
-            <p><strong>Time:</strong> {formData.time}</p>
-            <p><strong>Party Size:</strong> {formData.guests}</p>
+            {reservationDetails.reservationId && (
+              <p><strong>Reservation ID:</strong> {reservationDetails.reservationId}</p>
+            )}
+            {reservationDetails.tableNumber && (
+              <p><strong>Table Number:</strong> {reservationDetails.tableNumber}</p>
+            )}
+            {reservationDetails.name && (
+              <p><strong>Name:</strong> {reservationDetails.name}</p>
+            )}
+            {reservationDetails.email && (
+              <p><strong>Email:</strong> {reservationDetails.email}</p>
+            )}
+            {reservationDetails.phone && (
+              <p><strong>Phone:</strong> {reservationDetails.phone}</p>
+            )}
+            {reservationDetails.date && (
+              <p><strong>Date:</strong> {reservationDetails.date}</p>
+            )}
+            {reservationDetails.time && (
+              <p><strong>Time:</strong> {reservationDetails.time}</p>
+            )}
+            {reservationDetails.guests && (
+              <p><strong>Guests:</strong> {reservationDetails.guests}</p>
+            )}
+            {reservationDetails.specialRequests && (
+              <p><strong>Special Requests:</strong> {reservationDetails.specialRequests}</p>
+            )}
           </div>
           <button 
             className="make-new-reservation"
@@ -257,7 +323,7 @@ const ReservationsPage: React.FC = () => {
                 onChange={handleChange}
                 required
               >
-                {[...Array(20)].map((_, i) => (
+                {[...Array(8)].map((_, i) => (
                   <option key={i + 1} value={i + 1}>
                     {i + 1} {i === 0 ? 'Guest' : 'Guests'}
                   </option>
@@ -285,66 +351,84 @@ const ReservationsPage: React.FC = () => {
               )}
             </div>
             
-            <div className="form-group">
-              <label htmlFor="name">Full Name *</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                disabled={!availabilityChecked || !isAvailable}
-              />
-            </div>
-            
-            <div className="form-group">
-              <label htmlFor="email">Email Address *</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                disabled={!availabilityChecked || !isAvailable}
-              />
-            </div>
-            
-            <div className="form-group">
-              <label htmlFor="phone">Phone Number</label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder="Optional"
-                disabled={!availabilityChecked || !isAvailable}
-              />
-            </div>
-            
-            <div className="form-group">
-              <label htmlFor="specialRequests">Special Requests</label>
-              <textarea
-                id="specialRequests"
-                name="specialRequests"
-                value={formData.specialRequests}
-                onChange={handleChange}
-                rows={4}
-                placeholder="Allergies, special occasions, seating preferences, etc."
-                disabled={!availabilityChecked || !isAvailable}
-              />
-            </div>
-            
-            <div className="form-submit">
-              <button 
-                type="submit" 
-                disabled={!availabilityChecked || !isAvailable || isSubmitting || !formData.name || !formData.email}
-              >
-                {isSubmitting ? 'Submitting...' : 'Complete Reservation'}
-              </button>
-            </div>
+            {availabilityChecked && isAvailable && (
+            <>
+              <div className="form-group">
+                <label htmlFor="name">Full Name *</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="email">Email Address *</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="phone">Phone Number</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="Optional"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="specialRequests">Special Requests</label>
+                <textarea
+                  id="specialRequests"
+                  name="specialRequests"
+                  value={formData.specialRequests}
+                  onChange={handleChange}
+                  rows={4}
+                  placeholder="Allergies, special occasions, seating preferences, etc."
+                />
+              </div>
+
+              <div className="form-group newsletter-opt-in">
+                <input
+                  type="checkbox"
+                  id="newsletterOptIn"
+                  name="newsletterOptIn"
+                  checked={formData.newsletterOptIn || false}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      newsletterOptIn: e.target.checked,
+                    }))
+                  }
+                />
+                <label htmlFor="newsletterOptIn" className="checkbox-label">
+                I want to receive updates on special events and promotions!
+                </label>
+              </div>
+
+              <div className="form-submit">
+                <button 
+                  type="submit" 
+                  disabled={!availabilityChecked || !isAvailable || isSubmitting || !formData.name || !formData.email}
+                >
+                  {isSubmitting ? 'Submitting...' : 'Complete Reservation'}
+                </button>
+              </div>
+            </>
+            )}
           </form>
           
           <div className="reservation-info">

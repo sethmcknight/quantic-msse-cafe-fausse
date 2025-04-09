@@ -9,7 +9,7 @@
 .footer-content {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust column sizing for responsiveness */
-  gap: 1.5rem; /* Reduce the gap between sections */
+  gap: .5rem; /* Reduce the gap between sections */
   margin-bottom: 1.5rem;
   align-items: start; /* Align items to the top */
   justify-content: center; /* Center the grid content */
@@ -17,8 +17,8 @@
 
 /* Ensure footer sections span the full width of their grid cell */
 .footer-section {
-  margin: 0 auto; /* Center the section horizontally */
-  padding: 0; /* Remove extra padding */
+  margin: 0; /* Center the section horizontally */
+  padding: 1rem; /* Remove extra padding */
   max-width: 100%; /* Prevent the section from being too wide */
   text-align: left; /* Align text consistently */
 }
@@ -55,7 +55,7 @@
 .newsletter-section {
   background: transparent;
   margin: 0 auto; /* Center the section horizontally */
-  padding: 0; /* Remove extra padding */
+  padding: 1 rem; /* Remove extra padding */
   display: flex;
   flex-direction: column;
   align-items: flex-start; /* Align content to the left */
@@ -111,17 +111,43 @@
   font-size: 0.9rem;
 }
 
-/* Responsive adjustments */
+/* Responsive Adjustments */
+
+/* Small Screens (≤600px) */
 @media (max-width: 600px) {
   .site-footer {
-    padding: 1rem;
+      padding: 1rem;
   }
 
   .footer-content {
-    grid-template-columns: 1fr; /* Stack sections vertically */
+      grid-template-columns: 1fr; /* Stack sections vertically */
   }
 
   .newsletter-container {
-    grid-column: span 1; /* Revert to single-column layout */
+      grid-column: span 1; /* Single-column layout */
+  }
+
+  .newsletter-form {
+      grid-template-columns: 1fr; /* Stack input and button vertically */
+  }
+
+  .newsletter-form button {
+      width: 100%; /* Full-width button */
+  }
+}
+
+/* Medium Screens (601px–1199px) */
+@media (min-width: 601px) and (max-width: 1199px) {
+  .footer-content {
+      grid-template-columns: repeat(2, 1fr); /* Two-column layout */
+      gap: 1rem; /* Adjust spacing */
+  }
+
+  .newsletter-container {
+      grid-column: span 2; /* Span across two columns */
+  }
+
+  .newsletter-form {
+      grid-template-columns: 2fr 1fr; /* Input takes more space than button */
   }
 }

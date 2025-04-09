@@ -45,7 +45,7 @@ def test_create_reservation(client, init_database):
         "guests": 4
     })
     assert response.status_code == 201
-    assert response.json["message"] == "Reservation created successfully."
+    assert response.json["message"] == "Thank you for your reservation. We look forward to serving you!"
 
     # Test missing required fields
     response = client.post('/api/reservations', json={
