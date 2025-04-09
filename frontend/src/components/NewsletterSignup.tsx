@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { newsletterApi } from '../utils/api';
-import './NewsletterSignup.css';
+import '../css/NewsletterSignup.css';
 
 interface NewsletterSignupProps {
   className?: string;

@@ -1,114 +1,153 @@
 .site-footer {
-    background-color: #000;
-    color: #fff;
-    padding: 2rem;
-    border-top: 1px solid #444;
-    font-family: 'Montserrat', sans-serif;
-  }
-  
-  .footer-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .footer-section h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.75rem;
-    margin-bottom: 0.5rem;
-    color: #fff;
-  }
-  
-  .footer-section p,
-  .footer-links li {
-    font-size: 0.95rem;
-    margin: 0.25rem 0;
-  }
-  
-  .footer-links {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .footer-links li a {
-    text-decoration: none;
-    color: #fff;
-    transition: color 0.3s ease;
-  }
-  
-  .footer-links li a:hover {
-    color: #8b5a2b;
-  }
-  
-  /* Simplified Newsletter Section */
-  .newsletter-section {
-    background: transparent;
-    margin-top: 1rem;
-    padding-top: 0.5rem;
-  }
-  
-  .newsletter-container {
-    background: transparent;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .newsletter-form {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 0.5rem;
-    align-items: center;
-  }
-  
-  .newsletter-form input {
-    background: #fff;
-    color: #000;
-    border: 1px solid #ccc;
-    padding: 0.5rem;
-    font-size: 1rem;
-  }
-  
-  .newsletter-form button {
-    background: #8b5a2b;
-    color: #fff;
-    border: none;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  .newsletter-form button:hover {
-    background: #704726;
-  }
-  
-  .social-links {
-    margin-top: 1rem;
-    display: flex;
-    gap: 1rem;
-  }
-  
-  .social-links a {
-    font-size: 1.1rem;
-    text-decoration: none;
-    color: #fff;
-    transition: color 0.3s ease;
-  }
-  
-  .social-links a:hover {
-    color: #8b5a2b;
-  }
-  
-  .footer-bottom {
-    text-align: center;
-    border-top: 1px solid #444;
-    padding-top: 1rem;
-    font-size: 0.9rem;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 600px) {
-    .site-footer {
+  background-color: #000;
+  color: #fff;
+  padding: 2rem;
+  border-top: 1px solid #444;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust column sizing for responsiveness */
+  gap: .5rem; /* Reduce the gap between sections */
+  margin-bottom: 1.5rem;
+  align-items: start; /* Align items to the top */
+  justify-content: center; /* Center the grid content */
+}
+
+/* Ensure footer sections span the full width of their grid cell */
+.footer-section {
+  margin: 0; /* Center the section horizontally */
+  padding: 1rem; /* Remove extra padding */
+  max-width: 100%; /* Prevent the section from being too wide */
+  text-align: left; /* Align text consistently */
+}
+
+.footer-section h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.footer-section p,
+.footer-links li {
+  font-size: 0.95rem;
+  margin: 0.25rem 0;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links li a {
+  text-decoration: none;
+  color: #fff;
+  transition: color 0.3s ease;
+}
+
+.footer-links li a:hover {
+  color: #8b5a2b;
+}
+
+/* Newsletter Section */
+.newsletter-section {
+  background: transparent;
+  margin: 0 auto; /* Center the section horizontally */
+  padding: 1 rem; /* Remove extra padding */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align content to the left */
+  max-width: 600px; /* Limit the width of the newsletter section */
+}
+
+.newsletter-container {
+  background: transparent;
+  grid-column: span 2; /* Make the container span 2 columns */
+  margin-top: 0; /* Remove extra spacing above */
+  width: 100%; /* Ensure it spans the section */
+}
+
+/* Ensure the form elements are aligned horizontally */
+.newsletter-form {
+  display: grid;
+  grid-template-columns: 1fr auto; /* Input takes most space, button adjusts */
+  gap: 0.5rem; /* Add spacing between input and button */
+  align-items: center; /* Vertically align input and button */
+  width: 100%; /* Ensure it spans the container */
+}
+
+/* Ensure the input and button fit properly */
+.newsletter-form input {
+  flex: 1; /* Allow input to grow */
+  background: #fff;
+  color: #000;
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 100%; /* Ensure input spans available space */
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.newsletter-form button {
+  background: #8b5a2b; /* Correct button background color */
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  white-space: nowrap; /* Prevent button text from wrapping */
+}
+
+.newsletter-form button:hover {
+  background: #704726; /* Darker shade for hover effect */
+}
+
+.footer-bottom {
+  text-align: center;
+  border-top: 1px solid #444;
+  padding-top: 1rem;
+  font-size: 0.9rem;
+}
+
+/* Responsive Adjustments */
+
+/* Small Screens (≤600px) */
+@media (max-width: 600px) {
+  .site-footer {
       padding: 1rem;
-    }
   }
+
+  .footer-content {
+      grid-template-columns: 1fr; /* Stack sections vertically */
+  }
+
+  .newsletter-container {
+      grid-column: span 1; /* Single-column layout */
+  }
+
+  .newsletter-form {
+      grid-template-columns: 1fr; /* Stack input and button vertically */
+  }
+
+  .newsletter-form button {
+      width: 100%; /* Full-width button */
+  }
+}
+
+/* Medium Screens (601px–1199px) */
+@media (min-width: 601px) and (max-width: 1199px) {
+  .footer-content {
+      grid-template-columns: repeat(2, 1fr); /* Two-column layout */
+      gap: 1rem; /* Adjust spacing */
+  }
+
+  .newsletter-container {
+      grid-column: span 2; /* Span across two columns */
+  }
+
+  .newsletter-form {
+      grid-template-columns: 2fr 1fr; /* Input takes more space than button */
+  }
+}

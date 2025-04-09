@@ -3,9 +3,9 @@ Reservations API Blueprint for Café Fausse
 """
 from flask import Blueprint, jsonify, request
 from datetime import datetime, timedelta
-from extensions import db
-from models.reservation import Reservation
-from models.customer import Customer
+from ..extensions import db
+from ..models.reservation import Reservation
+from ..models.customer import Customer
 import random
 
 reservations_bp = Blueprint('reservations', __name__)
@@ -24,7 +24,7 @@ def create_reservation():
     required_fields = ['name', 'email', 'date', 'time', 'guests']
     for field in required_fields:
         if field not in data:
-            return jsonify({'success': False, 'message': f'Missing required field: {field}'}), 400
+            return jsonify({'success': False, 'error': 'Validation Error', 'message': f'Missing required field: {field}'}), 400
     
     try:
         # Parse date and time
@@ -74,10 +74,17 @@ def create_reservation():
         
         return jsonify({
             'success': True, 
-            'message': 'Reservation confirmed!',
+            'message': 'Thank you for your reservation. We look forward to serving you!',
             'reservation_id': reservation.id,
             'table_number': reservation.table_number,
-            'time_slot': reservation.time_slot.isoformat()
+            'time_slot': reservation.time_slot.isoformat(),
+            'name': customer.name,
+            'email': customer.email,
+            'phone': customer.phone,
+            'date': data['date'],
+            'time': data['time'],
+            'guests': data['guests'],
+            'specialRequests': data.get('special_requests', '')
         }), 201
         
     except ValueError as e:
@@ -159,3 +166,25 @@ def cancel_reservation(reservation_id):
         'message': 'Reservation has been canceled',
         'reservation_id': reservation_id
     })
+
+@reservations_bp.route('/all', methods=['GET'])
+def get_reservations():
+    """Get all reservations"""
+    reservations = Reservation.query.all()
+    reservations_with_customer = []
+
+    for reservation in reservations:
+        customer = Customer.query.get(reservation.customer_id)
+        reservation_dict = reservation.to_dict()
+        reservation_dict['customer_name'] = customer.name if customer else None
+        reservations_with_customer.append(reservation_dict)
+
+    return jsonify({
+        'success': True,
+        'reservations': reservations_with_customer
+    })
+
+@reservations_bp.route('', methods=['GET'])
+@reservations_bp.route('/', methods=['GET'])
+def get_all_reservations():
+    return get_reservations()

@@ -5,7 +5,7 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 
 # Import configuration
-from config.config import config
+from .config.config import config
 
 def create_app(config_name='development'):
     """Create and configure the Flask application"""
@@ -26,6 +26,9 @@ def create_app(config_name='development'):
         })
     
     # Register blueprints
+    from .api.menu import menu_bp
+    from .api.reservations import reservations_bp
+    from .api.newsletter import newsletter_bp
     from api.menu import menu_bp
     from api.reservations import reservations_bp
     from api.newsletter import newsletter_bp
@@ -39,6 +42,7 @@ def create_app(config_name='development'):
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     
     # Initialize extensions with the app
+    from .extensions import db, migrate
     from extensions import db, migrate, login_manager
     db.init_app(app)
     migrate.init_app(app, db)

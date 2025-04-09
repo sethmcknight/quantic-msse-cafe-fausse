@@ -179,7 +179,7 @@ cafe-fausse/
 │       ├── components/     # Reusable UI components
 │       ├── context/        # React Context API providers
 │       ├── pages/          # Page components
-│       ├── styles/         # CSS styles
+│       ├── css/            # CSS styles
 │       └── utils/          # Utility functions and API clients
 │
 ├── backend/                # Flask backend application
@@ -369,22 +369,10 @@ The application was developed using a component-based approach with React:
    - Confirmed responsive design across devices
    - Validated data persistence
 
-## 🚀 Future Enhancements
-
-Features planned for future releases:
-
-1. **Admin Dashboard**: For restaurant staff to manage reservations and menu
-2. **User Accounts**: Allow customers to create accounts and view reservation history
-3. **Online Ordering**: Add functionality for take-out orders
-4. **Social Media Integration**: Share menu items and events on social platforms
-5. **Internationalization**: Support for multiple languages
-6. **Gift Cards**: Purchase and redemption of digital gift cards
-7. **Event Booking**: Private dining and event scheduling
-8. **Menu Filtering**: Advanced dietary preference filtering
-
 ## 👥 Contributors
 
 - Seth McKnight - MSSE Cohort 66
+- Toby Pasquale - MSSE Cohort 66
 
 ## 📄 License
 

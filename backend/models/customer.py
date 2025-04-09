@@ -1,13 +1,14 @@
 """
 Customer model for the Café Fausse application
 """
-from models.base import Base
-from extensions import db
+from .base import Base
+from ..extensions import db
 
 
 class Customer(Base):
     """Customer model representing restaurant customers"""
     __tablename__ = 'customers'
+    __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -15,8 +16,8 @@ class Customer(Base):
     phone = db.Column(db.String(20), nullable=True)
     newsletter_signup = db.Column(db.Boolean, default=False)
     
-    # Relationship with reservations
-    reservations = db.relationship('Reservation', backref='customer', lazy=True)
+    # Relationship with reservations - use fully qualified path to avoid conflict
+    reservations = db.relationship('backend.models.reservation.Reservation', backref='customer', lazy=True)
 
     def __repr__(self):
         return f'<Customer {self.name}>'
