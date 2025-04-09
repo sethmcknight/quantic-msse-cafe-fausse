@@ -16,7 +16,7 @@ def setup_database():
     app = create_app('testing')
     with app.app_context():
         from backend.init_db import init_db
-        init_db(app, populate_sample_data=True)
+        init_db(app, populate_sample_data=True)  # Ensure admin user is created
 
 @pytest.fixture
 def admin_token(client: FlaskClient):

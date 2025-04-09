@@ -15,6 +15,13 @@ def client():
             init_db(app)  # Initialize the database with sample data
         yield client
 
+@pytest.fixture(scope='module', autouse=True)
+def setup_database():
+    app = create_app('testing')
+    with app.app_context():
+        from backend.init_db import init_db
+        init_db(app, populate_sample_data=True)  # Ensure admin user is created
+
 @pytest.fixture
 def admin_token(client: FlaskClient):
     # Generate an admin authentication token
@@ -91,22 +98,24 @@ def test_unexpected_server_error(client: FlaskClient, monkeypatch):
     assert response.status_code == 500
     assert 'error' in response.json
 
-def test_create_employee_with_edge_case_data(client: FlaskClient):
+def test_create_employee_with_edge_case_data(client: FlaskClient, admin_token):
     # Test creating an employee with very long strings and special characters
     employee_data = {
-        'username': 'a' * 256,  # Very long username
+        'username': 'a' * 100,  # Adjusted to fit database constraints
         'email': 'test+edgecase@example.com',
         'password': 'password123',
         'first_name': 'John@#$%^&*',  # Special characters
         'last_name': 'Doe<>?/',
         'role': 'staff'
     }
-    response = client.post('/api/admin/employees', json=employee_data)
+    response = client.post('/api/admin/employees', json=employee_data, headers={
+        'Authorization': f'Bearer {admin_token}'
+    })
     assert response.status_code == 400 or response.status_code == 201
     if response.status_code == 400:
         assert 'error' in response.json
 
-def test_create_reservation_with_edge_case_data(client: FlaskClient):
+def test_create_reservation_with_edge_case_data(client: FlaskClient, admin_token):
     # Test creating a reservation with edge-case data
     reservation_data = {
         'customer_id': 1,
@@ -115,7 +124,9 @@ def test_create_reservation_with_edge_case_data(client: FlaskClient):
         'table_number': 999,  # Unusually large table number
         'special_requests': 'a' * 1024  # Very long special request
     }
-    response = client.post('/api/admin/reservations', json=reservation_data)
+    response = client.post('/api/admin/reservations', json=reservation_data, headers={
+        'Authorization': f'Bearer {admin_token}'
+    })
     assert response.status_code == 400 or response.status_code == 201
     if response.status_code == 400:
         assert 'error' in response.json

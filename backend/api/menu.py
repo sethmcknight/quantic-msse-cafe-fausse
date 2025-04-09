@@ -5,8 +5,17 @@ from flask import Blueprint, jsonify, request
 from ..extensions import db
 from ..models.menu_item import MenuItem
 from ..models.category import Category
+from sqlalchemy.orm import Session
 
 menu_bp = Blueprint('menu', __name__)
+
+def get_menu_item_by_id(item_id):
+    session: Session = db.session
+    return session.get(MenuItem, item_id)
+
+def get_category_by_id(category_id):
+    session: Session = db.session
+    return session.get(Category, category_id)
 
 @menu_bp.route('/categories', methods=['GET'])
 def get_categories():
@@ -35,7 +44,7 @@ def get_menu_items():
 @menu_bp.route('/items/<int:item_id>', methods=['GET'])
 def get_menu_item(item_id):
     """Get a specific menu item by ID"""
-    item = MenuItem.query.get(item_id)
+    item = get_menu_item_by_id(item_id)
     
     if not item:
         return jsonify({'success': False, 'message': 'Menu item not found'}), 404
@@ -48,7 +57,7 @@ def get_menu_item(item_id):
 @menu_bp.route('/categories/<int:category_id>/items', methods=['GET'])
 def get_items_by_category(category_id):
     """Get all menu items for a specific category"""
-    category = Category.query.get(category_id)
+    category = get_category_by_id(category_id)
     
     if not category:
         return jsonify({'success': False, 'message': 'Category not found'}), 404

@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session
 from werkzeug.security import generate_password_hash
 
 from backend.models.employee import Employee
@@ -40,6 +41,10 @@ def manager_required(func):
     decorated_view.__name__ = func.__name__
     return decorated_view
 
+def get_customer_by_id(customer_id):
+    session: Session = db.session
+    return session.get(Customer, customer_id)
+
 # Dashboard API
 @admin_bp.route('/dashboard', methods=['GET'])
 @login_required
@@ -68,7 +73,7 @@ def get_dashboard_data():
         # Format reservations for response
         formatted_reservations = []
         for res in upcoming_reservations:
-            customer = Customer.query.get(res.customer_id)
+            customer = get_customer_by_id(res.customer_id)
             customer_name = customer.name if customer else "Unknown Customer"
                 
             formatted_reservations.append({
@@ -177,14 +182,27 @@ def create_employee():
 def update_employee(employee_id):
     """Update an employee"""
     data = request.get_json()
-    
+
     try:
         employee = Employee.query.get_or_404(employee_id)
-        
+
         # Prevent deactivating your own account
         if current_user.id == employee.id and 'is_active' in data and not data['is_active']:
             return jsonify({'error': 'You cannot deactivate your own account'}), 400
-        
+
+        # Validate email format
+        if 'email' in data:
+            from email_validator import validate_email, EmailNotValidError
+            try:
+                validate_email(data['email'])
+            except EmailNotValidError:
+                return jsonify({'error': 'Invalid email format'}), 400
+
+        # Validate role
+        valid_roles = ['admin', 'manager', 'staff']
+        if 'role' in data and data['role'] not in valid_roles:
+            return jsonify({'error': f'Invalid role. Valid roles are: {", ".join(valid_roles)}'}), 400
+
         # Update fields if they exist in the request
         if 'username' in data and data['username'] != employee.username:
             # Check if username already exists
@@ -192,34 +210,34 @@ def update_employee(employee_id):
             if existing_username and existing_username.id != employee_id:
                 return jsonify({'error': 'Username already exists'}), 409
             employee.username = data['username']
-            
+
         if 'email' in data and data['email'] != employee.email:
             # Check if email already exists
             existing_email = Employee.query.filter_by(email=data['email']).first()
             if existing_email and existing_email.id != employee_id:
                 return jsonify({'error': 'Email already exists'}), 409
             employee.email = data['email']
-            
+
         if 'first_name' in data:
             employee.first_name = data['first_name']
-            
+
         if 'last_name' in data:
             employee.last_name = data['last_name']
-            
+
         if 'role' in data:
             # Prevent demoting yourself from admin
             if current_user.id == employee.id and employee.is_admin and data['role'] != 'admin':
                 return jsonify({'error': 'You cannot demote yourself from admin'}), 400
             employee.role = data['role']
-            
+
         if 'is_active' in data:
             employee.is_active = data['is_active']
-            
+
         if 'password' in data and data['password']:
             employee.set_password(data['password'])
-        
+
         db.session.commit()
-        
+
         return jsonify({
             'message': 'Employee updated successfully',
             'employee': employee.to_dict()
@@ -331,7 +349,7 @@ def get_reservation(reservation_id):
     """Get a specific reservation"""
     try:
         reservation = Reservation.query.get_or_404(reservation_id)
-        customer = Customer.query.get(reservation.customer_id)
+        customer = get_customer_by_id(reservation.customer_id)
         
         reservation_data = {
             'id': reservation.id,

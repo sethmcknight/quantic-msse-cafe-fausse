@@ -7,12 +7,21 @@ from ..extensions import db
 from ..models.reservation import Reservation
 from ..models.customer import Customer
 import random
+from sqlalchemy.orm import Session
 
 reservations_bp = Blueprint('reservations', __name__)
 
 # Constants
 TOTAL_TABLES = 30
 RESERVATION_DURATION = 90  # minutes
+
+def get_reservation_by_id(reservation_id):
+    session: Session = db.session
+    return session.get(Reservation, reservation_id)
+
+def get_customer_by_id(customer_id):
+    session: Session = db.session
+    return session.get(Customer, customer_id)
 
 @reservations_bp.route('', methods=['POST'])
 @reservations_bp.route('/', methods=['POST'])
@@ -133,13 +142,13 @@ def check_availability():
 @reservations_bp.route('/<int:reservation_id>', methods=['GET'])
 def get_reservation(reservation_id):
     """Get a specific reservation"""
-    reservation = Reservation.query.get(reservation_id)
+    reservation = get_reservation_by_id(reservation_id)
     
     if not reservation:
         return jsonify({'success': False, 'message': 'Reservation not found'}), 404
     
     # Get customer info
-    customer = Customer.query.get(reservation.customer_id)
+    customer = get_customer_by_id(reservation.customer_id)
     
     return jsonify({
         'success': True,
@@ -153,7 +162,7 @@ def get_reservation(reservation_id):
 @reservations_bp.route('/cancel/<int:reservation_id>', methods=['POST'])
 def cancel_reservation(reservation_id):
     """Cancel a reservation"""
-    reservation = Reservation.query.get(reservation_id)
+    reservation = get_reservation_by_id(reservation_id)
     
     if not reservation:
         return jsonify({'success': False, 'message': 'Reservation not found'}), 404
@@ -174,7 +183,7 @@ def get_reservations():
     reservations_with_customer = []
 
     for reservation in reservations:
-        customer = Customer.query.get(reservation.customer_id)
+        customer = get_customer_by_id(reservation.customer_id)
         reservation_dict = reservation.to_dict()
         reservation_dict['customer_name'] = customer.name if customer else None
         reservations_with_customer.append(reservation_dict)
