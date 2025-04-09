@@ -15,16 +15,15 @@ logger = logging.getLogger(__name__)
 
 newsletter_bp = Blueprint('newsletter', __name__)
 
-# Email validation regex pattern
-EMAIL_PATTERN = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-
 def subscribe_to_newsletter(email):
     """Helper function to subscribe an email to the newsletter"""
     logger.debug(f"Attempting to subscribe email: {email}")
 
-    # Validate email format
-    if not re.match(EMAIL_PATTERN, email):
-        logger.error(f"Invalid email format: {email}")
+    # Validate email format using email_validator
+    try:
+        validate_email(email)
+    except EmailNotValidError as e:
+        logger.error(f"Invalid email format: {email} - {str(e)}")
         return {'success': False, 'message': 'Invalid email format'}, 400
 
     try:
@@ -62,9 +61,11 @@ def subscribe():
     email = data['email'].strip().lower()
     logger.debug(f"Received subscription request for email: {email}")
 
-    # Validate email format
-    if not re.match(EMAIL_PATTERN, email):
-        logger.error(f"Invalid email format: {email}")
+    # Validate email format using email_validator
+    try:
+        validate_email(email)
+    except EmailNotValidError as e:
+        logger.error(f"Invalid email format: {email} - {str(e)}")
         return jsonify({'success': False, 'message': 'Invalid email format'}), 400
 
     try:
