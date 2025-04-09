@@ -4,6 +4,7 @@ Reservation model for the Café Fausse application
 from .base import Base
 from ..extensions import db
 from datetime import datetime
+from .customer import Customer  # Import Customer model
 
 
 class Reservation(Base):
@@ -41,9 +42,11 @@ class Reservation(Base):
     
     def to_dict(self):
         """Convert reservation to a dictionary"""
+        customer = Customer.query.get(self.customer_id)
         return {
             'id': self.id,
             'customer_id': self.customer_id,
+            'customer_name': customer.name if customer else None,
             'time_slot': self.time_slot.isoformat(),
             'guests': self.guests,
             'table_number': self.table_number,

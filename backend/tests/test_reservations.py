@@ -3,6 +3,10 @@ from backend.api.reservations import create_reservation, get_reservations
 from ..app import create_app
 from backend.init_db import init_db
 from backend.init_db import drop_db  # Ensure drop_db is imported
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 @pytest.fixture
 def client():
@@ -89,7 +93,8 @@ def test_get_reservations(client, init_database):
         "time": "19:00",
         "guests": 4
     })
+
     response = client.get('/api/reservations')
     assert response.status_code == 200
-    assert len(response.json) == 1
-    assert response.json[0]["name"] == "John Doe"
+    assert len(response.json["reservations"]) == 1
+    assert response.json["reservations"][0]["customer_name"] == "John Doe"

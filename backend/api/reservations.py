@@ -164,9 +164,17 @@ def cancel_reservation(reservation_id):
 def get_reservations():
     """Get all reservations"""
     reservations = Reservation.query.all()
+    reservations_with_customer = []
+
+    for reservation in reservations:
+        customer = Customer.query.get(reservation.customer_id)
+        reservation_dict = reservation.to_dict()
+        reservation_dict['customer_name'] = customer.name if customer else None
+        reservations_with_customer.append(reservation_dict)
+
     return jsonify({
         'success': True,
-        'reservations': [reservation.to_dict() for reservation in reservations]
+        'reservations': reservations_with_customer
     })
 
 @reservations_bp.route('', methods=['GET'])
