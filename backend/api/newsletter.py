@@ -7,6 +7,7 @@ from ..models.newsletter import Newsletter
 from ..models.customer import Customer
 import re
 import logging
+from email_validator import validate_email, EmailNotValidError
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
@@ -157,3 +158,30 @@ def get_subscribers():
         'count': len(subscribers),
         'subscribers': [sub.to_dict() for sub in subscribers]
     })
+
+@newsletter_bp.route('/api/newsletter', methods=['POST'])
+def subscribe_to_newsletter():
+    """Subscribe to the newsletter"""
+    data = request.json
+
+    # Validate email
+    try:
+        email = data.get('email', '').strip()
+        logging.debug(f"Validating email: {email}")
+        validate_email(email)
+    except EmailNotValidError as e:
+        logging.error(f"Email validation failed: {str(e)}")
+        print(f"DEBUG: Email validation failed with error: {str(e)}")  # Temporary debug statement
+        return jsonify({"success": False, "message": "Invalid email address."}), 400
+
+    # Check for duplicate subscription
+    existing_subscription = Newsletter.query.filter_by(email=email).first()
+    if existing_subscription:
+        return jsonify({"success": False, "message": "Email already subscribed."}), 400
+
+    # Add new subscription
+    new_subscription = Newsletter(email=email, is_active=True)
+    db.session.add(new_subscription)
+    db.session.commit()
+
+    return jsonify({"success": True, "message": "Subscription successful."}), 200

@@ -32,25 +32,25 @@ def clear_database():
 
 def test_get_menu_items(client, init_database):
     # Test retrieving menu items (should be empty initially)
-    response = client.get('/api/menu/items')  # Corrected route
+    response = client.get('/api/menu/items')  # Corrected endpoint for retrieving menu items
     assert response.status_code == 200
     assert response.json == {"success": True, "items": []}  # Adjusted expected response
 
     # Add a menu item and test retrieval
-    client.post('/api/menu/items', json={  # Corrected route
+    client.post('/api/menu/items', json={  # Corrected endpoint for adding menu items
         "name": "Ribeye Steak",
         "description": "Juicy ribeye steak with garlic butter.",
         "price": 29.99,
         "category_id": 2  # Assuming category_id 2 exists
     })
-    response = client.get('/api/menu/items')  # Corrected route
+    response = client.get('/api/menu/items')  # Corrected endpoint for retrieving menu items
     assert response.status_code == 200
     assert len(response.json["items"]) == 1
     assert response.json["items"][0]["name"] == "Ribeye Steak"
 
 def test_add_menu_item(client, init_database):
     # Test adding a valid menu item
-    response = client.post('/api/menu/items', json={  # Corrected route
+    response = client.post('/api/menu/items', json={  # Corrected endpoint for adding menu items
         "name": "Caesar Salad",
         "description": "Crisp romaine lettuce with Caesar dressing.",
         "price": 12.99,
@@ -60,7 +60,7 @@ def test_add_menu_item(client, init_database):
     assert response.json["message"] == "Menu item added successfully."
 
     # Test adding a menu item with missing fields
-    response = client.post('/api/menu/items', json={  # Corrected route
+    response = client.post('/api/menu/items', json={  # Corrected endpoint for adding menu items
         "name": "Incomplete Item"
     })
     assert response.status_code == 400

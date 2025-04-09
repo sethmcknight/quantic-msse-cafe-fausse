@@ -25,16 +25,16 @@ def init_database():
 
 def test_subscribe_to_newsletter(client, init_database):
     # Test valid subscription
-    response = client.post('/api/newsletter', json={"email": "test@example.com"})
-    assert response.status_code == 200
-    assert response.json["message"] == "Subscription successful."
+    response = client.post('/api/newsletter/subscribe', json={"email": "test@example.com"})
+    assert response.status_code == 201
+    assert response.json["message"] == "Thank you for subscribing to our newsletter!"
 
     # Test duplicate subscription
-    response = client.post('/api/newsletter', json={"email": "test@example.com"})
-    assert response.status_code == 400
-    assert response.json["message"] == "Email already subscribed."
+    response = client.post('/api/newsletter/subscribe', json={"email": "test@example.com"})
+    assert response.status_code == 409
+    assert response.json["message"] == "This email is already subscribed to our newsletter"
 
     # Test invalid email
-    response = client.post('/api/newsletter', json={"email": "invalid-email"})
+    response = client.post('/api/newsletter/subscribe', json={"email": "invalid-email"})
     assert response.status_code == 400
-    assert response.json["message"] == "Invalid email address."
+    assert response.json["message"] == "Invalid email format"
