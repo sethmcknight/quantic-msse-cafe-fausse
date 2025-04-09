@@ -46,13 +46,22 @@ def test_get_menu_items(client, init_database_with_sample_data):
     assert response.status_code == 200
     assert len(response.json["items"]) > 0  # Ensure sample data is present
 
-def test_add_menu_item(client, init_database_with_sample_data):
+@pytest.fixture
+def valid_category_id(client, init_database_with_sample_data):
+    """Fixture to dynamically fetch a valid category ID."""
+    response = client.get('/api/menu/categories')
+    assert response.status_code == 200
+    categories = response.json["categories"]
+    assert len(categories) > 0  # Ensure at least one category exists
+    return categories[0]["id"]  # Return the first category ID
+
+def test_add_menu_item(client, init_database_with_sample_data, valid_category_id):
     # Test adding a valid menu item
     response = client.post('/api/menu/items', json={
         "name": "Caesar Salad",
         "description": "Crisp romaine lettuce with Caesar dressing.",
         "price": 12.99,
-        "category_id": 1  # Assuming category_id 1 exists
+        "category_id": valid_category_id  # Use dynamically fetched category ID
     })
     assert response.status_code == 201
     assert response.json["message"] == "Menu item added successfully"
