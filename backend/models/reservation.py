@@ -1,14 +1,16 @@
 """
 Reservation model for the Café Fausse application
 """
-from models.base import Base
-from extensions import db
+from .base import Base
+from ..extensions import db
 from datetime import datetime
+from .customer import Customer  # Import Customer model
 
 
 class Reservation(Base):
     """Reservation model representing table bookings"""
     __tablename__ = 'reservations'
+    __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'), nullable=False)
@@ -40,9 +42,11 @@ class Reservation(Base):
     
     def to_dict(self):
         """Convert reservation to a dictionary"""
+        customer = Customer.query.get(self.customer_id)
         return {
             'id': self.id,
             'customer_id': self.customer_id,
+            'customer_name': customer.name if customer else None,
             'time_slot': self.time_slot.isoformat(),
             'guests': self.guests,
             'table_number': self.table_number,

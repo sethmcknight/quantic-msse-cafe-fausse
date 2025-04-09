@@ -24,6 +24,8 @@ class ProductionConfig(Config):
     """Production configuration"""
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'postgresql://postgres:postgres@localhost/cafe_fausse'
+    DEBUG = False
+    TESTING = False
 
 # Configuration dictionary
 config = {
