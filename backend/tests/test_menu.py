@@ -26,25 +26,59 @@ def init_database():
 def init_database_with_sample_data():
     app = create_app('testing')
     with app.app_context():
-        init_db(app, populate_sample_data=True)  # Populate with sample data
+        if not hasattr(app, '_db_initialized'):
+            init_db(app, populate_sample_data=True)  # Populate with sample data
     yield
-    # Teardown the database after testing
-    from backend.init_db import drop_db
-    drop_db()
+    drop_db(app)  # Teardown the database after testing
 
 @pytest.fixture(autouse=True)
 def clear_database():
     app = create_app('testing')
     with app.app_context():
-        from backend.init_db import drop_db, init_db
-        drop_db()
-        init_db(app, populate_sample_data=False)
+        if not hasattr(app, '_db_initialized'):
+            init_db(app, populate_sample_data=False)  # Ensure no sample data is populated
 
 def test_get_menu_items(client, init_database_with_sample_data):
     # Test retrieving menu items (should include sample data)
     response = client.get('/api/menu/items')
     assert response.status_code == 200
-    assert len(response.json["items"]) > 0  # Ensure sample data is present
+
+    # Validate response structure
+    assert "success" in response.json
+    assert "items" in response.json
+    assert response.json["success"] is True
+
+    # Ensure sample data is present
+    items = response.json["items"]
+    assert len(items) > 0
+
+    # Validate the structure of the first item
+    first_item = items[0]
+    assert "id" in first_item
+    assert "name" in first_item
+    assert "description" in first_item
+    assert "price" in first_item
+    assert "category_id" in first_item
+    assert "is_vegetarian" in first_item
+    assert "is_vegan" in first_item
+    assert "is_gluten_free" in first_item
+
+    # Validate data types of the first item
+    assert isinstance(first_item["id"], int)
+    assert isinstance(first_item["name"], str)
+    assert isinstance(first_item["description"], str)
+    assert isinstance(first_item["price"], (int, float))
+    assert isinstance(first_item["category_id"], int)
+    assert isinstance(first_item["is_vegetarian"], bool)
+    assert isinstance(first_item["is_vegan"], bool)
+    assert isinstance(first_item["is_gluten_free"], bool)
+
+    # Test retrieving menu items when the database is empty
+    init_database()  # Clear the database
+    response = client.get('/api/menu/items')
+    assert response.status_code == 200
+    assert response.json["success"] is True
+    assert len(response.json["items"]) == 0  # Ensure no items are returned
 
 @pytest.fixture
 def valid_category_id(client, init_database_with_sample_data):

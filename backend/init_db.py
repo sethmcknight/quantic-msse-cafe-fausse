@@ -13,6 +13,10 @@ from datetime import datetime, timedelta
 
 def init_db(app, populate_sample_data=True):
     """Initialize the database with optional sample data"""
+    if not hasattr(app, '_db_initialized'):
+        db.init_app(app)  # Ensure SQLAlchemy is initialized with the app
+        app._db_initialized = True
+
     print("Initializing database...")
 
     with app.app_context():
@@ -225,10 +229,10 @@ def init_db(app, populate_sample_data=True):
 
         print("Database initialization complete!")
 
-def drop_db():
-    """Drop all tables in the database."""
-    print("Dropping all tables...")
-    db.drop_all()
+def drop_db(app):
+    """Drop all tables in the database"""
+    with app.app_context():
+        db.drop_all()
     db.session.commit()
 
 if __name__ == '__main__':

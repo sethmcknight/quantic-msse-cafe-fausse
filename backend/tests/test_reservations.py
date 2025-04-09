@@ -21,9 +21,8 @@ def init_database():
     with app.app_context():
         init_db(app, populate_sample_data=False)  # Ensure no sample data is populated
     yield
-    # Teardown the database after testing
-    from backend.init_db import drop_db
-    drop_db()
+    with app.app_context():
+        drop_db(app)
 
 # Ensure the database is cleared before each test
 @pytest.fixture(autouse=True)

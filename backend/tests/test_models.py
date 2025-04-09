@@ -1,11 +1,11 @@
 import pytest
 from datetime import datetime
-from ..models.category import Category
-from ..models.customer import Customer
-from ..models.menu_item import MenuItem
-from ..models.newsletter import Newsletter
-from ..models.reservation import Reservation
-from ..extensions import db
+from backend.models.category import Category
+from backend.models.customer import Customer
+from backend.models.menu_item import MenuItem
+from backend.models.newsletter import Newsletter
+from backend.models.reservation import Reservation
+from backend.extensions import db
 from ..app import create_app
 
 @pytest.fixture
