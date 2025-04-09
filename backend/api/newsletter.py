@@ -171,7 +171,7 @@ def subscribe_to_newsletter():
         validate_email(email)
     except EmailNotValidError as e:
         logging.error(f"Email validation failed: {str(e)}")
-        print(f"DEBUG: Email validation failed with error: {str(e)}")  # Temporary debug statement
+        # Debug statement removed for production
         return jsonify({"success": False, "message": "Invalid email address."}), 400
 
     # Check for duplicate subscription
