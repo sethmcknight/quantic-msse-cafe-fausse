@@ -225,7 +225,7 @@ def init_db(app, populate_sample_data=True):
         db.session.add_all([reservation1, reservation2])
         db.session.commit()
         
-        # Create admin test user
+        # Debug log for admin user creation
         print("Creating admin test user...")
         admin = Employee(
             username="admin",
@@ -236,8 +236,10 @@ def init_db(app, populate_sample_data=True):
             role="admin",
             is_active=True
         )
-        
+        print(f"Admin user created: {admin}")
+
         # Create manager test user
+        print("Creating manager test user...")
         manager = Employee(
             username="manager",
             email="manager@cafefausse.com",
@@ -247,6 +249,7 @@ def init_db(app, populate_sample_data=True):
             role="manager",
             is_active=True
         )
+        print(f"Manager user created: {manager}")
         
         db.session.add_all([admin, manager])
         db.session.commit()
