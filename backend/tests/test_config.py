@@ -1,6 +1,6 @@
 import pytest
-from ..config.config import DevelopmentConfig, TestingConfig, ProductionConfig
-from ..app import create_app
+from backend.config.config import DevelopmentConfig, TestingConfig, ProductionConfig
+from backend.app import create_app
 
 @pytest.fixture
 def client():

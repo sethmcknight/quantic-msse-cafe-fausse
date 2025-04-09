@@ -2,9 +2,9 @@
 Newsletter API Blueprint for Café Fausse
 """
 from flask import Blueprint, jsonify, request
-from ..extensions import db
-from ..models.newsletter import Newsletter
-from ..models.customer import Customer
+from extensions import db
+from models.newsletter import Newsletter
+from models.customer import Customer
 import re
 import logging
 from email_validator import validate_email, EmailNotValidError

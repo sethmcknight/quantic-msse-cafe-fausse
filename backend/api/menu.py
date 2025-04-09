@@ -2,9 +2,9 @@
 Menu API Blueprint for Café Fausse
 """
 from flask import Blueprint, jsonify, request
-from ..extensions import db
-from ..models.menu_item import MenuItem
-from ..models.category import Category
+from extensions import db
+from models.menu_item import MenuItem
+from models.category import Category
 
 menu_bp = Blueprint('menu', __name__)
 

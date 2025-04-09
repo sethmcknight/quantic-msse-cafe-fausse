@@ -2,7 +2,7 @@
 MenuItem model for the Café Fausse application
 """
 from .base import Base
-from ..extensions import db
+from extensions import db
 from .category import Category  # Explicitly import the Category model
 
 

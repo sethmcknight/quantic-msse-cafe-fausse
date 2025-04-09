@@ -2,7 +2,7 @@
 Newsletter model for the Café Fausse application
 """
 from .base import Base
-from ..extensions import db
+from extensions import db
 
 
 class Newsletter(Base):
