@@ -53,7 +53,7 @@ def test_access_admin_endpoint_without_authentication(client: FlaskClient):
     assert response.status_code == 401
     assert 'error' in response.json
 
-def test_access_admin_endpoint_insufficient_permissions(client: FlaskClient, admin_token):
+def test_access_admin_endpoint_insufficient_permissions(client: FlaskClient):
     # Test accessing an admin endpoint with insufficient permissions
     login_data = {
         'username': 'staff_user',  # Assuming a staff user exists

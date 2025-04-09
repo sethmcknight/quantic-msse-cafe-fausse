@@ -5,6 +5,7 @@ from flask.testing import FlaskClient
 # Assuming the app and blueprints are already imported
 from backend.app import create_app
 from ..init_db import init_db
+from backend.init_db import initialize_database
 
 @pytest.fixture
 def client():
@@ -21,6 +22,12 @@ def setup_database():
     with app.app_context():
         from backend.init_db import init_db
         init_db(app, populate_sample_data=True)  # Ensure admin user is created
+
+@pytest.fixture(scope='function', autouse=True)
+def init_empty_database(client):
+    """Initialize an empty database for tests requiring no entries."""
+    app = client.application
+    initialize_database(app, populate_sample_data=False)
 
 @pytest.fixture
 def admin_token(client: FlaskClient):
@@ -81,11 +88,12 @@ def test_database_error_handling(client: FlaskClient, monkeypatch):
     def mock_query(*args, **kwargs):
         raise Exception("Database connection error")
 
-    monkeypatch.setattr('backend.models.employee.Employee.query', mock_query)
+    with client.application.app_context():
+        monkeypatch.setattr('backend.models.employee.Employee.query', mock_query)
 
-    response = client.get('/api/admin/employees')
-    assert response.status_code == 500
-    assert 'error' in response.json
+        response = client.get('/api/admin/employees')
+        assert response.status_code == 500
+        assert 'error' in response.json
 
 def test_unexpected_server_error(client: FlaskClient, monkeypatch):
     # Simulate an unexpected server error

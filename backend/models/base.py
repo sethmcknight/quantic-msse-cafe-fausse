@@ -2,8 +2,7 @@
 Base model for SQLAlchemy models
 """
 from datetime import datetime
-from ..extensions import db
-
+from backend.extensions import db
 
 class Base(db.Model):
     """Base model class that includes common columns and methods"""

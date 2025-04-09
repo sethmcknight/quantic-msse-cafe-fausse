@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 from werkzeug.security import generate_password_hash
+from flask_jwt_extended import jwt_required
 
 from backend.models.employee import Employee
 from backend.models.menu_item import MenuItem
@@ -47,6 +48,7 @@ def get_customer_by_id(customer_id):
 
 # Dashboard API
 @admin_bp.route('/dashboard', methods=['GET'])
+@jwt_required()
 @login_required
 def get_dashboard_data():
     """Get dashboard statistics and data"""
@@ -104,6 +106,7 @@ def get_dashboard_data():
 
 # Employee Management API
 @admin_bp.route('/employees', methods=['GET'])
+@jwt_required()
 @admin_required
 def get_employees():
     """Get all employees"""
@@ -117,6 +120,7 @@ def get_employees():
         return jsonify({'error': 'Failed to load employees'}), 500
 
 @admin_bp.route('/employees/<int:employee_id>', methods=['GET'])
+@jwt_required()
 @admin_required
 def get_employee(employee_id):
     """Get a specific employee"""
@@ -130,6 +134,7 @@ def get_employee(employee_id):
         return jsonify({'error': 'Failed to load employee'}), 500
 
 @admin_bp.route('/employees', methods=['POST'])
+@jwt_required()
 @admin_required
 def create_employee():
     """Create a new employee"""
@@ -178,6 +183,7 @@ def create_employee():
         return jsonify({'error': 'Failed to create employee'}), 500
 
 @admin_bp.route('/employees/<int:employee_id>', methods=['PUT'])
+@jwt_required()
 @admin_required
 def update_employee(employee_id):
     """Update an employee"""
@@ -251,6 +257,7 @@ def update_employee(employee_id):
         return jsonify({'error': 'Failed to update employee'}), 500
 
 @admin_bp.route('/employees/<int:employee_id>', methods=['DELETE'])
+@jwt_required()
 @admin_required
 def delete_employee(employee_id):
     """Delete an employee (deactivate)"""

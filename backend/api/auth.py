@@ -23,6 +23,7 @@ def login():
         }), 400
     
     try:
+        print(f"Attempting login for username: {data['username']}")
         # Find employee by username
         employee = Employee.query.filter_by(username=data['username']).first()
         
@@ -52,6 +53,9 @@ def login():
         
         # Generate access token
         access_token = create_access_token(identity=employee.id)
+        
+        print(f"Employee found: {employee}")
+        print(f"Generated JWT token: {access_token}")
         
         return jsonify({
             'message': 'Login successful',

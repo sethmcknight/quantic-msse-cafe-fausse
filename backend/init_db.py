@@ -236,6 +236,7 @@ def init_db(app, populate_sample_data=True):
             role="admin",
             is_active=True
         )
+        admin.set_password("admin123")
         print(f"Admin user created: {admin}")
 
         # Create manager test user
@@ -249,12 +250,36 @@ def init_db(app, populate_sample_data=True):
             role="manager",
             is_active=True
         )
+        manager.set_password("manager123")
         print(f"Manager user created: {manager}")
-        
-        db.session.add_all([admin, manager])
+
+        # Create staff test user
+        print("Creating staff test user...")
+        staff = Employee(
+            username="staff_user",
+            email="staff@cafefausse.com",
+            first_name="Staff",
+            last_name="User",
+            password="staff123",
+            role="staff",
+            is_active=True
+        )
+        staff.set_password("staff123")
+        print(f"Staff user created: {staff}")
+
+        # Update manager credentials to match test cases
+        manager.username = "manager_user"
+        manager.password = "manager_password"
+        manager.set_password("manager_password")
+
+        db.session.add_all([admin, manager, staff])
         db.session.commit()
         
         print("Database initialization complete!")
+
+def initialize_database(app, populate_sample_data=True):
+    """Setup the database for testing with optional sample data."""
+    init_db(app, populate_sample_data=populate_sample_data)
 
 def drop_db():
     """Drop all tables in the database."""

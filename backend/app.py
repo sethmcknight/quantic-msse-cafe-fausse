@@ -53,6 +53,10 @@ def create_app(config_name='development'):
     login_manager.login_view = "auth.login"
     login_manager.login_message_category = "info"
     
+    @login_manager.unauthorized_handler
+    def unauthorized_callback():
+        return jsonify({'error': 'Unauthorized access'}), 401
+    
     return app
 
 if __name__ == '__main__':
