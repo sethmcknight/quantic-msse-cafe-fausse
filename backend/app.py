@@ -3,6 +3,7 @@ Café Fausse - Main Flask Application
 """
 from flask import Flask, jsonify
 from flask_cors import CORS
+import models # Import models to ensure they are registered with SQLAlchemy
 
 # Import configuration
 from config.config import config

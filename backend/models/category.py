@@ -16,7 +16,7 @@ class Category(Base):
     display_order = db.Column(db.Integer, default=0)
 
     # Use back_populates instead of backref to avoid conflicts
-    menu_items = db.relationship('backend.models.menu_item.MenuItem', back_populates='category', lazy=True)
+    menu_items = db.relationship('MenuItem', back_populates='category', lazy=True)
 
     def __repr__(self):
         return f'<Category {self.name}>'

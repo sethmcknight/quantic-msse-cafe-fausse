@@ -17,7 +17,7 @@ class Customer(Base):
     newsletter_signup = db.Column(db.Boolean, default=False)
     
     # Relationship with reservations - use fully qualified path to avoid conflict
-    reservations = db.relationship('backend.models.reservation.Reservation', backref='customer', lazy=True)
+    reservations = db.relationship('Reservation', backref='customer', lazy=True)
 
     def __repr__(self):
         return f'<Customer {self.name}>'
