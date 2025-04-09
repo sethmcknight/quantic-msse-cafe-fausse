@@ -15,5 +15,5 @@ login_manager = LoginManager()
 # Initialize login manager for employee authentication
 @login_manager.user_loader
 def load_user(user_id):
-    from models.employee import Employee
+    from backend.models.employee import Employee
     return Employee.query.get(int(user_id))

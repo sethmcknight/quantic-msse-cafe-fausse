@@ -57,29 +57,26 @@ def get_dashboard_data():
         
         # Get today's reservations count
         today_reservations_count = Reservation.query.filter(
-            Reservation.date == today
+            db.func.date(Reservation.time_slot) == today
         ).count()
         
         # Get upcoming reservations for display
         upcoming_reservations = Reservation.query.filter(
-            Reservation.date >= today
-        ).order_by(Reservation.date, Reservation.time).limit(10).all()
+            Reservation.time_slot >= datetime.now()
+        ).order_by(Reservation.time_slot).limit(10).all()
         
         # Format reservations for response
         formatted_reservations = []
         for res in upcoming_reservations:
             customer = Customer.query.get(res.customer_id)
-            if customer:
-                customer_name = f"{customer.first_name} {customer.last_name}"
-            else:
-                customer_name = "Unknown Customer"
+            customer_name = customer.name if customer else "Unknown Customer"
                 
             formatted_reservations.append({
                 'id': res.id,
                 'customer_name': customer_name,
-                'date': res.date.isoformat(),
-                'time': str(res.time),
-                'party_size': res.party_size,
+                'date': res.time_slot.date().isoformat(),
+                'time': res.time_slot.time().isoformat(),
+                'party_size': res.guests,
                 'table_number': res.table_number,
                 'status': res.status
             })

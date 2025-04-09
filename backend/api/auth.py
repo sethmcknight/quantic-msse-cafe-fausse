@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, session
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy.exc import SQLAlchemyError
+from flask_jwt_extended import create_access_token
 
 from backend.models.employee import Employee
 from backend.extensions import db
@@ -49,9 +50,15 @@ def login():
         employee.update_last_login()
         db.session.commit()
         
+        # Generate access token
+        access_token = create_access_token(identity=employee.id)
+        
         return jsonify({
             'message': 'Login successful',
-            'user': employee.to_dict()
+            'user': {
+                **employee.to_dict(),
+                'token': access_token
+            }
         }), 200
         
     except SQLAlchemyError as e:

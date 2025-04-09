@@ -19,6 +19,7 @@ class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
         'postgresql://postgres:postgres@localhost/cafe_fausse_test'
+    JWT_SECRET_KEY = 'test_secret_key'  # Added for JWT token generation
 
 class ProductionConfig(Config):
     """Production configuration"""

@@ -3,6 +3,7 @@ Café Fausse - Main Flask Application
 """
 from flask import Flask, jsonify
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 
 # Import configuration
 from .config.config import config
@@ -43,6 +44,9 @@ def create_app(config_name='development'):
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
+    
+    # Initialize JWT extension
+    jwt = JWTManager(app)
     
     # Configure session for login manager
     login_manager.session_protection = "strong"
