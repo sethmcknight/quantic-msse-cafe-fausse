@@ -1,7 +1,12 @@
 import pytest
+import logging
 from backend.api.menu import get_menu_items, add_menu_item
 from ..app import create_app
 from ..init_db import init_db
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 @pytest.fixture
 def client():
@@ -27,8 +32,11 @@ def init_database_with_sample_data():
     app = create_app('testing')
     with app.app_context():
         if not hasattr(app, '_db_initialized'):
+            logger.debug("Initializing database with sample data for testing...")
             init_db(app, populate_sample_data=True)  # Populate with sample data
+        logger.info("Database initialized with sample data.")
     yield
+    logger.info("Tearing down database after testing...")
     drop_db(app)  # Teardown the database after testing
 
 @pytest.fixture(autouse=True)
@@ -36,7 +44,9 @@ def clear_database():
     app = create_app('testing')
     with app.app_context():
         if not hasattr(app, '_db_initialized'):
+            logger.debug("Initializing database for testing...")
             init_db(app, populate_sample_data=False)  # Ensure no sample data is populated
+        logger.info("Database cleared for testing.")
 
 def test_get_menu_items(client, init_database_with_sample_data):
     # Test retrieving menu items (should include sample data)

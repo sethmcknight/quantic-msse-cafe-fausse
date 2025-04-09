@@ -3,6 +3,7 @@ Database initialization script for Café Fausse application
 """
 import os
 import sys
+import logging
 from .app import create_app
 from .extensions import db
 from .models.category import Category
@@ -11,39 +12,44 @@ from .models.reservation import Reservation
 from .models.newsletter import Newsletter
 from datetime import datetime, timedelta
 
+# Configure logging
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
 def init_db(app, populate_sample_data=True):
     """Initialize the database with optional sample data"""
     if not hasattr(app, '_db_initialized'):
         db.init_app(app)  # Ensure SQLAlchemy is initialized with the app
         app._db_initialized = True
+        logger.debug("SQLAlchemy initialized with the Flask app.")
 
-    print("Initializing database...")
+    logger.info("Initializing database...")
 
     with app.app_context():
         # Log the database URI for debugging
-        print(f"Database URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
+        logger.debug(f"Database URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
 
         # Drop all tables if they exist
-        print("Dropping all existing tables...")
+        logger.info("Dropping all existing tables...")
         db.drop_all()
 
         # Debug log to confirm schema creation
-        print("Executing db.create_all() to create tables...")
+        logger.info("Executing db.create_all() to create tables...")
 
         # Create all tables explicitly
         db.create_all()
 
         # Ensure the schema is created for testing
         if app.config.get('TESTING'):
-            print("Ensuring test database schema is created...")
+            logger.info("Ensuring test database schema is created...")
             db.create_all()
 
         if not populate_sample_data:
-            print("Skipping sample data population.")
+            logger.info("Skipping sample data population.")
             return
 
         # Create categories
-        print("Creating menu categories...")
+        logger.info("Creating menu categories...")
         starters = Category(name="Starters", description="Appetizers and small plates", display_order=1)
         main_courses = Category(name="Main Courses", description="Entrees and main dishes", display_order=2)
         desserts = Category(name="Desserts", description="Sweet treats to finish your meal", display_order=3)
@@ -56,7 +62,7 @@ def init_db(app, populate_sample_data=True):
         from .models.menu_item import MenuItem
 
         # Create menu items based on the requirements
-        print("Creating menu items...")
+        logger.info("Creating menu items...")
 
         # Starters
         bruschetta = MenuItem(
@@ -165,7 +171,7 @@ def init_db(app, populate_sample_data=True):
         db.session.commit()
 
         # Create sample customers
-        print("Creating sample customers...")
+        logger.info("Creating sample customers...")
         customer1 = Customer(
             name="John Smith",
             email="john.smith@example.com",
@@ -184,7 +190,7 @@ def init_db(app, populate_sample_data=True):
         db.session.commit()
 
         # Create sample newsletter subscribers
-        print("Creating newsletter subscribers...")
+        logger.info("Creating newsletter subscribers...")
         subscriber1 = Newsletter(
             email="newsletter.fan@example.com",
             is_active=True
@@ -199,7 +205,7 @@ def init_db(app, populate_sample_data=True):
         db.session.commit()
 
         # Create sample reservations
-        print("Creating sample reservations...")
+        logger.info("Creating sample reservations...")
         tomorrow = datetime.now() + timedelta(days=1)
         next_week = datetime.now() + timedelta(days=7)
 
@@ -227,12 +233,14 @@ def init_db(app, populate_sample_data=True):
         db.session.add_all([reservation1, reservation2])
         db.session.commit()
 
-        print("Database initialization complete!")
+        logger.info("Database initialization complete!")
 
 def drop_db(app):
     """Drop all tables in the database"""
     with app.app_context():
+        logger.info("Dropping all tables in the database...")
         db.drop_all()
+    logger.info("Database tables dropped successfully.")
     db.session.commit()
 
 if __name__ == '__main__':
