@@ -26,9 +26,13 @@ def init_db(app, populate_sample_data=True):
         # Debug log to confirm schema creation
         print("Executing db.create_all() to create tables...")
 
-        # Create all tables
-        print("Creating tables...")
+        # Create all tables explicitly
         db.create_all()
+
+        # Ensure the schema is created for testing
+        if app.config.get('TESTING'):
+            print("Ensuring test database schema is created...")
+            db.create_all()
 
         if not populate_sample_data:
             print("Skipping sample data population.")

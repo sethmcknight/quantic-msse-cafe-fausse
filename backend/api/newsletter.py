@@ -59,7 +59,6 @@ def subscribe():
         return jsonify({'success': False, 'message': 'Email is required'}), 400
 
     email = data['email'].strip().lower()
-    logger.debug(f"Received subscription request for email: {email}")
 
     # Validate email format using email_validator
     try:
@@ -73,7 +72,6 @@ def subscribe():
         existing_subscriber = Newsletter.find_by_email(email)
         if existing_subscriber:
             if existing_subscriber.is_active:
-                logger.info(f"Email already subscribed: {email}")
                 return jsonify({
                     'success': False, 
                     'message': 'This email is already subscribed to our newsletter'
@@ -82,7 +80,6 @@ def subscribe():
                 # Reactivate subscription
                 existing_subscriber.is_active = True
                 db.session.commit()
-                logger.info(f"Reactivated subscription for email: {email}")
                 return jsonify({
                     'success': True,
                     'message': 'Your subscription has been reactivated!'
@@ -93,13 +90,11 @@ def subscribe():
         if customer:
             customer.newsletter_signup = True
             db.session.commit()
-            logger.info(f"Updated newsletter preference for customer: {email}")
 
         # Create new subscription
         subscriber = Newsletter(email=email)
         db.session.add(subscriber)
         db.session.commit()
-        logger.info(f"Successfully subscribed email: {email}")
 
         return jsonify({
             'success': True,
