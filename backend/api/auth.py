@@ -3,8 +3,8 @@ from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy.exc import SQLAlchemyError
 
-from models.employee import Employee
-from extensions import db
+from backend.models.employee import Employee
+from backend.extensions import db
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 

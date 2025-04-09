@@ -1,6 +1,6 @@
 import pytest
 from backend.api.reservations import create_reservation, get_reservations
-from ..app import create_app
+from backend.app import create_app
 from backend.init_db import init_db
 from backend.init_db import drop_db  # Ensure drop_db is imported
 import logging

@@ -1,6 +1,6 @@
 import pytest
 from backend.api.menu import get_menu_items, add_menu_item
-from ..app import create_app
+from backend.app import create_app
 from ..init_db import init_db
 
 @pytest.fixture

@@ -3,13 +3,13 @@ from flask_login import login_required, current_user
 from sqlalchemy.exc import SQLAlchemyError
 from werkzeug.security import generate_password_hash
 
-from models.employee import Employee
-from models.menu_item import MenuItem
-from models.category import Category
-from models.reservation import Reservation
-from models.customer import Customer
-from models.newsletter import Newsletter
-from extensions import db
+from backend.models.employee import Employee
+from backend.models.menu_item import MenuItem
+from backend.models.category import Category
+from backend.models.reservation import Reservation
+from backend.models.customer import Customer
+from backend.models.newsletter import Newsletter
+from backend.extensions import db
 from datetime import datetime, timedelta, date
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/api/admin')

@@ -2,8 +2,8 @@ from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
 
-from models.base import Base
-from extensions import db
+from backend.models.base import Base
+from backend.extensions import db
 
 class Employee(UserMixin, Base):
     """

@@ -3,14 +3,14 @@ Database initialization script for Café Fausse application
 """
 import os
 import sys
-from app import create_app
-from extensions import db
-from models.category import Category
-from models.menu_item import MenuItem
-from models.customer import Customer
-from models.reservation import Reservation
-from models.newsletter import Newsletter
-from models.employee import Employee
+from backend.app import create_app
+from backend.extensions import db
+from backend.models.category import Category
+from backend.models.menu_item import MenuItem
+from backend.models.customer import Customer
+from backend.models.reservation import Reservation
+from backend.models.newsletter import Newsletter
+from backend.models.employee import Employee
 from datetime import datetime, timedelta
 
 def init_db(app, populate_sample_data=True):

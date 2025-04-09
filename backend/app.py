@@ -26,14 +26,11 @@ def create_app(config_name='development'):
         })
     
     # Register blueprints
-    from .api.menu import menu_bp
-    from .api.reservations import reservations_bp
-    from .api.newsletter import newsletter_bp
-    from api.menu import menu_bp
-    from api.reservations import reservations_bp
-    from api.newsletter import newsletter_bp
-    from api.admin import admin_bp
-    from api.auth import auth_bp
+    from backend.api.menu import menu_bp
+    from backend.api.reservations import reservations_bp
+    from backend.api.newsletter import newsletter_bp
+    from backend.api.admin import admin_bp
+    from backend.api.auth import auth_bp
     
     app.register_blueprint(menu_bp, url_prefix='/api/menu')
     app.register_blueprint(reservations_bp, url_prefix='/api/reservations')
@@ -42,8 +39,7 @@ def create_app(config_name='development'):
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     
     # Initialize extensions with the app
-    from .extensions import db, migrate
-    from extensions import db, migrate, login_manager
+    from backend.extensions import db, migrate, login_manager
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)

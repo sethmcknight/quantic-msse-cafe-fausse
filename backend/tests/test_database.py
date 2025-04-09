@@ -6,7 +6,7 @@ from ..models.menu_item import MenuItem
 from ..models.customer import Customer
 from ..models.reservation import Reservation
 from ..models.newsletter import Newsletter
-from ..app import create_app
+from backend.app import create_app
 
 @pytest.fixture
 def client():

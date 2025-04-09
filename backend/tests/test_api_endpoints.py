@@ -3,7 +3,7 @@ from flask import Flask
 from flask.testing import FlaskClient
 
 # Assuming the app and blueprints are already imported
-from ..app import create_app
+from backend.app import create_app
 from ..init_db import init_db
 
 @pytest.fixture
