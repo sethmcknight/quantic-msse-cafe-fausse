@@ -184,6 +184,9 @@ def get_reservations():
         customer = session.get(Customer, reservation.customer_id)
         reservation_dict = reservation.to_dict()
         reservation_dict['customer_name'] = customer.name if customer else None
+        reservation_dict['customer_email'] = customer.email if customer else None
+        reservation_dict['customer_phone'] = customer.phone if customer else None
+        reservation_dict['reservation_id'] = reservation.id
         reservations_with_customer.append(reservation_dict)
 
     session.close()

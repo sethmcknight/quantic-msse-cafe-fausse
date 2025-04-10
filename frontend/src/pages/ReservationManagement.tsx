@@ -12,6 +12,8 @@ interface Reservation {
     status: string;
     email?: string;
     phone?: string;
+    customer_email?: string;
+    customer_phone?: string;
 }
 
 const ReservationManagement = () => {
@@ -111,6 +113,7 @@ const ReservationManagement = () => {
                 <table>
                     <thead>
                         <tr>
+                            <th>Reservation ID</th>
                             <th>Customer Name</th>
                             <th>Customer ID</th>
                             <th>Guests</th>
@@ -126,6 +129,7 @@ const ReservationManagement = () => {
                     <tbody>
                         {filteredReservations.map(reservation => (
                             <tr key={reservation.id}>
+                                <td>{reservation.id}</td>
                                 <td>
                                     <input
                                         type="text"
@@ -175,15 +179,15 @@ const ReservationManagement = () => {
                                 <td>
                                     <input
                                         type="email"
-                                        value={reservation.email || ''}
-                                        onChange={e => handleEdit(reservation.id, 'email', e.target.value)}
+                                        value={reservation.customer_email || ''}
+                                        onChange={e => handleEdit(reservation.id, 'customer_email', e.target.value)}
                                     />
                                 </td>
                                 <td>
                                     <input
                                         type="tel"
-                                        value={reservation.phone || ''}
-                                        onChange={e => handleEdit(reservation.id, 'phone', e.target.value)}
+                                        value={reservation.customer_phone || ''}
+                                        onChange={e => handleEdit(reservation.id, 'customer_phone', e.target.value)}
                                     />
                                 </td>
                                 <td>
