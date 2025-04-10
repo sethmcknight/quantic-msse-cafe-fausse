@@ -6,7 +6,7 @@ interface Reservation {
     customer_name: string;
     customer_id: string;
     guests: number;
-    table_number: string;
+    table_number: string | number;
     time_slot: string;
     special_requests?: string;
     status: string;
