@@ -215,8 +215,8 @@ const ReservationManagement = () => {
                     </thead>
                     <tbody>
                         {filteredAndSortedReservations.map(reservation => (
-                            <tr key={reservation.id}>
-                                <td>{reservation.id}</td>
+                            <tr key={reservation.id || Math.random()}>
+                                <td>{reservation.id || 'New'}</td>
                                 <td>
                                     <select
                                         value={reservation.status}
