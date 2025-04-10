@@ -9,7 +9,7 @@ const MenuPage: React.FC = () => {
   const [notification, setNotification] = useState<{message: string; type: 'success' | 'error' | 'info'} | null>(null);
 
   // Sort categories by ID in ascending order
-  const sortedCategories = categories.sort((a, b) => a.id - b.id);
+  const sortedCategories = [...categories].sort((a, b) => a.id - b.id);
 
   // Handle errors from context
   useEffect(() => {
