@@ -5,6 +5,7 @@ from .base import Base
 from ..extensions import db
 from datetime import datetime
 from .customer import Customer  # Import Customer model
+from sqlalchemy.orm import Session
 
 
 class Reservation(Base):
@@ -42,7 +43,9 @@ class Reservation(Base):
     
     def to_dict(self):
         """Convert reservation to a dictionary"""
-        customer = Customer.query.get(self.customer_id)
+        session = Session(db.engine)
+        customer = session.get(Customer, self.customer_id)
+        session.close()
         return {
             'id': self.id,
             'customer_id': self.customer_id,

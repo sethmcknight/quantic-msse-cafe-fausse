@@ -7,6 +7,7 @@ from ..extensions import db
 from ..models.reservation import Reservation
 from ..models.customer import Customer
 import random
+from sqlalchemy.orm import Session
 
 reservations_bp = Blueprint('reservations', __name__)
 
@@ -133,34 +134,39 @@ def check_availability():
 @reservations_bp.route('/<int:reservation_id>', methods=['GET'])
 def get_reservation(reservation_id):
     """Get a specific reservation"""
-    reservation = Reservation.query.get(reservation_id)
-    
+    session = Session(db.engine)
+    reservation = session.get(Reservation, reservation_id)
+
     if not reservation:
+        session.close()
         return jsonify({'success': False, 'message': 'Reservation not found'}), 404
-    
-    # Get customer info
-    customer = Customer.query.get(reservation.customer_id)
-    
+
+    customer = session.get(Customer, reservation.customer_id)
+    session.close()
+
     return jsonify({
         'success': True,
         'reservation': {
             **reservation.to_dict(),
-            'customer_name': customer.name,
-            'customer_email': customer.email
+            'customer_name': customer.name if customer else None,
+            'customer_email': customer.email if customer else None
         }
     })
 
 @reservations_bp.route('/cancel/<int:reservation_id>', methods=['POST'])
 def cancel_reservation(reservation_id):
     """Cancel a reservation"""
-    reservation = Reservation.query.get(reservation_id)
-    
+    session = Session(db.engine)
+    reservation = session.get(Reservation, reservation_id)
+
     if not reservation:
+        session.close()
         return jsonify({'success': False, 'message': 'Reservation not found'}), 404
-    
+
     reservation.status = 'canceled'
     db.session.commit()
-    
+    session.close()
+
     return jsonify({
         'success': True,
         'message': 'Reservation has been canceled',
@@ -170,14 +176,17 @@ def cancel_reservation(reservation_id):
 @reservations_bp.route('/all', methods=['GET'])
 def get_reservations():
     """Get all reservations"""
-    reservations = Reservation.query.all()
+    session = Session(db.engine)
+    reservations = session.query(Reservation).all()
     reservations_with_customer = []
 
     for reservation in reservations:
-        customer = Customer.query.get(reservation.customer_id)
+        customer = session.get(Customer, reservation.customer_id)
         reservation_dict = reservation.to_dict()
         reservation_dict['customer_name'] = customer.name if customer else None
         reservations_with_customer.append(reservation_dict)
+
+    session.close()
 
     return jsonify({
         'success': True,
