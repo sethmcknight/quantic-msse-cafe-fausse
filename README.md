@@ -68,23 +68,23 @@ Café Fausse is a fine dining restaurant that needed a modern website to showcas
 
 ### Backend Setup
 
-1. Navigate to the backend directory:
+1. Navigate to the parent directory of the `backend` folder:
    ```bash
-   cd backend
+   cd /path/to/your/project
    ```
 
 2. Create a virtual environment (optional but recommended):
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   python3 -m venv backend/env
+   source backend/env/bin/activate  # On Windows: backend\env\Scripts\activate
    ```
 
 3. Install dependencies:
    ```bash
-   pip install -r requirements.txt
+   pip install -r backend/requirements.txt
    ```
 
-4. Create a .env file in the backend directory (see Environment Variables section)
+4. Create a `.env` file in the `backend` directory (see Environment Variables section for details).
 
 5. Create the PostgreSQL database:
    ```bash
@@ -93,17 +93,21 @@ Café Fausse is a fine dining restaurant that needed a modern website to showcas
 
 6. Initialize the database with sample data:
    ```bash
-   python init_db.py
+   python3 -m backend.init_db
    ```
 
-7. Start the Flask server:
+7. Start the Flask development server:
+   To run the backend development server, navigate to the parent directory of the `backend` folder and execute the following command:
+
    ```bash
    # Development mode
-   python run_dev.py
-   
+  python3 -m backend.run_dev
+  
    # Production mode
-   python run_prod.py
+   python -m backend.run_prod
    ```
+
+   This ensures that Python treats the `backend` directory as a package, resolving any relative imports correctly.
 
 8. The backend API will be available at [http://localhost:5001](http://localhost:5001)
 

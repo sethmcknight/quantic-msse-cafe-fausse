@@ -1,7 +1,7 @@
 """
 Development server launcher script for Café Fausse application
 """
-from app import create_app
+from backend.app import create_app
 import os
 
 if __name__ == '__main__':
