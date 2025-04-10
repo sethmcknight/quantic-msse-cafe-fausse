@@ -71,7 +71,7 @@ def create_reservation():
             status='confirmed'
         )
         db.session.add(reservation)
-        db.session.commit()
+        session.commit()
         
         return jsonify({
             'success': True, 
