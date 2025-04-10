@@ -10,6 +10,8 @@ interface Reservation {
     time_slot: string;
     special_requests?: string;
     status: string;
+    email?: string;
+    phone?: string;
 }
 
 const ReservationManagement = () => {
@@ -41,6 +43,39 @@ const ReservationManagement = () => {
 
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(event.target.value);
+    };
+
+    const handleEdit = (id: string, field: string, value: string | number) => {
+        setReservations(prevReservations =>
+            prevReservations.map(reservation =>
+                reservation.id === id ? { ...reservation, [field]: value } : reservation
+            )
+        );
+    };
+
+    const handleSave = (id: string) => {
+        const updatedReservation = reservations.find(reservation => reservation.id === id);
+        if (updatedReservation) {
+            fetch(`/api/reservations/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedReservation),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to save reservation');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Reservation updated:', data);
+                })
+                .catch(error => {
+                    console.error('Error saving reservation:', error);
+                });
+        }
     };
 
     const filteredReservations = reservations.filter(reservation => {
@@ -83,18 +118,77 @@ const ReservationManagement = () => {
                             <th>Time Slot</th>
                             <th>Special Requests</th>
                             <th>Status</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredReservations.map(reservation => (
                             <tr key={reservation.id}>
-                                <td>{reservation.customer_name}</td>
+                                <td>
+                                    <input
+                                        type="text"
+                                        value={reservation.customer_name}
+                                        onChange={e => handleEdit(reservation.id, 'customer_name', e.target.value)}
+                                    />
+                                </td>
                                 <td>{reservation.customer_id}</td>
-                                <td>{reservation.guests}</td>
-                                <td>{reservation.table_number}</td>
-                                <td>{reservation.time_slot}</td>
-                                <td>{reservation.special_requests || 'N/A'}</td>
-                                <td>{reservation.status}</td>
+                                <td>
+                                    <input
+                                        type="number"
+                                        value={reservation.guests}
+                                        onChange={e => handleEdit(reservation.id, 'guests', parseInt(e.target.value, 10))}
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type="number"
+                                        value={reservation.table_number}
+                                        onChange={e => handleEdit(reservation.id, 'table_number', parseInt(e.target.value, 10))}
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type="datetime-local"
+                                        value={reservation.time_slot}
+                                        onChange={e => handleEdit(reservation.id, 'time_slot', e.target.value)}
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type="text"
+                                        value={reservation.special_requests || ''}
+                                        onChange={e => handleEdit(reservation.id, 'special_requests', e.target.value)}
+                                    />
+                                </td>
+                                <td>
+                                    <select
+                                        value={reservation.status}
+                                        onChange={e => handleEdit(reservation.id, 'status', e.target.value)}
+                                    >
+                                        <option value="confirmed">Confirmed</option>
+                                        <option value="canceled">Canceled</option>
+                                        <option value="completed">Completed</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input
+                                        type="email"
+                                        value={reservation.email || ''}
+                                        onChange={e => handleEdit(reservation.id, 'email', e.target.value)}
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type="tel"
+                                        value={reservation.phone || ''}
+                                        onChange={e => handleEdit(reservation.id, 'phone', e.target.value)}
+                                    />
+                                </td>
+                                <td>
+                                    <button onClick={() => handleSave(reservation.id)}>Save</button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
