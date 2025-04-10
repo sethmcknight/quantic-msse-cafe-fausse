@@ -3,10 +3,13 @@ import '../css/reservation-management.css';
 
 interface Reservation {
     id: string;
-    name: string;
-    email: string;
-    phone: string;
-    date: string;
+    customer_name: string;
+    customer_id: string;
+    guests: number;
+    table_number: string;
+    time_slot: string;
+    special_requests?: string;
+    status: string;
 }
 
 const ReservationManagement = () => {
@@ -23,8 +26,8 @@ const ReservationManagement = () => {
                 return response.json();
             })
             .then(data => {
-                if (Array.isArray(data)) {
-                    setReservations(data);
+                if (data.success && Array.isArray(data.reservations)) {
+                    setReservations(data.reservations);
                 } else {
                     console.error('Unexpected data format:', data);
                     setReservations([]);
@@ -40,12 +43,25 @@ const ReservationManagement = () => {
         setSearchQuery(event.target.value);
     };
 
-    const filteredReservations = reservations.filter(reservation =>
-        reservation.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        reservation.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        reservation.phone.includes(searchQuery) ||
-        reservation.date.includes(searchQuery)
-    );
+    const filteredReservations = reservations.filter(reservation => {
+        const customerName = typeof reservation.customer_name === 'string' ? reservation.customer_name.toLowerCase() : '';
+        const customerId = typeof reservation.customer_id === 'string' ? reservation.customer_id.toLowerCase() : '';
+        const guests = reservation.guests ? reservation.guests.toString() : '';
+        const tableNumber = reservation.table_number ? reservation.table_number.toString() : '';
+        const timeSlot = typeof reservation.time_slot === 'string' ? reservation.time_slot : '';
+        const specialRequests = typeof reservation.special_requests === 'string' ? reservation.special_requests.toLowerCase() : '';
+        const status = typeof reservation.status === 'string' ? reservation.status.toLowerCase() : '';
+
+        return (
+            customerName.includes(searchQuery.toLowerCase()) ||
+            customerId.includes(searchQuery.toLowerCase()) ||
+            guests.includes(searchQuery) ||
+            tableNumber.includes(searchQuery) ||
+            timeSlot.includes(searchQuery) ||
+            specialRequests.includes(searchQuery.toLowerCase()) ||
+            status.includes(searchQuery.toLowerCase())
+        );
+    });
 
     return (
         <div className="management-page">
@@ -60,24 +76,25 @@ const ReservationManagement = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Date</th>
-                            <th>Actions</th>
+                            <th>Customer Name</th>
+                            <th>Customer ID</th>
+                            <th>Guests</th>
+                            <th>Table Number</th>
+                            <th>Time Slot</th>
+                            <th>Special Requests</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredReservations.map(reservation => (
                             <tr key={reservation.id}>
-                                <td>{reservation.name}</td>
-                                <td>{reservation.email}</td>
-                                <td>{reservation.phone}</td>
-                                <td>{reservation.date}</td>
-                                <td>
-                                    <button>Edit</button>
-                                    <button>Delete</button>
-                                </td>
+                                <td>{reservation.customer_name}</td>
+                                <td>{reservation.customer_id}</td>
+                                <td>{reservation.guests}</td>
+                                <td>{reservation.table_number}</td>
+                                <td>{reservation.time_slot}</td>
+                                <td>{reservation.special_requests || 'N/A'}</td>
+                                <td>{reservation.status}</td>
                             </tr>
                         ))}
                     </tbody>
