@@ -19,6 +19,7 @@ interface Reservation {
 const ReservationManagement = () => {
     const [reservations, setReservations] = useState<Reservation[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
 
     useEffect(() => {
         // Fetch reservations from the backend API
@@ -115,6 +116,37 @@ const ReservationManagement = () => {
         );
     });
 
+    const sortedReservations = React.useMemo(() => {
+        if (sortConfig !== null) {
+            return [...filteredReservations].sort((a, b) => {
+                const aValue = a[sortConfig.key as keyof Reservation] ?? '';
+                const bValue = b[sortConfig.key as keyof Reservation] ?? '';
+
+                if (aValue < bValue) {
+                    return sortConfig.direction === 'asc' ? -1 : 1;
+                }
+                if (aValue > bValue) {
+                    return sortConfig.direction === 'asc' ? 1 : -1;
+                }
+                return 0;
+            });
+        }
+        return filteredReservations;
+    }, [filteredReservations, sortConfig]);
+
+    const handleSort = (key: string) => {
+        setSortConfig(prevConfig => {
+            if (prevConfig && prevConfig.key === key) {
+                if (prevConfig.direction === 'asc') {
+                    return { key, direction: 'desc' };
+                } else if (prevConfig.direction === 'desc') {
+                    return null; // Clear sorting
+                }
+            }
+            return { key, direction: 'asc' };
+        });
+    };
+
     return (
         <div className="management-page">
             <main>
@@ -128,20 +160,37 @@ const ReservationManagement = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Status</th>
-                            <th>Time Slot</th>
-                            <th>Table</th>
-                            <th>Guests</th>
-                            <th>Customer ID</th>
-                            <th>Customer Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Special Requests</th>
+                            <th onClick={() => handleSort('id')}>
+                                ID {sortConfig?.key === 'id' ? (sortConfig.direction === 'asc' ? '▲' : sortConfig.direction === 'desc' ? '▼' : '⇅') : '⇅'}
+                            </th>
+                            <th onClick={() => handleSort('status')}>
+                                Status {sortConfig?.key === 'status' ? (sortConfig.direction === 'asc' ? '▲' : sortConfig.direction === 'desc' ? '▼' : '⇅') : '⇅'}
+                            </th>
+                            <th onClick={() => handleSort('time_slot')}>
+                                Time Slot {sortConfig?.key === 'time_slot' ? (sortConfig.direction === 'asc' ? '▲' : sortConfig.direction === 'desc' ? '▼' : '⇅') : '⇅'}
+                            </th>
+                            <th onClick={() => handleSort('table_number')}>
+                                Table {sortConfig?.key === 'table_number' ? (sortConfig.direction === 'asc' ? '▲' : sortConfig.direction === 'desc' ? '▼' : '⇅') : '⇅'}
+                            </th>
+                            <th onClick={() => handleSort('guests')}>
+                                Guests {sortConfig?.key === 'guests' ? (sortConfig.direction === 'asc' ? '▲' : sortConfig.direction === 'desc' ? '▼' : '⇅') : '⇅'}
+                            </th>
+                            <th onClick={() => handleSort('customer_name')}>
+                                Customer Name {sortConfig?.key === 'customer_name' ? (sortConfig.direction === 'asc' ? '▲' : sortConfig.direction === 'desc' ? '▼' : '⇅') : '⇅'}
+                            </th>
+                            <th onClick={() => handleSort('customer_email')}>
+                                Email {sortConfig?.key === 'customer_email' ? (sortConfig.direction === 'asc' ? '▲' : sortConfig.direction === 'desc' ? '▼' : '⇅') : '⇅'}
+                            </th>
+                            <th onClick={() => handleSort('customer_phone')}>
+                                Phone {sortConfig?.key === 'customer_phone' ? (sortConfig.direction === 'asc' ? '▲' : sortConfig.direction === 'desc' ? '▼' : '⇅') : '⇅'}
+                            </th>
+                            <th onClick={() => handleSort('special_requests')}>
+                                Special Requests {sortConfig?.key === 'special_requests' ? (sortConfig.direction === 'asc' ? '▲' : sortConfig.direction === 'desc' ? '▼' : '⇅') : '⇅'}
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredReservations.map(reservation => (
+                        {sortedReservations.map(reservation => (
                             <tr key={reservation.id}>
                                 <td>{reservation.id}</td>
                                 <td>
@@ -175,7 +224,6 @@ const ReservationManagement = () => {
                                         onChange={e => handleEdit(reservation.id, 'guests', parseInt(e.target.value, 10))}
                                     />
                                 </td>
-                                <td>{reservation.customer_id}</td>
                                 <td>
                                     <input
                                         type="text"

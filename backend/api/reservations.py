@@ -153,6 +153,48 @@ def get_reservation(reservation_id):
         }
     })
 
+@reservations_bp.route('/<int:reservation_id>', methods=['PUT'])
+def update_reservation(reservation_id):
+    """Update an existing reservation"""
+    data = request.json
+    session = Session(db.engine)
+    reservation = session.get(Reservation, reservation_id)
+
+    if not reservation:
+        session.close()
+        return jsonify({'success': False, 'message': 'Reservation not found'}), 404
+
+    # Update reservation fields
+    if 'table_number' in data:
+        reservation.table_number = data['table_number']
+    if 'time_slot' in data:
+        reservation.time_slot = data['time_slot']
+    if 'guests' in data:
+        reservation.guests = data['guests']
+    if 'special_requests' in data:
+        reservation.special_requests = data['special_requests']
+    if 'status' in data:
+        reservation.status = data['status']
+
+    # Update customer fields if provided
+    customer = session.get(Customer, reservation.customer_id)
+    if customer:
+        if 'customer_name' in data:
+            customer.name = data['customer_name']
+        if 'customer_email' in data:
+            customer.email = data['customer_email']
+        if 'customer_phone' in data:
+            customer.phone = data['customer_phone']
+
+    try:
+        session.commit()
+        session.close()
+        return jsonify({'success': True, 'message': 'Reservation updated successfully'}), 200
+    except Exception as e:
+        session.rollback()
+        session.close()
+        return jsonify({'success': False, 'message': f'An error occurred: {str(e)}'}), 500
+
 @reservations_bp.route('/cancel/<int:reservation_id>', methods=['POST'])
 def cancel_reservation(reservation_id):
     """Cancel a reservation"""
