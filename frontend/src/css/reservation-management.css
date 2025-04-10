@@ -63,3 +63,15 @@
     width: 100%;
     box-sizing: border-box;
 }
+
+input[type="datetime-local"] {
+    height: 30px;
+    padding: 5px;
+    font-size: 0.9rem;
+}
+
+th input[type="date"] {
+    height: 30px;
+    padding: 5px;
+    font-size: 0.9rem;
+}

@@ -20,6 +20,8 @@ const ReservationManagement = () => {
     const [reservations, setReservations] = useState<Reservation[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
+    const [statusFilter, setStatusFilter] = useState<string>('');
+    const [timeSlotFilter, setTimeSlotFilter] = useState<string>('');
 
     useEffect(() => {
         // Fetch reservations from the backend API
@@ -96,29 +98,36 @@ const ReservationManagement = () => {
         }
     };
 
-    const filteredReservations = reservations.filter(reservation => {
-        const customerName = typeof reservation.customer_name === 'string' ? reservation.customer_name.toLowerCase() : '';
-        const customerId = typeof reservation.customer_id === 'string' ? reservation.customer_id.toLowerCase() : '';
-        const guests = reservation.guests ? reservation.guests.toString() : '';
-        const tableNumber = reservation.table_number ? reservation.table_number.toString() : '';
-        const timeSlot = typeof reservation.time_slot === 'string' ? reservation.time_slot : '';
-        const specialRequests = typeof reservation.special_requests === 'string' ? reservation.special_requests.toLowerCase() : '';
-        const status = typeof reservation.status === 'string' ? reservation.status.toLowerCase() : '';
+    const filteredAndSortedReservations = React.useMemo(() => {
+        let filtered = reservations.filter(reservation => {
+            const matchesStatus = statusFilter ? reservation.status === statusFilter : true;
+            const matchesTimeSlot = timeSlotFilter ? reservation.time_slot.startsWith(timeSlotFilter) : true;
 
-        return (
-            customerName.includes(searchQuery.toLowerCase()) ||
-            customerId.includes(searchQuery.toLowerCase()) ||
-            guests.includes(searchQuery) ||
-            tableNumber.includes(searchQuery) ||
-            timeSlot.includes(searchQuery) ||
-            specialRequests.includes(searchQuery.toLowerCase()) ||
-            status.includes(searchQuery.toLowerCase())
-        );
-    });
+            const customerName = typeof reservation.customer_name === 'string' ? reservation.customer_name.toLowerCase() : '';
+            const customerId = typeof reservation.customer_id === 'string' ? reservation.customer_id.toLowerCase() : '';
+            const guests = reservation.guests ? reservation.guests.toString() : '';
+            const tableNumber = reservation.table_number ? reservation.table_number.toString() : '';
+            const timeSlot = typeof reservation.time_slot === 'string' ? reservation.time_slot : '';
+            const specialRequests = typeof reservation.special_requests === 'string' ? reservation.special_requests.toLowerCase() : '';
+            const status = typeof reservation.status === 'string' ? reservation.status.toLowerCase() : '';
 
-    const sortedReservations = React.useMemo(() => {
+            return (
+                matchesStatus &&
+                matchesTimeSlot &&
+                (
+                    customerName.includes(searchQuery.toLowerCase()) ||
+                    customerId.includes(searchQuery.toLowerCase()) ||
+                    guests.includes(searchQuery) ||
+                    tableNumber.includes(searchQuery) ||
+                    timeSlot.includes(searchQuery) ||
+                    specialRequests.includes(searchQuery.toLowerCase()) ||
+                    status.includes(searchQuery.toLowerCase())
+                )
+            );
+        });
+
         if (sortConfig !== null) {
-            return [...filteredReservations].sort((a, b) => {
+            filtered = [...filtered].sort((a, b) => {
                 const aValue = a[sortConfig.key as keyof Reservation] ?? '';
                 const bValue = b[sortConfig.key as keyof Reservation] ?? '';
 
@@ -131,8 +140,9 @@ const ReservationManagement = () => {
                 return 0;
             });
         }
-        return filteredReservations;
-    }, [filteredReservations, sortConfig]);
+
+        return filtered;
+    }, [reservations, searchQuery, statusFilter, timeSlotFilter, sortConfig]);
 
     const handleSort = (key: string) => {
         setSortConfig(prevConfig => {
@@ -165,9 +175,23 @@ const ReservationManagement = () => {
                             </th>
                             <th onClick={() => handleSort('status')}>
                                 Status {sortConfig?.key === 'status' ? (sortConfig.direction === 'asc' ? '▲' : sortConfig.direction === 'desc' ? '▼' : '⇅') : '⇅'}
+                                <select
+                                    value={statusFilter}
+                                    onChange={e => setStatusFilter(e.target.value)}
+                                >
+                                    <option value="">All</option>
+                                    <option value="confirmed">Confirmed</option>
+                                    <option value="canceled">Canceled</option>
+                                    <option value="completed">Completed</option>
+                                </select>
                             </th>
                             <th onClick={() => handleSort('time_slot')}>
                                 Time Slot {sortConfig?.key === 'time_slot' ? (sortConfig.direction === 'asc' ? '▲' : sortConfig.direction === 'desc' ? '▼' : '⇅') : '⇅'}
+                                <input
+                                    type="date"
+                                    value={timeSlotFilter}
+                                    onChange={e => setTimeSlotFilter(e.target.value)}
+                                />
                             </th>
                             <th onClick={() => handleSort('table_number')}>
                                 Table {sortConfig?.key === 'table_number' ? (sortConfig.direction === 'asc' ? '▲' : sortConfig.direction === 'desc' ? '▼' : '⇅') : '⇅'}
@@ -190,7 +214,7 @@ const ReservationManagement = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {sortedReservations.map(reservation => (
+                        {filteredAndSortedReservations.map(reservation => (
                             <tr key={reservation.id}>
                                 <td>{reservation.id}</td>
                                 <td>
