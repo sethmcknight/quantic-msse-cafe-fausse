@@ -95,3 +95,51 @@ def add_menu_item():
     except Exception as e:
         db.session.rollback()
         return jsonify({'success': False, 'message': f'An error occurred: {str(e)}'}), 500
+
+@menu_bp.route('/items/<int:item_id>', methods=['PUT'])
+def update_menu_item(item_id):
+    """Update a specific menu item by ID"""
+    data = request.get_json()
+    session = db.session
+
+    item = session.get(MenuItem, item_id)
+    if not item:
+        return jsonify({'success': False, 'message': 'Menu item not found'}), 404
+
+    # Update fields if they exist in the request
+    if 'name' in data:
+        item.name = data['name']
+    if 'description' in data:
+        item.description = data['description']
+    if 'price' in data:
+        item.price = data['price']
+    if 'category_id' in data:
+        item.category_id = data['category_id']
+
+    try:
+        session.commit()
+        return jsonify({'success': True, 'message': 'Menu item updated successfully'})
+    except Exception as e:
+        session.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+@menu_bp.route('/categories/<int:category_id>', methods=['PUT'])
+def update_menu_category(category_id):
+    """Update a specific menu category by ID"""
+    data = request.get_json()
+    session = db.session
+
+    category = session.get(Category, category_id)
+    if not category:
+        return jsonify({'success': False, 'message': 'Category not found'}), 404
+
+    # Update fields if they exist in the request
+    if 'name' in data:
+        category.name = data['name']
+
+    try:
+        session.commit()
+        return jsonify({'success': True, 'message': 'Category updated successfully'})
+    except Exception as e:
+        session.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500

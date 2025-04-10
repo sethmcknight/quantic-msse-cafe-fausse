@@ -8,6 +8,9 @@ const MenuPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [notification, setNotification] = useState<{message: string; type: 'success' | 'error' | 'info'} | null>(null);
 
+  // Sort categories by ID in ascending order
+  const sortedCategories = categories.sort((a, b) => a.id - b.id);
+
   // Handle errors from context
   useEffect(() => {
     if (error) {
@@ -38,7 +41,7 @@ const MenuPage: React.FC = () => {
 
   const renderCategoryFilter = () => (
     <div className="category-filter">
-      {categories.map(category => (
+      {sortedCategories.map(category => (
         <button 
           key={category.id}
           className={selectedCategory === category.id ? 'active' : ''}
@@ -123,7 +126,7 @@ const MenuPage: React.FC = () => {
       
       {renderCategoryFilter()}
       
-      {categories.map(category => {
+      {sortedCategories.map(category => {
         // Filter items for the current category.
         const categoryItems = menuItems.filter(item => item.category_id === category.id);
         if (categoryItems.length === 0) return null;

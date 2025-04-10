@@ -29,3 +29,15 @@ class Category(Base):
             'description': self.description,
             'display_order': self.display_order
         }
+
+class MenuCategory(db.Model):
+    __tablename__ = 'menu_categories'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name
+        }

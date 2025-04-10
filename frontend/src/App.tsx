@@ -10,6 +10,8 @@ import AboutPage from './pages/AboutPage';
 import GalleryPage from './pages/GalleryPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ReservationManagement from './pages/ReservationManagement';
+import NewsletterManagement from './pages/NewsletterManagement';
+import MenuManagement from './pages/MenuManagement';
 
 // Layout Components
 import Navigation from './components/Navigation';
@@ -32,6 +34,8 @@ const AppContent: React.FC = () => {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/reservations/management" element={<ReservationManagement />} />
+          <Route path="/newsletter/management" element={<NewsletterManagement />} />
+          <Route path="/menu/management" element={<MenuManagement />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
