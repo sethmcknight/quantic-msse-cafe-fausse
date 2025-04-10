@@ -9,20 +9,52 @@
     padding: 20px;
 }
 
+/* Add responsive styling for the reservation management table */
 .management-page table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-}
-
-.management-page table th, .management-page table td {
-    border: 1px solid #ddd;
-    padding: 8px;
+    margin: 20px 0;
+    font-size: 1rem;
     text-align: left;
 }
 
-.management-page table th {
+.management-page th, .management-page td {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+.management-page th {
     background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .management-page table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .management-page th, .management-page td {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+
+    .management-page th {
+        font-size: 1rem;
+    }
+}
+
+/* Mobile-friendly adjustments */
+@media (max-width: 480px) {
+    .management-page table {
+        font-size: 0.8rem;
+    }
+
+    .management-page th, .management-page td {
+        padding: 6px;
+    }
 }
 
 .management-page input {

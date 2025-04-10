@@ -48,22 +48,37 @@ const ReservationManagement = () => {
     };
 
     const handleEdit = (id: string, field: string, value: string | number) => {
+        // Validate duplicate table number assignment for the same timeslot
+        if (field === 'table_number') {
+            const editedReservation = reservations.find(reservation => reservation.id === id);
+            if (editedReservation) {
+                const isDuplicate = reservations.some(reservation =>
+                    reservation.id !== id &&
+                    reservation.table_number === value &&
+                    reservation.time_slot === editedReservation.time_slot
+                );
+                if (isDuplicate) {
+                    alert('This table is already assigned for the selected timeslot. Please choose a different table.');
+                    return;
+                }
+            }
+        }
+
         setReservations(prevReservations =>
             prevReservations.map(reservation =>
                 reservation.id === id ? { ...reservation, [field]: value } : reservation
             )
         );
-    };
 
-    const handleSave = (id: string) => {
         const updatedReservation = reservations.find(reservation => reservation.id === id);
         if (updatedReservation) {
+            const updatedData = { ...updatedReservation, [field]: value };
             fetch(`/api/reservations/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(updatedReservation),
+                body: JSON.stringify(updatedData),
             })
                 .then(response => {
                     if (!response.ok) {
@@ -188,9 +203,6 @@ const ReservationManagement = () => {
                                         value={reservation.special_requests || ''}
                                         onChange={e => handleEdit(reservation.id, 'special_requests', e.target.value)}
                                     />
-                                </td>
-                                <td>
-                                    <button onClick={() => handleSave(reservation.id)}>Save</button>
                                 </td>
                             </tr>
                         ))}
