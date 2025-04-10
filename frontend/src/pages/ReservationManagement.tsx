@@ -113,17 +113,16 @@ const ReservationManagement = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>Reservation ID</th>
-                            <th>Customer Name</th>
-                            <th>Customer ID</th>
-                            <th>Guests</th>
-                            <th>Table Number</th>
-                            <th>Time Slot</th>
-                            <th>Special Requests</th>
+                            <th>ID</th>
                             <th>Status</th>
+                            <th>Time Slot</th>
+                            <th>Table</th>
+                            <th>Guests</th>
+                            <th>Customer ID</th>
+                            <th>Customer Name</th>
                             <th>Email</th>
                             <th>Phone</th>
-                            <th>Actions</th>
+                            <th>Special Requests</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -131,18 +130,20 @@ const ReservationManagement = () => {
                             <tr key={reservation.id}>
                                 <td>{reservation.id}</td>
                                 <td>
-                                    <input
-                                        type="text"
-                                        value={reservation.customer_name}
-                                        onChange={e => handleEdit(reservation.id, 'customer_name', e.target.value)}
-                                    />
+                                    <select
+                                        value={reservation.status}
+                                        onChange={e => handleEdit(reservation.id, 'status', e.target.value)}
+                                    >
+                                        <option value="confirmed">Confirmed</option>
+                                        <option value="canceled">Canceled</option>
+                                        <option value="completed">Completed</option>
+                                    </select>
                                 </td>
-                                <td>{reservation.customer_id}</td>
                                 <td>
                                     <input
-                                        type="number"
-                                        value={reservation.guests}
-                                        onChange={e => handleEdit(reservation.id, 'guests', parseInt(e.target.value, 10))}
+                                        type="datetime-local"
+                                        value={reservation.time_slot}
+                                        onChange={e => handleEdit(reservation.id, 'time_slot', e.target.value)}
                                     />
                                 </td>
                                 <td>
@@ -154,27 +155,18 @@ const ReservationManagement = () => {
                                 </td>
                                 <td>
                                     <input
-                                        type="datetime-local"
-                                        value={reservation.time_slot}
-                                        onChange={e => handleEdit(reservation.id, 'time_slot', e.target.value)}
+                                        type="number"
+                                        value={reservation.guests}
+                                        onChange={e => handleEdit(reservation.id, 'guests', parseInt(e.target.value, 10))}
                                     />
                                 </td>
+                                <td>{reservation.customer_id}</td>
                                 <td>
                                     <input
                                         type="text"
-                                        value={reservation.special_requests || ''}
-                                        onChange={e => handleEdit(reservation.id, 'special_requests', e.target.value)}
+                                        value={reservation.customer_name}
+                                        onChange={e => handleEdit(reservation.id, 'customer_name', e.target.value)}
                                     />
-                                </td>
-                                <td>
-                                    <select
-                                        value={reservation.status}
-                                        onChange={e => handleEdit(reservation.id, 'status', e.target.value)}
-                                    >
-                                        <option value="confirmed">Confirmed</option>
-                                        <option value="canceled">Canceled</option>
-                                        <option value="completed">Completed</option>
-                                    </select>
                                 </td>
                                 <td>
                                     <input
@@ -188,6 +180,13 @@ const ReservationManagement = () => {
                                         type="tel"
                                         value={reservation.customer_phone || ''}
                                         onChange={e => handleEdit(reservation.id, 'customer_phone', e.target.value)}
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type="text"
+                                        value={reservation.special_requests || ''}
+                                        onChange={e => handleEdit(reservation.id, 'special_requests', e.target.value)}
                                     />
                                 </td>
                                 <td>
