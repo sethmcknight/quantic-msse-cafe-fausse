@@ -17,7 +17,7 @@ const LoginPage = () => {
       const response = await apiClient.post('/auth/login', { username, password });
       if (response.token) {
         localStorage.setItem('authToken', response.token);
-        navigate('/menu/management'); // Redirect to a protected route
+        navigate('/manage/reservations'); // Redirect to a protected route
       }
     } catch (err) {
       setError('Invalid username or password');
