@@ -356,6 +356,15 @@ The application was developed using a component-based approach with React:
    - Confirmed responsive design across devices
    - Validated data persistence
 
+## Test Credentials
+
+To test the login functionality, use the following credentials:
+
+- **Username**: `admin`
+- **Password**: `password123`
+
+These credentials provide access to the admin account for testing purposes.
+
 ## 👥 Contributors
 
 - Seth McKnight - MSSE Cohort 66
