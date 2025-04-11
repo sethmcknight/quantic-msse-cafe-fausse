@@ -1,0 +1,205 @@
+/* Styling for the Menu Management Page */
+.menu-management {
+    margin: 20px;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.menu-management h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #8b5a2b;
+}
+
+.menu-management h2 {
+    font-size: 1.5rem;
+    margin: 1.5rem 0 1rem;
+    color: #8b5a2b;
+}
+
+/* Navigation buttons styling */
+.menu-management-nav {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.menu-management-nav button {
+    background-color: #f5f5f5;
+    color: #555;
+    border: 1px solid #ddd;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.menu-management-nav button:hover {
+    background-color: #e5e5e5;
+    transform: translateY(-2px);
+}
+
+.menu-management-nav button.active {
+    background-color: #8b5a2b;
+    color: white;
+    border-color: #8b5a2b;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.menu-management table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+.menu-management th,
+.menu-management td {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.menu-management th {
+    background-color: #f4f4f4;
+    font-weight: 600;
+    user-select: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.menu-management th:hover {
+    background-color: #e0e0e0;
+}
+
+.menu-management tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.menu-management tr:hover {
+    background-color: #f1f1f1;
+}
+
+.menu-management input,
+.menu-management select {
+    padding: 0.5rem;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.menu-management input[type="number"] {
+    width: 80px;
+}
+
+.filtered-count {
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Filter styling */
+.filter-input {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+    position: relative;
+}
+
+.filter-input input,
+.filter-input select {
+    padding: 0.25rem;
+    font-size: 0.85rem;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    flex: 1;
+}
+
+.price-filter {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto;
+    gap: 0.25rem;
+    align-items: center;
+}
+
+.price-filter span {
+    font-weight: bold;
+    text-align: center;
+}
+
+.price-filter input {
+    width: 100%;
+}
+
+.clear-filter {
+    background: none;
+    border: none;
+    color: #777;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 0 0.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.clear-filter:hover {
+    color: #333;
+}
+
+/* Responsive design */
+@media (max-width: 992px) {
+    .menu-management {
+        padding: 1rem;
+    }
+
+    .menu-management table {
+        font-size: 0.9rem;
+    }
+
+    .menu-management th,
+    .menu-management td {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .menu-management-nav {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .menu-management table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .filter-input {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .filter-input input,
+    .filter-input select {
+        width: 100%;
+    }
+
+    .price-filter {
+        grid-template-columns: 1fr auto 1fr;
+        grid-template-rows: auto auto;
+    }
+
+    .price-filter .clear-filter {
+        grid-row: 1;
+        grid-column: 3;
+    }
+}

@@ -12,6 +12,7 @@ const NewsletterSignup: React.FC<NewsletterSignupProps> = ({ className, footerMo
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const { showNotification } = useAppContext();
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,11 +30,12 @@ const NewsletterSignup: React.FC<NewsletterSignupProps> = ({ className, footerMo
     
     // Validate email
     if (!validateEmail(email)) {
-      showNotification('Please enter a valid email address', 'error');
+      setErrorMessage('Please enter a valid email address');
       return;
     }
     
     setIsSubmitting(true);
+    setErrorMessage(''); // Clear any previous error message
     
     try {
       const response = await newsletterApi.subscribe(email);
@@ -43,11 +45,15 @@ const NewsletterSignup: React.FC<NewsletterSignupProps> = ({ className, footerMo
         showNotification(response.message || 'Thanks for subscribing to our newsletter!', 'success');
         setEmail('');
       } else {
-        showNotification(response.message || 'Error subscribing to newsletter', 'error');
+        if (response.message && response.message.toLowerCase().includes('invalid email format')) {
+          setErrorMessage('Please enter a valid email address');
+        } else {
+          setErrorMessage(response.message || 'Error subscribing to newsletter');
+        }
       }
     } catch (error) {
       console.error('Newsletter subscription error:', error);
-      showNotification('Failed to subscribe. Please try again later.', 'error');
+      setErrorMessage('Failed to subscribe. Please try again later.');
     } finally {
       setIsSubmitting(false);
     }
@@ -93,6 +99,7 @@ const NewsletterSignup: React.FC<NewsletterSignupProps> = ({ className, footerMo
               {isSubmitting ? 'Subscribing...' : 'Subscribe'}
             </button>
           </div>
+          {errorMessage && <p className="error-text">{errorMessage}</p>}
           {!footerMode && (
             <small className="privacy-note">
               We respect your privacy and will never share your information.

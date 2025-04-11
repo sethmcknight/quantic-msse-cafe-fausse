@@ -148,11 +148,59 @@ def unsubscribe():
 def get_subscribers():
     """Get all active newsletter subscribers"""
     # This endpoint would typically be restricted to admin users
-    subscribers = Newsletter.query.filter_by(is_active=True).all()
+    subscribers = Newsletter.query.all()  # Get all subscribers, not just active ones
     return jsonify({
         'success': True,
         'count': len(subscribers),
         'subscribers': [sub.to_dict() for sub in subscribers]
     })
+
+@newsletter_bp.route('/subscribers/<int:subscriber_id>', methods=['PUT'])
+def update_subscriber(subscriber_id):
+    """Update a newsletter subscriber"""
+    try:
+        # Get the subscriber from the database
+        subscriber = Newsletter.query.get(subscriber_id)
+        if not subscriber:
+            logger.error(f"Subscriber with ID {subscriber_id} not found")
+            return jsonify({
+                'success': False,
+                'message': f'Subscriber with ID {subscriber_id} not found'
+            }), 404
+
+        # Get data from request
+        data = request.json
+        if data is None:
+            return jsonify({
+                'success': False,
+                'message': 'No data provided'
+            }), 400
+
+        # Update is_active status if provided
+        if 'is_active' in data:
+            subscriber.is_active = data['is_active']
+            
+            # If the subscriber is a customer, update their newsletter_signup status as well
+            customer = Customer.find_by_email(subscriber.email)
+            if customer:
+                customer.newsletter_signup = data['is_active']
+
+        # Save changes
+        db.session.commit()
+        logger.info(f"Successfully updated subscriber with ID {subscriber_id}")
+        
+        return jsonify({
+            'success': True,
+            'message': 'Subscriber updated successfully',
+            'subscriber': subscriber.to_dict()
+        })
+    
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f"Error updating subscriber with ID {subscriber_id}: {str(e)}")
+        return jsonify({
+            'success': False,
+            'message': f'An error occurred: {str(e)}'
+        }), 500
 
 # Removed duplicate '/api/newsletter' POST route to avoid conflicts with '/subscribe'

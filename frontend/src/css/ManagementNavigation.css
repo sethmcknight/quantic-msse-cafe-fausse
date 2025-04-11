@@ -1,0 +1,127 @@
+.management-header {
+  background-color: #3c3224;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  padding: 0.5rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Use CSS Grid for the nav so items are well spaced */
+.management-navigation {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+
+/* Navigation Logo */
+.management-navigation .nav-logo a {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Mobile menu toggle styling */
+.management-navigation .mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.management-navigation .menu-icon {
+  width: 25px;
+  height: 3px;
+  background-color: #fff;
+  display: block;
+  position: relative;
+}
+
+.management-navigation .menu-icon::before,
+.management-navigation .menu-icon::after {
+  content: '';
+  width: 25px;
+  height: 3px;
+  background-color: #fff;
+  position: absolute;
+  left: 0;
+  transition: transform 0.3s ease;
+}
+
+.management-navigation .menu-icon::before {
+  top: -8px;
+}
+
+.management-navigation .menu-icon::after {
+  top: 8px;
+}
+
+/* Navigation Links */
+.management-navigation .nav-links {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.management-navigation .nav-links li a {
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  color: #e0e0e0;
+  transition: color 0.3s ease;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+}
+
+.management-navigation .nav-links li a:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.management-navigation .nav-links li a.active {
+  color: #fff;
+  background-color: #8b5a2b;
+}
+
+.management-navigation .nav-links li a.back-to-site {
+  color: #ffc107;
+  border: 1px solid #ffc107;
+}
+
+.management-navigation .nav-links li a.back-to-site:hover {
+  background-color: #ffc107;
+  color: #3c3224;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .management-navigation {
+    grid-template-columns: 1fr auto;
+  }
+
+  .management-navigation .mobile-menu-toggle {
+    display: block;
+  }
+  
+  .management-navigation .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #3c3224;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+    display: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  
+  .management-navigation .nav-links.show-mobile {
+    display: flex;
+  }
+}

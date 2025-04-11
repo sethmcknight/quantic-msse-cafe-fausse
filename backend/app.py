@@ -29,10 +29,12 @@ def create_app(config_name='development'):
     from .api.menu import menu_bp
     from .api.reservations import reservations_bp
     from .api.newsletter import newsletter_bp
+    from .api.customers import customers_bp
     
     app.register_blueprint(menu_bp, url_prefix='/api/menu')
     app.register_blueprint(reservations_bp, url_prefix='/api/reservations')
     app.register_blueprint(newsletter_bp, url_prefix='/api/newsletter')
+    app.register_blueprint(customers_bp, url_prefix='/api/customers')
     
     # Initialize extensions with the app
     from .extensions import db, migrate

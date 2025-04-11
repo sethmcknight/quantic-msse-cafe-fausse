@@ -1,0 +1,226 @@
+/* Styling for the Customer Management Page */
+.customer-management {
+    margin: 20px auto;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    width: calc(100% - 40px);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.customer-management h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #8b5a2b;
+}
+
+.customer-management h2 {
+    font-size: 1.5rem;
+    margin: 1.5rem 0 1rem;
+    color: #8b5a2b;
+}
+
+.customer-management table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+.customer-management th,
+.customer-management td {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.customer-management th {
+    background-color: #f4f4f4;
+    font-weight: 600;
+    user-select: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.customer-management th:hover {
+    background-color: #e0e0e0;
+}
+
+.customer-management tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.customer-management tr:hover {
+    background-color: #f1f1f1;
+}
+
+.customer-management input,
+.customer-management select {
+    padding: 0.5rem;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.customer-management input[type="checkbox"] {
+    width: auto;
+    margin: 0 auto;
+    display: block;
+}
+
+.customer-management .checkbox-cell {
+    text-align: center;
+}
+
+.filtered-count {
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Filter styling */
+.filter-input {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+    position: relative;
+}
+
+.filter-input input,
+.filter-input select {
+    padding: 0.25rem;
+    font-size: 0.85rem;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    flex: 1;
+}
+
+.clear-filter {
+    background: none;
+    border: none;
+    color: #777;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 0 0.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.clear-filter:hover {
+    color: #333;
+}
+
+/* Newsletter status styling */
+.newsletter-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.status-label {
+    display: block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+.status-label.subscribed {
+    background-color: #e7f5e4;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+}
+
+.status-label.not-subscribed {
+    background-color: #f5e7e7;
+    color: #c62828;
+    border: 1px solid #ef9a9a;
+}
+
+.toggle-container {
+    width: 100%;
+    text-align: center;
+}
+
+.toggle-button {
+    background-color: #8b5a2b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.toggle-button:hover {
+    background-color: #6b4721;
+}
+
+/* Newsletter dropdown styling */
+.newsletter-select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 1rem;
+    color: #333;
+    appearance: menulist;
+    cursor: pointer;
+}
+
+.newsletter-select option {
+    padding: 0.5rem;
+}
+
+/* Table container for proper responsiveness */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* Responsive design */
+@media (max-width: 992px) {
+    .customer-management {
+        padding: 1rem;
+    }
+
+    .customer-management table {
+        font-size: 0.9rem;
+    }
+
+    .customer-management th,
+    .customer-management td {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .customer-management {
+        padding: 1rem;
+        margin: 10px auto;
+        width: calc(100% - 20px);
+    }
+
+    .filter-input {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .filter-input input,
+    .filter-input select {
+        width: 100%;
+    }
+}

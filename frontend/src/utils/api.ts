@@ -121,12 +121,13 @@ export const reservationApi = {
     time: string;
     guests: number | string;
     specialRequests?: string;
+    newsletterOptIn: boolean; // Added newsletterOptIn field
   }) {
     return apiClient.post<{
       success: boolean;
       message: string;
-      reservationId?: number;
-      tableNumber?: number;
+      reservation_id?: number;
+      table_number?: number;
     }>('/reservations', {
       name: formData.name,
       email: formData.email,
@@ -135,6 +136,7 @@ export const reservationApi = {
       time: formData.time,
       guests: Number(formData.guests),
       special_requests: formData.specialRequests,
+      newsletter_opt_in: formData.newsletterOptIn, // Include newsletterOptIn in the payload
     });
   },
 };

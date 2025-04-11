@@ -1,0 +1,229 @@
+/* Styling for the Newsletter Management Page */
+.newsletter-management {
+    margin: 20px auto;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    width: calc(100% - 40px);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.newsletter-management h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #8b5a2b;
+}
+
+/* Filters container with CSS Grid */
+.filters-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.search-container input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+/* Subscribers count */
+.subscribers-count {
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #666;
+}
+
+/* Table container for better responsiveness */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* Table styling */
+.newsletter-management table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+.newsletter-management th,
+.newsletter-management td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.newsletter-management th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Status filter in table header */
+.newsletter-management th select {
+    margin-left: 8px;
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 0.9rem;
+    background-color: white;
+    cursor: pointer;
+    display: block;
+    margin-top: 5px;
+}
+
+/* Email search in table header */
+.email-search {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.email-search input[type="text"] {
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 0.9rem;
+    background-color: white;
+    cursor: text;
+    width: 100%;
+}
+
+.clear-search-filter {
+    background: none;
+    border: none;
+    color: #777;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-left: 4px;
+    padding: 0 4px;
+    min-width: 20px;
+}
+
+.clear-search-filter:hover {
+    color: #333;
+}
+
+/* Date filter in table header */
+.date-filter {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.date-filter input[type="date"] {
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 0.9rem;
+    background-color: white;
+    cursor: pointer;
+    width: 140px;
+}
+
+.clear-date-filter {
+    background: none;
+    border: none;
+    color: #777;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-left: 4px;
+    padding: 0 4px;
+}
+
+.clear-date-filter:hover {
+    color: #333;
+}
+
+.newsletter-management th:hover {
+    background-color: #e0e0e0;
+}
+
+.newsletter-management tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.newsletter-management tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Styling for the status dropdown in the table cell */
+.newsletter-management td select {
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    min-width: 100px;
+}
+
+/* Responsive design using CSS Grid */
+@media (max-width: 992px) {
+    .newsletter-management {
+        padding: 1rem;
+    }
+
+    .newsletter-management table {
+        font-size: 0.9rem;
+    }
+
+    .newsletter-management th,
+    .newsletter-management td {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .newsletter-management {
+        padding: 1rem;
+        margin: 10px auto;
+        width: calc(100% - 20px);
+    }
+    
+    .email-search,
+    .date-filter {
+        width: 100%;
+    }
+    
+    .newsletter-management th select,
+    .date-filter input[type="date"],
+    .email-search input[type="text"] {
+        font-size: 0.8rem;
+        padding: 3px;
+    }
+    
+    .date-filter input[type="date"] {
+        width: 120px;
+    }
+}
+
+/* Mobile-friendly adjustments */
+@media (max-width: 480px) {
+    .newsletter-management h1 {
+        font-size: 1.5rem;
+    }
+    
+    .date-filter,
+    .email-search {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .clear-date-filter,
+    .clear-search-filter {
+        margin-top: 2px;
+        margin-left: 0;
+    }
+}

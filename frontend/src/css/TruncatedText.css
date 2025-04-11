@@ -1,0 +1,40 @@
+.truncated-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  word-break: break-word;
+}
+
+.truncated-text span {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.toggle-button {
+  background: none;
+  border: none;
+  color: #8b5a2b;
+  cursor: pointer;
+  font-size: 0.75rem;
+  padding: 2px 4px;
+  text-align: left;
+  width: fit-content;
+  text-decoration: underline;
+}
+
+.toggle-button:hover {
+  color: #704923;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .truncated-text span {
+    font-size: 0.85rem;
+  }
+  
+  .toggle-button {
+    font-size: 0.7rem;
+    padding: 1px 3px;
+  }
+}
