@@ -4,6 +4,7 @@ from .customer import Customer
 from .menu_item import MenuItem
 from .newsletter import Newsletter
 from .reservation import Reservation
+# Import of Employee temporarily removed to avoid circular imports
 
 __all__ = [
     "Base",
@@ -12,4 +13,5 @@ __all__ = [
     "MenuItem",
     "Newsletter",
     "Reservation",
+    # "Employee" temporarily removed
 ]

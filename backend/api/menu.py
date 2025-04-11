@@ -6,6 +6,7 @@ from ..extensions import db
 from ..models.menu_item import MenuItem
 from ..models.category import Category
 from sqlalchemy.orm import Session
+from flask_jwt_extended import jwt_required
 
 menu_bp = Blueprint('menu', __name__)
 
@@ -67,6 +68,7 @@ def get_items_by_category(category_id):
     })
 
 @menu_bp.route('/items', methods=['POST'])
+@jwt_required()
 def add_menu_item():
     """Add a new menu item"""
     data = request.json
@@ -97,6 +99,7 @@ def add_menu_item():
         return jsonify({'success': False, 'message': f'An error occurred: {str(e)}'}), 500
 
 @menu_bp.route('/items/<int:item_id>', methods=['PUT'])
+@jwt_required()
 def update_menu_item(item_id):
     """Update a specific menu item by ID"""
     data = request.get_json()
@@ -124,6 +127,7 @@ def update_menu_item(item_id):
         return jsonify({'success': False, 'message': str(e)}), 500
 
 @menu_bp.route('/categories/<int:category_id>', methods=['PUT'])
+@jwt_required()
 def update_menu_category(category_id):
     """Update a specific menu category by ID"""
     data = request.get_json()

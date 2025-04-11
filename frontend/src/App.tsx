@@ -11,12 +11,14 @@ import GalleryPage from './pages/GalleryPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ManageReservations from './pages/ManageReservations';
 import ManageSubscribers from './pages/ManageSubscribers';
-import MenuManagement from './pages/ManageMenus';
-import CustomerManagement from './pages/ManageCustomers';
+import ManageMenus from './pages/ManageMenus';
+import ManageCustomers from './pages/ManageCustomers';
+import LoginPage from './pages/LoginPage';
 
 // Layout Components
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // Context Provider
 import { AppProvider } from './context/AppContext';
@@ -26,12 +28,15 @@ const AppContent: React.FC = () => {
   return (
     <div className="App">
       <Routes>
-        {/* Management Routes - Navigation is included in each page */}
-        <Route path="/manage/customers" element={<CustomerManagement />} />
-        <Route path="/manage/reservations" element={<ManageReservations />} />
-        <Route path="/manage/subscribers" element={<ManageSubscribers />} />
-        <Route path="/manage/menus" element={<MenuManagement />} />
-        
+        {/* Management Routes - Protected */}
+        <Route path="/manage/customers" element={<ProtectedRoute><ManageCustomers /></ProtectedRoute>} />
+        <Route path="/manage/reservations" element={<ProtectedRoute><ManageReservations /></ProtectedRoute>} />
+        <Route path="/manage/subscribers" element={<ProtectedRoute><ManageSubscribers /></ProtectedRoute>} />
+        <Route path="/manage/menus" element={<ProtectedRoute><ManageMenus /></ProtectedRoute>} />
+
+        {/* Login Route */}
+        <Route path="/manage" element={<LoginPage />} />
+
         {/* Regular Routes with standard Navigation */}
         <Route path="/" element={
           <>

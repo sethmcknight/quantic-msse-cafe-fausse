@@ -9,6 +9,7 @@ from .models.category import Category
 from .models.customer import Customer
 from .models.reservation import Reservation
 from .models.newsletter import Newsletter
+from .models.employee import Employee  # Import Employee model directly
 from datetime import datetime, timedelta
 
 def init_db(app, populate_sample_data=True):
@@ -222,6 +223,19 @@ def init_db(app, populate_sample_data=True):
 
         db.session.add_all([reservation1, reservation2])
         db.session.commit()
+
+        # Create sample employees
+        print("Creating sample employees...")
+        admin_employee = Employee(
+            username="admin",
+            role="admin"
+        )
+        admin_employee.set_password("password123")
+
+        db.session.add(admin_employee)
+        db.session.commit()
+
+        print("Sample employees created!")
 
         print("Database initialization complete!")
 
