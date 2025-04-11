@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import '../css/CustomerManagement.css';
+import ManagementNavigation from '../components/ManagementNavigation';
+import Footer from '../components/Footer';
 
 interface Customer {
   id: number;
@@ -189,163 +191,167 @@ const CustomerManagement: React.FC = () => {
   }, [customers, nameFilter, emailFilter, phoneFilter, newsletterFilter, sortConfig]);
 
   return (
-    <div className="customer-management">
-      <h1>Customer Management</h1>
+    <>
+      <ManagementNavigation />
+      <div className="customer-management">
+        <h1>Customer Management</h1>
 
-      <div className="filtered-count">
-        <p>Showing {filteredAndSortedCustomers.length} of {customers.length} customers</p>
-      </div>
-      
-      <table>
-        <thead>
-          <tr>
-            <th onClick={() => handleSort('id')}>
-              ID{getSortIndicator('id')}
-            </th>
-            <th onClick={() => handleSort('name')}>
-              Name{getSortIndicator('name')}
-              <div className="filter-input">
-                <input
-                  type="text"
-                  value={nameFilter}
-                  onChange={handleNameFilterChange}
-                  onClick={(e) => e.stopPropagation()}
-                  placeholder="Filter by name..."
-                />
-                {nameFilter && (
-                  <button 
-                    className="clear-filter" 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      clearNameFilter();
-                    }}
+        <div className="filtered-count">
+          <p>Showing {filteredAndSortedCustomers.length} of {customers.length} customers</p>
+        </div>
+        
+        <table>
+          <thead>
+            <tr>
+              <th onClick={() => handleSort('id')}>
+                ID{getSortIndicator('id')}
+              </th>
+              <th onClick={() => handleSort('name')}>
+                Name{getSortIndicator('name')}
+                <div className="filter-input">
+                  <input
+                    type="text"
+                    value={nameFilter}
+                    onChange={handleNameFilterChange}
+                    onClick={(e) => e.stopPropagation()}
+                    placeholder="Filter by name..."
+                  />
+                  {nameFilter && (
+                    <button 
+                      className="clear-filter" 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        clearNameFilter();
+                      }}
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+              </th>
+              <th onClick={() => handleSort('email')}>
+                Email{getSortIndicator('email')}
+                <div className="filter-input">
+                  <input
+                    type="text"
+                    value={emailFilter}
+                    onChange={handleEmailFilterChange}
+                    onClick={(e) => e.stopPropagation()}
+                    placeholder="Filter by email..."
+                  />
+                  {emailFilter && (
+                    <button 
+                      className="clear-filter" 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        clearEmailFilter();
+                      }}
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+              </th>
+              <th onClick={() => handleSort('phone')}>
+                Phone{getSortIndicator('phone')}
+                <div className="filter-input">
+                  <input
+                    type="text"
+                    value={phoneFilter}
+                    onChange={handlePhoneFilterChange}
+                    onClick={(e) => e.stopPropagation()}
+                    placeholder="Filter by phone..."
+                  />
+                  {phoneFilter && (
+                    <button 
+                      className="clear-filter" 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        clearPhoneFilter();
+                      }}
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+              </th>
+              <th onClick={() => handleSort('newsletter_signup')}>
+                Newsletter{getSortIndicator('newsletter_signup')}
+                <div className="filter-input">
+                  <select
+                    value={newsletterFilter}
+                    onChange={handleNewsletterFilterChange}
+                    onClick={(e) => e.stopPropagation()}
                   >
-                    ×
-                  </button>
-                )}
-              </div>
-            </th>
-            <th onClick={() => handleSort('email')}>
-              Email{getSortIndicator('email')}
-              <div className="filter-input">
-                <input
-                  type="text"
-                  value={emailFilter}
-                  onChange={handleEmailFilterChange}
-                  onClick={(e) => e.stopPropagation()}
-                  placeholder="Filter by email..."
-                />
-                {emailFilter && (
-                  <button 
-                    className="clear-filter" 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      clearEmailFilter();
-                    }}
-                  >
-                    ×
-                  </button>
-                )}
-              </div>
-            </th>
-            <th onClick={() => handleSort('phone')}>
-              Phone{getSortIndicator('phone')}
-              <div className="filter-input">
-                <input
-                  type="text"
-                  value={phoneFilter}
-                  onChange={handlePhoneFilterChange}
-                  onClick={(e) => e.stopPropagation()}
-                  placeholder="Filter by phone..."
-                />
-                {phoneFilter && (
-                  <button 
-                    className="clear-filter" 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      clearPhoneFilter();
-                    }}
-                  >
-                    ×
-                  </button>
-                )}
-              </div>
-            </th>
-            <th onClick={() => handleSort('newsletter_signup')}>
-              Newsletter{getSortIndicator('newsletter_signup')}
-              <div className="filter-input">
-                <select
-                  value={newsletterFilter}
-                  onChange={handleNewsletterFilterChange}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <option value="">All</option>
-                  <option value="true">Subscribed</option>
-                  <option value="false">Not Subscribed</option>
-                </select>
-                {newsletterFilter && (
-                  <button 
-                    className="clear-filter" 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      clearNewsletterFilter();
-                    }}
-                  >
-                    ×
-                  </button>
-                )}
-              </div>
-            </th>
-            <th onClick={() => handleSort('created_at')}>
-              Created At{getSortIndicator('created_at')}
-            </th>
-            <th onClick={() => handleSort('updated_at')}>
-              Updated At{getSortIndicator('updated_at')}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredAndSortedCustomers.map(customer => (
-            <tr key={customer.id}>
-              <td>{customer.id}</td>
-              <td>
-                <input
-                  type="text"
-                  value={customer.name}
-                  onChange={e => handleEditCustomer(customer.id, 'name', e.target.value)}
-                />
-              </td>
-              <td>
-                <input
-                  type="email"
-                  value={customer.email}
-                  onChange={e => handleEditCustomer(customer.id, 'email', e.target.value)}
-                />
-              </td>
-              <td>
-                <input
-                  type="tel"
-                  value={customer.phone || ''}
-                  onChange={e => handleEditCustomer(customer.id, 'phone', e.target.value)}
-                />
-              </td>
-              <td>
-                <select
-                  value={customer.newsletter_signup.toString()}
-                  onChange={e => handleEditCustomer(customer.id, 'newsletter_signup', e.target.value === 'true')}
-                  className="newsletter-select"
-                >
-                  <option value="true">Subscribed</option>
-                  <option value="false">Not Subscribed</option>
-                </select>
-              </td>
-              <td>{customer.created_at ? new Date(customer.created_at).toLocaleString() : 'N/A'}</td>
-              <td>{customer.updated_at ? new Date(customer.updated_at).toLocaleString() : 'N/A'}</td>
+                    <option value="">All</option>
+                    <option value="true">Subscribed</option>
+                    <option value="false">Not Subscribed</option>
+                  </select>
+                  {newsletterFilter && (
+                    <button 
+                      className="clear-filter" 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        clearNewsletterFilter();
+                      }}
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+              </th>
+              <th onClick={() => handleSort('created_at')}>
+                Created At{getSortIndicator('created_at')}
+              </th>
+              <th onClick={() => handleSort('updated_at')}>
+                Updated At{getSortIndicator('updated_at')}
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {filteredAndSortedCustomers.map(customer => (
+              <tr key={customer.id}>
+                <td>{customer.id}</td>
+                <td>
+                  <input
+                    type="text"
+                    value={customer.name}
+                    onChange={e => handleEditCustomer(customer.id, 'name', e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="email"
+                    value={customer.email}
+                    onChange={e => handleEditCustomer(customer.id, 'email', e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="tel"
+                    value={customer.phone || ''}
+                    onChange={e => handleEditCustomer(customer.id, 'phone', e.target.value)}
+                  />
+                </td>
+                <td>
+                  <select
+                    value={customer.newsletter_signup.toString()}
+                    onChange={e => handleEditCustomer(customer.id, 'newsletter_signup', e.target.value === 'true')}
+                    className="newsletter-select"
+                  >
+                    <option value="true">Subscribed</option>
+                    <option value="false">Not Subscribed</option>
+                  </select>
+                </td>
+                <td>{customer.created_at ? new Date(customer.created_at).toLocaleString() : 'N/A'}</td>
+                <td>{customer.updated_at ? new Date(customer.updated_at).toLocaleString() : 'N/A'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <Footer />
+    </>
   );
 };
 
