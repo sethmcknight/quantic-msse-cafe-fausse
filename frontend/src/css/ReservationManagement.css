@@ -2,11 +2,17 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    padding: 20px;
 }
 
 .management-page main {
     flex: 1;
     padding: 20px;
+}
+
+.management-page h1 {
+    color: #8b5a2b;
+    margin-bottom: 20px;
 }
 
 /* Add responsive styling for the reservation management table */
@@ -16,16 +22,34 @@
     margin: 20px 0;
     font-size: 1rem;
     text-align: left;
+    margin-top: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .management-page th, .management-page td {
     padding: 12px;
     border: 1px solid #ddd;
+    text-align: left;
 }
 
 .management-page th {
     background-color: #f4f4f4;
     font-weight: bold;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    position: relative;
+}
+
+.management-page th:hover {
+    background-color: #e8e8e8;
+}
+
+.management-page tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.management-page tr:hover {
+    background-color: #f1f1f1;
 }
 
 /* Responsive design for smaller screens */
@@ -86,18 +110,439 @@ th input[type="date"] {
     font-size: 1rem;
     margin-bottom: 20px;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    background-color: #8b5a2b;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
 }
 
 .add-reservation-button:hover {
     background-color: #704726; /* Darker brown on hover */
     transform: translateY(-2px);
+    background-color: #704923;
 }
 
 .close-reservation-button {
     background-color: #d9534f; /* Red but more muted to match style */
+    background-color: #d9534f;
 }
 
 .close-reservation-button:hover {
     background-color: #c9302c; /* Darker red on hover */
     transform: translateY(-2px);
+    background-color: #c9302c;
+}
+
+/* Filter inputs in table headers */
+.management-page th input,
+.management-page th select {
+    display: block;
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.management-page th input[type="date"] {
+    width: calc(100% - 10px);
+}
+
+/* Filter section using Grid */
+.filter-section {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.management-page th button {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 2px 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    display: inline-block;
+}
+
+.management-page th button:hover {
+    background-color: #e0e0e0;
+}
+
+/* Clear button for filters */
+.clear-filter {
+    background: none;
+    border: none;
+    color: #777;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 3px;
+}
+
+.clear-filter:hover {
+    color: #333;
+}
+
+/* Form inputs styling */
+.management-page input,
+.management-page select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.management-page input[type="number"] {
+    width: 80px;
+}
+
+/* Responsive styles using Grid */
+@media (max-width: 1200px) {
+    .management-page th,
+    .management-page td {
+        padding: 8px;
+    }
+    
+    .management-page input,
+    .management-page select {
+        padding: 6px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .management-page table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    .management-page th input,
+    .management-page th select {
+        width: 100%;
+        min-width: 80px;
+        font-size: 0.85rem;
+    }
+    
+    .filter-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .management-page {
+        padding: 10px;
+    }
+    
+    .management-page th button {
+        padding: 2px 4px;
+        font-size: 0.75rem;
+    }
+}
+
+/* Special Requests cell styling */
+.special-requests-cell {
+  position: relative;
+  min-width: 180px;
+}
+
+.special-requests-cell textarea {
+  width: 100%;
+  min-height: 60px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  resize: vertical;
+}
+
+.special-requests-cell textarea:focus {
+  border-color: #8b5a2b;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(139, 90, 43, 0.2);
+}
+
+.preview-text {
+  display: none;
+}
+
+.special-requests-cell textarea:not(:focus) {
+  display: none;
+}
+
+.special-requests-cell textarea:not(:focus) + .preview-text {
+  display: block;
+}
+
+/* Responsive design for special requests */
+@media (max-width: 992px) {
+  .special-requests-cell {
+    min-width: 150px;
+  }
+  
+  .special-requests-cell textarea {
+    min-height: 50px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Column width styling */
+.management-page th:nth-child(1), 
+.management-page td:nth-child(1) {
+  /* ID column */
+  min-width: 60px;
+}
+
+.management-page th:nth-child(2), 
+.management-page td:nth-child(2) {
+  /* Status column */
+  min-width: 120px;
+}
+
+.management-page th:nth-child(3), 
+.management-page td:nth-child(3) {
+  /* Time Slot column */
+  min-width: 200px;
+}
+
+.management-page th:nth-child(4), 
+.management-page td:nth-child(4) {
+  /* Table column */
+  min-width: 80px;
+}
+
+.management-page th:nth-child(5), 
+.management-page td:nth-child(5) {
+  /* Guests column */
+  min-width: 80px;
+}
+
+.management-page th:nth-child(6), 
+.management-page td:nth-child(6) {
+  /* Customer Name column */
+  min-width: 180px;
+}
+
+.management-page th:nth-child(7), 
+.management-page td:nth-child(7) {
+  /* Email column */
+  min-width: 200px;
+}
+
+.management-page th:nth-child(8), 
+.management-page td:nth-child(8) {
+  /* Phone column */
+  min-width: 140px;
+}
+
+/* Styling for the Reservation Management Page using CSS Grid */
+.reservation-management {
+    margin: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reservation-management h1 {
+    color: #8b5a2b;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.filtered-count {
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #666;
+}
+
+/* Table container for better responsiveness */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* Table styling */
+.reservation-management table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 1rem;
+    text-align: left;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reservation-management th,
+.reservation-management td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.reservation-management th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+}
+
+.reservation-management th:hover {
+    background-color: #e8e8e8;
+}
+
+.reservation-management tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.reservation-management tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .reservation-management {
+        padding: 15px;
+        margin: 10px;
+    }
+    
+    .reservation-management table {
+        font-size: 0.9rem;
+    }
+
+    .reservation-management th, 
+    .reservation-management td {
+        padding: 8px;
+    }
+}
+
+/* Mobile-friendly adjustments */
+@media (max-width: 480px) {
+    .reservation-management {
+        padding: 10px;
+        margin: 5px;
+    }
+    
+    .reservation-management table {
+        font-size: 0.8rem;
+    }
+
+    .reservation-management th, 
+    .reservation-management td {
+        padding: 6px;
+    }
+}
+
+/* Styling for filter inputs and form elements in reservation-management */
+.reservation-management input,
+.reservation-management select,
+.reservation-management textarea {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.95rem;
+}
+
+.reservation-management th input,
+.reservation-management th select {
+    display: block;
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.reservation-management .filter-input {
+    margin-top: 5px;
+    position: relative;
+}
+
+.reservation-management .clear-filter {
+    background: none;
+    border: none;
+    color: #777;
+    cursor: pointer;
+    font-size: 0.9rem;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.reservation-management .clear-filter:hover {
+    color: #333;
+}
+
+.reservation-management input[type="number"] {
+    width: 80px;
+}
+
+.reservation-management input[type="datetime-local"] {
+    width: 180px;
+    padding: 5px;
+}
+
+/* Column width adjustments for reservation table */
+.reservation-management th:nth-child(1),
+.reservation-management td:nth-child(1) {
+    /* ID column */
+    min-width: 60px;
+}
+
+.reservation-management th:nth-child(2),
+.reservation-management td:nth-child(2) {
+    /* Status column */
+    min-width: 120px;
+}
+
+.reservation-management th:nth-child(3),
+.reservation-management td:nth-child(3) {
+    /* Time Slot column */
+    min-width: 200px;
+}
+
+.reservation-management th:nth-child(4),
+.reservation-management td:nth-child(4) {
+    /* Table column */
+    min-width: 80px;
+}
+
+.reservation-management th:nth-child(5),
+.reservation-management td:nth-child(5) {
+    /* Guests column */
+    min-width: 80px;
+}
+
+.reservation-management th:nth-child(6),
+.reservation-management td:nth-child(6) {
+    /* Customer Name column */
+    min-width: 180px;
+}
+
+.reservation-management th:nth-child(7),
+.reservation-management td:nth-child(7) {
+    /* Email column */
+    min-width: 200px;
+}
+
+.reservation-management th:nth-child(8),
+.reservation-management td:nth-child(8) {
+    /* Phone column */
+    min-width: 140px;
+}
+
+.reservation-management th:nth-child(9),
+.reservation-management td:nth-child(9) {
+    /* Special requests column */
+    min-width: 180px;
 }
