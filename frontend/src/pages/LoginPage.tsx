@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './LoginPage.css'; // Add styling for the login page
+import '../css/LoginPage.css'; // Updated path to reflect the new location of LoginPage.css
 import apiClient from '../utils/apiClient';
 
 const LoginPage = () => {
@@ -27,7 +27,7 @@ const LoginPage = () => {
   return (
     <div className="login-page">
       <form className="login-form" onSubmit={handleLogin}>
-        <h2>Login</h2>
+        <h2>Login to Café Fausse</h2>
         {error && <p className="error-message">{error}</p>}
         <div className="form-group">
           <label htmlFor="username">Username</label>
