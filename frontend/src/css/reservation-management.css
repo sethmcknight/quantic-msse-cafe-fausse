@@ -75,3 +75,26 @@ th input[type="date"] {
     padding: 5px;
     font-size: 0.9rem;
 }
+
+.add-reservation-button {
+    padding: 0.5rem 1rem;
+    background-color: #28a745; /* Green color for Add New Reservation */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+.add-reservation-button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.close-reservation-button {
+    background-color: #ff4d4d; /* Red color for Close New Reservation */
+}
+
+.close-reservation-button:hover {
+    background-color: #cc0000; /* Darker red on hover */
+}

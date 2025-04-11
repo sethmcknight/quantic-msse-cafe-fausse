@@ -40,7 +40,9 @@ const ReservationConfirmation: React.FC<{ reservationDetails: any; onDismiss: ()
   );
 };
 
-const ReservationForm: React.FC<{ showNotification: (message: string, type: 'success' | 'error' | 'info') => void }> = ({ showNotification }) => {
+const ReservationForm: React.FC<{
+  showNotification: (message: string, type: 'success' | 'error' | 'info') => void;
+}> = ({ showNotification }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',

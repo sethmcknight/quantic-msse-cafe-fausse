@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../css/reservation-management.css';
+import ReservationForm from '../components/ReservationForm';
 
 interface Reservation {
     id: string;
@@ -22,6 +23,7 @@ const ReservationManagement = () => {
     const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
     const [statusFilter, setStatusFilter] = useState<string>('');
     const [timeSlotFilter, setTimeSlotFilter] = useState<string>('');
+    const [showReservationForm, setShowReservationForm] = useState(false);
 
     useEffect(() => {
         // Fetch reservations from the backend API
@@ -161,7 +163,21 @@ const ReservationManagement = () => {
         <div className="management-page">
             <main>
                 <h1>Reservation Management</h1>
-                <input
+                <button
+                    className={`add-reservation-button ${showReservationForm ? 'close-reservation-button' : ''}`}
+                    onClick={() => setShowReservationForm(!showReservationForm)}
+                >
+                    {showReservationForm ? 'Close New Reservation' : 'Add New Reservation'}
+                </button>
+               
+                {showReservationForm && (
+                    <ReservationForm
+                        showNotification={(message, type) => {
+                            console.log(`${type.toUpperCase()}: ${message}`);
+                        }}
+                    />
+                )}
+                 <input
                     type="text"
                     placeholder="Search by name, email, phone, or date"
                     value={searchQuery}
