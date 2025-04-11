@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import '../css/ManagementNavigation.css';
 
 const ManagementNavigation: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -16,6 +17,15 @@ const ManagementNavigation: React.FC = () => {
 
   const isActive = (path: string) => {
     return location.pathname === path;
+  };
+
+  const handleLogout = () => {
+    // Remove the auth token from localStorage
+    localStorage.removeItem('authToken');
+    // Redirect to the login page
+    navigate('/manage');
+    // Close mobile menu if open
+    closeMobileMenu();
   };
 
   return (
@@ -78,6 +88,15 @@ const ManagementNavigation: React.FC = () => {
             >
               Back to Website
             </Link>
+          </li>
+          <li>
+            <button 
+              className="logout-button" 
+              onClick={handleLogout}
+              aria-label="Logout"
+            >
+              Logout
+            </button>
           </li>
         </ul>
       </nav>
