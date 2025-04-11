@@ -8,6 +8,7 @@ from ..models.reservation import Reservation
 from ..models.customer import Customer
 import random
 from sqlalchemy.orm import Session
+from ..api.newsletter import subscribe_to_newsletter
 
 reservations_bp = Blueprint('reservations', __name__)
 
@@ -20,32 +21,38 @@ RESERVATION_DURATION = 90  # minutes
 def create_reservation():
     """Create a new reservation"""
     data = request.json
-    
+
+    # Log the incoming payload
+    print("Incoming reservation payload:", data)
+
     # Validate required fields
     required_fields = ['name', 'email', 'date', 'time', 'guests']
     for field in required_fields:
         if field not in data:
+            print(f"Validation Error: Missing required field: {field}")
             return jsonify({'success': False, 'error': 'Validation Error', 'message': f'Missing required field: {field}'}), 400
-    
+
     try:
         # Parse date and time
         time_slot_str = f"{data['date']} {data['time']}"
         time_slot = datetime.strptime(time_slot_str, '%Y-%m-%d %H:%M')
-        
+
         # Don't allow reservations in the past
         if time_slot < datetime.now():
+            print("Validation Error: Cannot make reservations in the past")
             return jsonify({'success': False, 'message': 'Cannot make reservations in the past'}), 400
-            
+
         # First, check if we have availability
         reservation_end = time_slot + timedelta(minutes=RESERVATION_DURATION)
         booked_tables = Reservation.get_booked_tables(time_slot, reservation_end)
-        
+
         if len(booked_tables) >= TOTAL_TABLES:
+            print("Availability Error: Fully booked for this time slot")
             return jsonify({
                 'success': False, 
                 'message': 'Sorry, we are fully booked for this time slot'
             }), 409
-            
+
         # Get or create customer
         customer = Customer.find_by_email(data['email'])
         if not customer:
@@ -56,11 +63,19 @@ def create_reservation():
                 newsletter_signup=data.get('newsletter_signup', False)
             )
             customer.save()
-        
+
+        # Handle newsletter opt-in
+        if data.get('newsletter_opt_in', False):
+            try:
+                subscribe_to_newsletter(data['email'])
+                print(f"Newsletter subscription successful for {data['email']}")
+            except Exception as e:
+                print(f"Error subscribing {data['email']} to newsletter: {str(e)}")
+
         # Find an available table (any random unbooked table)
         available_tables = [t for t in range(1, TOTAL_TABLES + 1) if t not in booked_tables]
         table_number = random.choice(available_tables)
-        
+
         # Create the reservation
         reservation = Reservation(
             customer_id=customer.id,
@@ -71,8 +86,10 @@ def create_reservation():
             status='confirmed'
         )
         db.session.add(reservation)
-        session.commit()
-        
+        db.session.commit()
+
+        print("Reservation created successfully:", reservation)
+
         return jsonify({
             'success': True, 
             'message': 'Thank you for your reservation. We look forward to serving you!',
@@ -87,11 +104,13 @@ def create_reservation():
             'guests': data['guests'],
             'specialRequests': data.get('special_requests', '')
         }), 201
-        
+
     except ValueError as e:
+        print("ValueError:", str(e))
         return jsonify({'success': False, 'message': f'Invalid data format: {str(e)}'}), 400
     except Exception as e:
         db.session.rollback()
+        print("Unhandled Exception:", str(e))
         return jsonify({'success': False, 'message': f'An error occurred: {str(e)}'}), 500
 
 @reservations_bp.route('/check-availability', methods=['POST'])

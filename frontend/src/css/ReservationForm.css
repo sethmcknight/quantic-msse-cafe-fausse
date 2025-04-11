@@ -1,0 +1,43 @@
+.reservation-confirmation {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.reservation-confirmation h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.reservation-confirmation ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.reservation-confirmation li {
+  margin-bottom: 0.5rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem;
+}
+
+.reservation-confirmation button {
+  justify-self: center;
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.reservation-confirmation button:hover {
+  background-color: #0056b3;
+}
