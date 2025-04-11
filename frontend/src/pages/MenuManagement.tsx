@@ -307,173 +307,177 @@ const MenuManagement: React.FC = () => {
             <div className="filtered-count">
               <p>Showing {filteredAndSortedMenuItems.length} of {menuItems.length} items</p>
             </div>
-            <table>
-              <thead>
-                <tr>
-                  <th onClick={() => handleSort('id')}>
-                    ID{getSortIndicator('id')}
-                  </th>
-                  <th onClick={() => handleSort('name')}>
-                    Name{getSortIndicator('name')}
-                    <div className="filter-input">
-                      <input
-                        type="text"
-                        value={nameFilter}
-                        onChange={handleNameFilterChange}
-                        onClick={(e) => e.stopPropagation()}
-                        placeholder="Filter by name..."
-                      />
-                      {nameFilter && (
-                        <button 
-                          className="clear-filter" 
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            clearNameFilter();
-                          }}
+            <div className="table-container" style={{ overflowX: "auto" }}>
+              <table>
+                <thead>
+                  <tr>
+                    <th onClick={() => handleSort('id')}>
+                      ID{getSortIndicator('id')}
+                    </th>
+                    <th onClick={() => handleSort('name')}>
+                      Name{getSortIndicator('name')}
+                      <div className="filter-input">
+                        <input
+                          type="text"
+                          value={nameFilter}
+                          onChange={handleNameFilterChange}
+                          onClick={(e) => e.stopPropagation()}
+                          placeholder="Filter by name..."
+                        />
+                        {nameFilter && (
+                          <button 
+                            className="clear-filter" 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              clearNameFilter();
+                            }}
+                          >
+                            ×
+                          </button>
+                        )}
+                      </div>
+                    </th>
+                    <th onClick={() => handleSort('description')}>
+                      Description{getSortIndicator('description')}
+                    </th>
+                    <th onClick={() => handleSort('price')}>
+                      Price{getSortIndicator('price')}
+                      <div className="filter-input price-filter">
+                        <input
+                          type="number"
+                          value={minPriceFilter}
+                          onChange={handleMinPriceFilterChange}
+                          onClick={(e) => e.stopPropagation()}
+                          placeholder="Min"
+                          min="0"
+                          step="0.01"
+                        />
+                        <span>-</span>
+                        <input
+                          type="number"
+                          value={maxPriceFilter}
+                          onChange={handleMaxPriceFilterChange}
+                          onClick={(e) => e.stopPropagation()}
+                          placeholder="Max"
+                          min="0"
+                          step="0.01"
+                        />
+                        {(minPriceFilter || maxPriceFilter) && (
+                          <button 
+                            className="clear-filter" 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              clearPriceFilters();
+                            }}
+                          >
+                            ×
+                          </button>
+                        )}
+                      </div>
+                    </th>
+                    <th onClick={() => handleSort('category_id')}>
+                      Category{getSortIndicator('category_id')}
+                      <div className="filter-input">
+                        <select
+                          value={categoryFilter}
+                          onChange={handleCategoryFilterChange}
+                          onClick={(e) => e.stopPropagation()}
                         >
-                          ×
-                        </button>
-                      )}
-                    </div>
-                  </th>
-                  <th onClick={() => handleSort('description')}>
-                    Description{getSortIndicator('description')}
-                  </th>
-                  <th onClick={() => handleSort('price')}>
-                    Price{getSortIndicator('price')}
-                    <div className="filter-input price-filter">
-                      <input
-                        type="number"
-                        value={minPriceFilter}
-                        onChange={handleMinPriceFilterChange}
-                        onClick={(e) => e.stopPropagation()}
-                        placeholder="Min"
-                        min="0"
-                        step="0.01"
-                      />
-                      <span>-</span>
-                      <input
-                        type="number"
-                        value={maxPriceFilter}
-                        onChange={handleMaxPriceFilterChange}
-                        onClick={(e) => e.stopPropagation()}
-                        placeholder="Max"
-                        min="0"
-                        step="0.01"
-                      />
-                      {(minPriceFilter || maxPriceFilter) && (
-                        <button 
-                          className="clear-filter" 
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            clearPriceFilters();
-                          }}
-                        >
-                          ×
-                        </button>
-                      )}
-                    </div>
-                  </th>
-                  <th onClick={() => handleSort('category_id')}>
-                    Category{getSortIndicator('category_id')}
-                    <div className="filter-input">
-                      <select
-                        value={categoryFilter}
-                        onChange={handleCategoryFilterChange}
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <option value="">All Categories</option>
-                        {menuCategories.map(category => (
-                          <option key={category.id} value={category.id}>
-                            {category.name}
-                          </option>
-                        ))}
-                      </select>
-                      {categoryFilter && (
-                        <button 
-                          className="clear-filter" 
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            clearCategoryFilter();
-                          }}
-                        >
-                          ×
-                        </button>
-                      )}
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredAndSortedMenuItems.map(item => (
-                  <tr key={item.id}>
-                    <td>{item.id}</td>
-                    <td>
-                      <input
-                        type="text"
-                        value={item.name}
-                        onChange={e => handleEditItem(item.id, 'name', e.target.value)}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value={item.description}
-                        onChange={e => handleEditItem(item.id, 'description', e.target.value)}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        value={item.price}
-                        onChange={e => handleEditItem(item.id, 'price', parseFloat(e.target.value))}
-                      />
-                    </td>
-                    <td>
-                      <select
-                        value={item.category_id}
-                        onChange={e => handleEditItemCategory(item.id, parseInt(e.target.value, 10))}
-                      >
-                        <option value="">Select Category</option>
-                        {menuCategories.map(category => (
-                          <option key={category.id} value={category.id}>
-                            {category.name}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
+                          <option value="">All Categories</option>
+                          {menuCategories.map(category => (
+                            <option key={category.id} value={category.id}>
+                              {category.name}
+                            </option>
+                          ))}
+                        </select>
+                        {categoryFilter && (
+                          <button 
+                            className="clear-filter" 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              clearCategoryFilter();
+                            }}
+                          >
+                            ×
+                          </button>
+                        )}
+                      </div>
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {filteredAndSortedMenuItems.map(item => (
+                    <tr key={item.id}>
+                      <td>{item.id}</td>
+                      <td>
+                        <input
+                          type="text"
+                          value={item.name}
+                          onChange={e => handleEditItem(item.id, 'name', e.target.value)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          value={item.description}
+                          onChange={e => handleEditItem(item.id, 'description', e.target.value)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          value={item.price}
+                          onChange={e => handleEditItem(item.id, 'price', parseFloat(e.target.value))}
+                        />
+                      </td>
+                      <td>
+                        <select
+                          value={item.category_id}
+                          onChange={e => handleEditItemCategory(item.id, parseInt(e.target.value, 10))}
+                        >
+                          <option value="">Select Category</option>
+                          {menuCategories.map(category => (
+                            <option key={category.id} value={category.id}>
+                              {category.name}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </>
         )}
 
         {activeTable === 'categories' && (
           <>
             <h2>Menu Categories</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                </tr>
-              </thead>
-              <tbody>
-                {menuCategories.map(category => (
-                  <tr key={category.id}>
-                    <td>{category.id}</td>
-                    <td>
-                      <input
-                        type="text"
-                        value={category.name}
-                        onChange={e => handleEditCategory(category.id, 'name', e.target.value)}
-                      />
-                    </td>
+            <div className="table-container" style={{ overflowX: "auto" }}>
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {menuCategories.map(category => (
+                    <tr key={category.id}>
+                      <td>{category.id}</td>
+                      <td>
+                        <input
+                          type="text"
+                          value={category.name}
+                          onChange={e => handleEditCategory(category.id, 'name', e.target.value)}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </>
         )}
       </div>

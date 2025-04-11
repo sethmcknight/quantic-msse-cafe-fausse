@@ -197,91 +197,93 @@ const NewsletterManagement: React.FC = () => {
           <p>Total: {filteredAndSortedSubscribers.length} subscribers</p>
         </div>
 
-        <table>
-          <thead>
-            <tr>
-              <th onClick={() => handleSort('id')}>
-                ID{getSortIndicator('id')}
-              </th>
-              <th onClick={() => handleSort('email')}>
-                Email{getSortIndicator('email')}
-                <div className="email-search">
-                  <input
-                    type="text"
-                    value={emailSearch}
-                    onChange={handleEmailSearchChange}
-                    onClick={(e) => e.stopPropagation()}
-                    placeholder="Search emails..."
-                  />
-                  {emailSearch && (
-                    <button 
-                      className="clear-search-filter" 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        clearEmailSearch();
-                      }}
-                    >
-                      ×
-                    </button>
-                  )}
-                </div>
-              </th>
-              <th onClick={() => handleSort('created_at')}>
-                Subscribed Date{getSortIndicator('created_at')}
-                <div className="date-filter">
-                  <input
-                    type="date"
-                    value={dateFilter}
-                    onChange={handleDateFilterChange}
-                    onClick={(e) => e.stopPropagation()}
-                    placeholder="Filter by date"
-                  />
-                  {dateFilter && (
-                    <button 
-                      className="clear-date-filter" 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        clearDateFilter();
-                      }}
-                    >
-                      ×
-                    </button>
-                  )}
-                </div>
-              </th>
-              <th onClick={() => handleSort('is_active')}>
-                Status{getSortIndicator('is_active')}
-                <select
-                  value={statusFilter}
-                  onChange={handleStatusFilterChange}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <option value="all">All</option>
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </select>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredAndSortedSubscribers.map(subscriber => (
-              <tr key={subscriber.id}>
-                <td>{subscriber.id}</td>
-                <td>{subscriber.email}</td>
-                <td>{formatDate(subscriber.created_at)}</td>
-                <td>
+        <div className="table-container" style={{ overflowX: "auto" }}>
+          <table>
+            <thead>
+              <tr>
+                <th onClick={() => handleSort('id')}>
+                  ID{getSortIndicator('id')}
+                </th>
+                <th onClick={() => handleSort('email')}>
+                  Email{getSortIndicator('email')}
+                  <div className="email-search">
+                    <input
+                      type="text"
+                      value={emailSearch}
+                      onChange={handleEmailSearchChange}
+                      onClick={(e) => e.stopPropagation()}
+                      placeholder="Search emails..."
+                    />
+                    {emailSearch && (
+                      <button 
+                        className="clear-search-filter" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          clearEmailSearch();
+                        }}
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+                </th>
+                <th onClick={() => handleSort('created_at')}>
+                  Subscribed Date{getSortIndicator('created_at')}
+                  <div className="date-filter">
+                    <input
+                      type="date"
+                      value={dateFilter}
+                      onChange={handleDateFilterChange}
+                      onClick={(e) => e.stopPropagation()}
+                      placeholder="Filter by date"
+                    />
+                    {dateFilter && (
+                      <button 
+                        className="clear-date-filter" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          clearDateFilter();
+                        }}
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+                </th>
+                <th onClick={() => handleSort('is_active')}>
+                  Status{getSortIndicator('is_active')}
                   <select
-                    value={subscriber.is_active ? 'Active' : 'Inactive'}
-                    onChange={(e) => handleStatusChange(subscriber.id, e.target.value === 'Active')}
+                    value={statusFilter}
+                    onChange={handleStatusFilterChange}
+                    onClick={(e) => e.stopPropagation()}
                   >
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
+                    <option value="all">All</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
                   </select>
-                </td>
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredAndSortedSubscribers.map(subscriber => (
+                <tr key={subscriber.id}>
+                  <td>{subscriber.id}</td>
+                  <td>{subscriber.email}</td>
+                  <td>{formatDate(subscriber.created_at)}</td>
+                  <td>
+                    <select
+                      value={subscriber.is_active ? 'Active' : 'Inactive'}
+                      onChange={(e) => handleStatusChange(subscriber.id, e.target.value === 'Active')}
+                    >
+                      <option value="Active">Active</option>
+                      <option value="Inactive">Inactive</option>
+                    </select>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
       <Footer />
     </>

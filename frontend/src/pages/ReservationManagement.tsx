@@ -242,7 +242,8 @@ const ReservationManagement = () => {
                 <div className="filtered-count">
                     <p>Showing {filteredAndSortedReservations.length} of {reservations.length} reservations</p>
                 </div>
-                <div className="table-container">
+
+                <div className="table-container" style={{ overflowX: "auto" }}>
                     <table>
                         <thead>
                             <tr>
