@@ -12,6 +12,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import ReservationManagement from './pages/ReservationManagement';
 import NewsletterManagement from './pages/NewsletterManagement';
 import MenuManagement from './pages/MenuManagement';
+import CustomerManagement from './pages/CustomerManagement';
 
 // Layout Components
 import Navigation from './components/Navigation';
@@ -36,6 +37,7 @@ const AppContent: React.FC = () => {
           <Route path="/reservations/management" element={<ReservationManagement />} />
           <Route path="/newsletter/management" element={<NewsletterManagement />} />
           <Route path="/menu/management" element={<MenuManagement />} />
+          <Route path="/customer/management" element={<CustomerManagement />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
