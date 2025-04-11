@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../css/reservation-management.css';
+import '../css/ReservationManagement.css';
 import ReservationForm from '../components/ReservationForm';
 
 interface Reservation {

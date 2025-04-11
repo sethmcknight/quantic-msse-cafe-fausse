@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '../css/newsletter-management.css';
+import '../css/NewsletterManagement.css';
 
 interface NewsletterSubscriber {
   id: number;
@@ -41,7 +41,6 @@ const NewsletterManagement: React.FC = () => {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Name</th>
             <th>Email</th>
             <th>Subscribed Date</th>
           </tr>
@@ -50,7 +49,6 @@ const NewsletterManagement: React.FC = () => {
           {subscribers.map(subscriber => (
             <tr key={subscriber.id}>
               <td>{subscriber.id}</td>
-              <td>{subscriber.name}</td>
               <td>{subscriber.email}</td>
               <td>{new Date(subscriber.subscribed_date).toLocaleDateString()}</td>
             </tr>

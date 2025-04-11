@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '../css/menu-management.css';
+import '../css/MenuManagement.css';
 
 interface MenuItem {
   id: number;
