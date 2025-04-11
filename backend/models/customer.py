@@ -35,9 +35,13 @@ class Customer(Base):
     
     def save(self):
         """Save customer to database"""
-        db.session.add(self)
-        db.session.commit()
-        return self
+        session = Session(db.engine)
+        try:
+            session.add(self)
+            session.commit()
+            return self
+        finally:
+            session.close()
     
     def to_dict(self):
         """Convert customer to a dictionary"""
