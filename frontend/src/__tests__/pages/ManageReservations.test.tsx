@@ -38,7 +38,7 @@ describe('ManageReservations Page', () => {
         render(<ManageReservations />);
 
         // Verify the page title
-        expect(screen.getByText('Reservation Management')).toBeInTheDocument();
+        expect(screen.getByText('Manage Reservations')).toBeInTheDocument();
 
         // Wait for reservations to load
         await waitFor(() => {
