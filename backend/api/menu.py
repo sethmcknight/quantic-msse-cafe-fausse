@@ -5,6 +5,7 @@ from flask import Blueprint, jsonify, request
 from ..extensions import db
 from ..models.menu_item import MenuItem
 from ..models.category import Category
+from sqlalchemy.orm import Session
 
 menu_bp = Blueprint('menu', __name__)
 
@@ -35,7 +36,9 @@ def get_menu_items():
 @menu_bp.route('/items/<int:item_id>', methods=['GET'])
 def get_menu_item(item_id):
     """Get a specific menu item by ID"""
-    item = MenuItem.query.get(item_id)
+    session = Session(db.engine)
+    item = session.get(MenuItem, item_id)
+    session.close()
     
     if not item:
         return jsonify({'success': False, 'message': 'Menu item not found'}), 404
@@ -48,7 +51,9 @@ def get_menu_item(item_id):
 @menu_bp.route('/categories/<int:category_id>/items', methods=['GET'])
 def get_items_by_category(category_id):
     """Get all menu items for a specific category"""
-    category = Category.query.get(category_id)
+    session = Session(db.engine)
+    category = session.get(Category, category_id)
+    session.close()
     
     if not category:
         return jsonify({'success': False, 'message': 'Category not found'}), 404
@@ -90,3 +95,51 @@ def add_menu_item():
     except Exception as e:
         db.session.rollback()
         return jsonify({'success': False, 'message': f'An error occurred: {str(e)}'}), 500
+
+@menu_bp.route('/items/<int:item_id>', methods=['PUT'])
+def update_menu_item(item_id):
+    """Update a specific menu item by ID"""
+    data = request.get_json()
+    session = db.session
+
+    item = session.get(MenuItem, item_id)
+    if not item:
+        return jsonify({'success': False, 'message': 'Menu item not found'}), 404
+
+    # Update fields if they exist in the request
+    if 'name' in data:
+        item.name = data['name']
+    if 'description' in data:
+        item.description = data['description']
+    if 'price' in data:
+        item.price = data['price']
+    if 'category_id' in data:
+        item.category_id = data['category_id']
+
+    try:
+        session.commit()
+        return jsonify({'success': True, 'message': 'Menu item updated successfully'})
+    except Exception as e:
+        session.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+@menu_bp.route('/categories/<int:category_id>', methods=['PUT'])
+def update_menu_category(category_id):
+    """Update a specific menu category by ID"""
+    data = request.get_json()
+    session = db.session
+
+    category = session.get(Category, category_id)
+    if not category:
+        return jsonify({'success': False, 'message': 'Category not found'}), 404
+
+    # Update fields if they exist in the request
+    if 'name' in data:
+        category.name = data['name']
+
+    try:
+        session.commit()
+        return jsonify({'success': True, 'message': 'Category updated successfully'})
+    except Exception as e:
+        session.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500

@@ -79,6 +79,7 @@ def test_create_reservation(client, init_database):
     assert "Cannot make reservations in the past" in response.json["message"]
 
 def test_get_reservations(client, init_database):
+    """Test the get_reservations API endpoint"""
     # Test retrieving reservations (should be empty initially)
     response = client.get('/api/reservations')
     assert response.status_code == 200
@@ -98,3 +99,34 @@ def test_get_reservations(client, init_database):
     assert response.status_code == 200
     assert len(response.json["reservations"]) == 1
     assert response.json["reservations"][0]["customer_name"] == "John Doe"
+
+def test_get_reservations_multiple(client, init_database):
+    """Test the get_reservations API endpoint with multiple reservations"""
+    # Add multiple reservations
+    client.post('/api/reservations', json={
+        "name": "John Doe",
+        "email": "johndoe@example.com",
+        "phone": "123-456-7890",
+        "date": "2025-04-10",
+        "time": "19:00",
+        "guests": 4
+    })
+
+    client.post('/api/reservations', json={
+        "name": "Jane Smith",
+        "email": "janesmith@example.com",
+        "phone": "987-654-3210",
+        "date": "2025-04-11",
+        "time": "20:00",
+        "guests": 2
+    })
+
+    # Retrieve reservations
+    response = client.get('/api/reservations')
+    assert response.status_code == 200
+    assert len(response.json["reservations"]) == 2
+
+    # Verify the details of the reservations
+    reservation_names = [res["customer_name"] for res in response.json["reservations"]]
+    assert "John Doe" in reservation_names
+    assert "Jane Smith" in reservation_names
