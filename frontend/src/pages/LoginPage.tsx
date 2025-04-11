@@ -14,13 +14,27 @@ const LoginPage = () => {
     setError('');
 
     try {
-      const response = await apiClient.post('/auth/login', { username, password });
-      if (response.token) {
-        localStorage.setItem('authToken', response.token);
-        navigate('/manage/reservations'); // Redirect to a protected route
+      const response = await fetch('http://localhost:5001/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('authToken', data.token);
+
+        // Redirect to the stored path or a default path
+        const redirectPath = localStorage.getItem('redirectPath') || '/manage/reservations'; // Default to reservations if no redirectPath
+        localStorage.removeItem('redirectPath'); // Clear the stored path
+        navigate(redirectPath);
+      } else {
+        setError('Invalid username or password');
       }
     } catch (err) {
-      setError('Invalid username or password');
+      setError('An error occurred. Please try again.');
     }
   };
 
