@@ -10,7 +10,7 @@ import AboutPage from './pages/AboutPage';
 import GalleryPage from './pages/GalleryPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ManageReservations from './pages/ManageReservations';
-import NewsletterManagement from './pages/ManageSubscribers';
+import ManageSubscribers from './pages/ManageSubscribers';
 import MenuManagement from './pages/ManageMenus';
 import CustomerManagement from './pages/ManageCustomers';
 
@@ -29,7 +29,7 @@ const AppContent: React.FC = () => {
         {/* Management Routes - Navigation is included in each page */}
         <Route path="/manage/customers" element={<CustomerManagement />} />
         <Route path="/manage/reservations" element={<ManageReservations />} />
-        <Route path="/manage/subscribers" element={<NewsletterManagement />} />
+        <Route path="/manage/subscribers" element={<ManageSubscribers />} />
         <Route path="/manage/menus" element={<MenuManagement />} />
         
         {/* Regular Routes with standard Navigation */}
