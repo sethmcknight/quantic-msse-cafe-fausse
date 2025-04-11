@@ -58,7 +58,7 @@ const ManagementNavigation: React.FC = () => {
               className={isActive('/manage/menus') ? 'active' : ''}
               onClick={closeMobileMenu}
             >
-              Menu
+              Menus
             </Link>
           </li>
           <li>
