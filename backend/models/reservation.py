@@ -27,13 +27,20 @@ class Reservation(Base):
     @classmethod
     def find_by_time_slot(cls, time_slot_start, time_slot_end=None):
         """Find reservations for a given time slot"""
-        if time_slot_end:
-            return cls.query.filter(
-                cls.time_slot >= time_slot_start,
-                cls.time_slot <= time_slot_end,
-                cls.status == 'confirmed'
-            ).all()
-        return cls.query.filter_by(time_slot=time_slot_start, status='confirmed').all()
+        # Create a new session to ensure we get the latest data
+        session = Session(db.engine)
+        try:
+            if time_slot_end:
+                reservations = session.query(cls).filter(
+                    cls.time_slot >= time_slot_start,
+                    cls.time_slot <= time_slot_end,
+                    cls.status == 'confirmed'
+                ).all()
+            else:
+                reservations = session.query(cls).filter_by(time_slot=time_slot_start, status='confirmed').all()
+            return reservations
+        finally:
+            session.close()
 
     @classmethod
     def get_booked_tables(cls, time_slot_start, time_slot_end=None):
