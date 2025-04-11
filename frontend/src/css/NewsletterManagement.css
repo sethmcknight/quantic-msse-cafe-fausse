@@ -1,15 +1,20 @@
 /* Styling for the Newsletter Management Page */
 .newsletter-management {
-    margin: 20px;
-    padding: 20px;
+    margin: 20px auto;
+    padding: 2rem;
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    width: calc(100% - 40px);
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .newsletter-management h1 {
     font-size: 2rem;
     margin-bottom: 20px;
+    color: #8b5a2b;
 }
 
 /* Filters container with CSS Grid */
@@ -35,11 +40,19 @@
     color: #666;
 }
 
+/* Table container for better responsiveness */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
 /* Table styling */
 .newsletter-management table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
 }
 
 .newsletter-management th,
@@ -157,16 +170,31 @@
 }
 
 /* Responsive design using CSS Grid */
-@media (max-width: 768px) {
-    .newsletter-management table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
+@media (max-width: 992px) {
+    .newsletter-management {
+        padding: 1rem;
     }
 
-    .newsletter-management th, 
+    .newsletter-management table {
+        font-size: 0.9rem;
+    }
+
+    .newsletter-management th,
     .newsletter-management td {
-        padding: 8px;
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .newsletter-management {
+        padding: 1rem;
+        margin: 10px auto;
+        width: calc(100% - 20px);
+    }
+    
+    .email-search,
+    .date-filter {
+        width: 100%;
     }
     
     .newsletter-management th select,
@@ -179,19 +207,10 @@
     .date-filter input[type="date"] {
         width: 120px;
     }
-    
-    .email-search {
-        width: 100%;
-    }
 }
 
 /* Mobile-friendly adjustments */
 @media (max-width: 480px) {
-    .newsletter-management {
-        margin: 10px;
-        padding: 10px;
-    }
-
     .newsletter-management h1 {
         font-size: 1.5rem;
     }

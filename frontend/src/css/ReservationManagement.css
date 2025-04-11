@@ -344,11 +344,15 @@ th input[type="date"] {
 
 /* Styling for the Reservation Management Page using CSS Grid */
 .reservation-management {
-    margin: 20px;
-    padding: 20px;
+    margin: 20px auto;
+    padding: 2rem;
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    width: calc(100% - 40px);
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .reservation-management h1 {
@@ -406,38 +410,29 @@ th input[type="date"] {
     background-color: #f1f1f1;
 }
 
-/* Responsive design for smaller screens */
-@media (max-width: 768px) {
-    .reservation-management {
-        padding: 15px;
-        margin: 10px;
-    }
-    
-    .reservation-management table {
-        font-size: 0.9rem;
-    }
-
-    .reservation-management th, 
-    .reservation-management td {
-        padding: 8px;
-    }
+.add-reservation-button {
+    padding: 0.75rem 1.5rem;
+    background-color: #8b5a2b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-/* Mobile-friendly adjustments */
-@media (max-width: 480px) {
-    .reservation-management {
-        padding: 10px;
-        margin: 5px;
-    }
-    
-    .reservation-management table {
-        font-size: 0.8rem;
-    }
+.add-reservation-button:hover {
+    background-color: #704726;
+    transform: translateY(-2px);
+}
 
-    .reservation-management th, 
-    .reservation-management td {
-        padding: 6px;
-    }
+.close-reservation-button {
+    background-color: #d9534f;
+}
+
+.close-reservation-button:hover {
+    background-color: #c9302c;
 }
 
 /* Styling for filter inputs and form elements in reservation-management */
@@ -449,6 +444,7 @@ th input[type="date"] {
     border-radius: 4px;
     font-family: inherit;
     font-size: 0.95rem;
+    max-width: 100%;
 }
 
 .reservation-management th input,
@@ -465,6 +461,8 @@ th input[type="date"] {
 .reservation-management .filter-input {
     margin-top: 5px;
     position: relative;
+    display: flex;
+    align-items: center;
 }
 
 .reservation-management .clear-filter {
@@ -472,11 +470,12 @@ th input[type="date"] {
     border: none;
     color: #777;
     cursor: pointer;
-    font-size: 0.9rem;
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    transform: translateY(-50%);
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 0 0.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .reservation-management .clear-filter:hover {
@@ -490,6 +489,90 @@ th input[type="date"] {
 .reservation-management input[type="datetime-local"] {
     width: 180px;
     padding: 5px;
+}
+
+/* Special Requests cell styling */
+.special-requests-cell {
+    position: relative;
+    min-width: 180px;
+}
+
+.special-requests-cell textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    resize: vertical;
+}
+
+.special-requests-cell textarea:focus {
+    border-color: #8b5a2b;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(139, 90, 43, 0.2);
+}
+
+.preview-text {
+    display: none;
+}
+
+.special-requests-cell textarea:not(:focus) {
+    display: none;
+}
+
+.special-requests-cell textarea:not(:focus) + .preview-text {
+    display: block;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 992px) {
+    .reservation-management {
+        padding: 1rem;
+    }
+    
+    .reservation-management table {
+        font-size: 0.9rem;
+    }
+
+    .reservation-management th, 
+    .reservation-management td {
+        padding: 8px;
+    }
+    
+    .special-requests-cell {
+        min-width: 150px;
+    }
+    
+    .special-requests-cell textarea {
+        min-height: 50px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Mobile-friendly adjustments */
+@media (max-width: 768px) {
+    .reservation-management {
+        padding: 1rem;
+        margin: 10px auto;
+        width: calc(100% - 20px);
+    }
+    
+    .filter-input {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .filter-input input,
+    .filter-input select {
+        width: 100%;
+    }
+    
+    .reservation-management input[type="datetime-local"] {
+        width: 100%;
+    }
 }
 
 /* Column width adjustments for reservation table */

@@ -1,12 +1,14 @@
 /* Styling for the Customer Management Page */
 .customer-management {
-    margin: 20px;
+    margin: 20px auto;
     padding: 2rem;
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     max-width: 1200px;
-    margin: 0 auto;
+    width: calc(100% - 40px);
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .customer-management h1 {
@@ -63,6 +65,7 @@
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 1rem;
+    box-sizing: border-box;
 }
 
 .customer-management input[type="checkbox"] {
@@ -182,6 +185,12 @@
     padding: 0.5rem;
 }
 
+/* Table container for proper responsiveness */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
 /* Responsive design */
 @media (max-width: 992px) {
     .customer-management {
@@ -199,10 +208,10 @@
 }
 
 @media (max-width: 768px) {
-    .customer-management table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
+    .customer-management {
+        padding: 1rem;
+        margin: 10px auto;
+        width: calc(100% - 20px);
     }
 
     .filter-input {
