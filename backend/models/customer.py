@@ -3,6 +3,7 @@ Customer model for the Café Fausse application
 """
 from .base import Base
 from ..extensions import db
+from sqlalchemy.orm import Session
 
 
 class Customer(Base):
@@ -25,7 +26,18 @@ class Customer(Base):
     @classmethod
     def find_by_email(cls, email):
         """Find a customer by email address"""
-        return cls.query.filter_by(email=email).first()
+        session = Session(db.engine)
+        try:
+            customer = session.query(cls).filter_by(email=email).first()
+            return customer
+        finally:
+            session.close()
+    
+    def save(self):
+        """Save customer to database"""
+        db.session.add(self)
+        db.session.commit()
+        return self
     
     def to_dict(self):
         """Convert customer to a dictionary"""
