@@ -284,7 +284,7 @@ const MenuManagement: React.FC = () => {
     <>
       <ManagementNavigation />
       <div className="menu-management">
-        <h1>Menu Management</h1>
+        <h1>Manage Menus</h1>
 
         <nav className="menu-management-nav">
           <button

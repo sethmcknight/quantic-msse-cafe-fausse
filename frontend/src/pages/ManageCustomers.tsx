@@ -194,7 +194,7 @@ const CustomerManagement: React.FC = () => {
     <>
       <ManagementNavigation />
       <div className="customer-management">
-        <h1>Customer Management</h1>
+        <h1>Manage Customers</h1>
 
         <div className="filtered-count">
           <p>Showing {filteredAndSortedCustomers.length} of {customers.length} customers</p>

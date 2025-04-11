@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import ReservationManagement from '../../pages/ReservationManagement';
+import ManageReservations from '../../pages/ManageReservations';
 
 // Mock the fetch API
 beforeEach(() => {
@@ -33,9 +33,9 @@ afterEach(() => {
     jest.clearAllMocks();
 });
 
-describe('ReservationManagement Page', () => {
+describe('ManageReservations Page', () => {
     test('renders the page and fetches reservations', async () => {
-        render(<ReservationManagement />);
+        render(<ManageReservations />);
 
         // Verify the page title
         expect(screen.getByText('Reservation Management')).toBeInTheDocument();
@@ -48,7 +48,7 @@ describe('ReservationManagement Page', () => {
     });
 
     test('filters reservations based on search query', async () => {
-        render(<ReservationManagement />);
+        render(<ManageReservations />);
 
         // Wait for reservations to load
         await waitFor(() => {
@@ -72,7 +72,7 @@ describe('ReservationManagement Page', () => {
             })
         );
 
-        render(<ReservationManagement />);
+        render(<ManageReservations />);
 
         // Verify error message
         await waitFor(() => {

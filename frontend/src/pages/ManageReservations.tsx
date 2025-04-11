@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import '../css/ReservationManagement.css';
+import '../css/ManageReservations.css';
 import ReservationForm from '../components/ReservationForm';
 import TruncatedText from '../components/TruncatedText';
 import ManagementNavigation from '../components/ManagementNavigation';
@@ -20,7 +20,7 @@ interface Reservation {
     customer_phone?: string;
 }
 
-const ReservationManagement = () => {
+const ManageReservations = () => {
     const [reservations, setReservations] = useState<Reservation[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
@@ -222,7 +222,7 @@ const ReservationManagement = () => {
         <>
             <ManagementNavigation />
             <div className="reservation-management">
-                <h1>Reservation Management</h1>
+                <h1>Manage Reservations</h1>
                 
                 <button
                     className={`add-reservation-button ${showReservationForm ? 'close-reservation-button' : ''}`}
@@ -481,4 +481,4 @@ const ReservationManagement = () => {
     );
 };
 
-export default ReservationManagement;
+export default ManageReservations;

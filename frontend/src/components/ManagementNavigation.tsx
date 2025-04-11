@@ -36,8 +36,8 @@ const ManagementNavigation: React.FC = () => {
         <ul className={`nav-links ${mobileMenuOpen ? 'show-mobile' : ''}`}>
           <li>
             <Link 
-              to="/customer/management" 
-              className={isActive('/customer/management') ? 'active' : ''}
+              to="/manage/customers" 
+              className={isActive('/manage/customers') ? 'active' : ''}
               onClick={closeMobileMenu}
             >
               Customers
@@ -45,8 +45,8 @@ const ManagementNavigation: React.FC = () => {
           </li>
           <li>
             <Link 
-              to="/reservations/management" 
-              className={isActive('/reservations/management') ? 'active' : ''}
+              to="/manage/reservations" 
+              className={isActive('/manage/reservations') ? 'active' : ''}
               onClick={closeMobileMenu}
             >
               Reservations
@@ -54,8 +54,8 @@ const ManagementNavigation: React.FC = () => {
           </li>
           <li>
             <Link 
-              to="/menu/management" 
-              className={isActive('/menu/management') ? 'active' : ''}
+              to="/manage/menus" 
+              className={isActive('/manage/menus') ? 'active' : ''}
               onClick={closeMobileMenu}
             >
               Menu
@@ -63,8 +63,8 @@ const ManagementNavigation: React.FC = () => {
           </li>
           <li>
             <Link 
-              to="/newsletter/management" 
-              className={isActive('/newsletter/management') ? 'active' : ''}
+              to="/manage/subscribers" 
+              className={isActive('/manage/subscribers') ? 'active' : ''}
               onClick={closeMobileMenu}
             >
               Newsletter

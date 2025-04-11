@@ -191,7 +191,7 @@ const NewsletterManagement: React.FC = () => {
     <>
       <ManagementNavigation />
       <div className="newsletter-management">
-        <h1>Newsletter Management</h1>
+        <h1>Manage Subscribers</h1>
 
         <div className="subscribers-count">
           <p>Total: {filteredAndSortedSubscribers.length} subscribers</p>
