@@ -14,28 +14,29 @@ def login():
         password = data.get('password')
 
         # Debug print
-        print(f"Login attempt for username: {username}")
+        current_app.logger.info("Login attempt received.")
         
         # Validate user credentials
         user = Employee.query.filter_by(username=username).first()
         
         if not user:
-            print(f"User not found: {username}")
+            current_app.logger.warning("Login failed: User not found.")
             return jsonify({'error': 'Invalid credentials'}), 401
             
         if user and user.check_password(password):
             # User exists and password is correct
-            print(f"Login successful for {username}")
+            current_app.logger.info("Login successful.")
             access_token = create_access_token(identity=user.id)
             return jsonify({'token': access_token}), 200
         else:
-            print(f"Password check failed for {username}")
+            current_app.logger.warning("Login failed: Incorrect password.")
             return jsonify({'error': 'Invalid credentials'}), 401
             
     except Exception as e:
         # Log the error
-        print(f"Login error: {str(e)}")
-        print(traceback.format_exc())
+        current_app.logger.error(f"Login error: {str(e)}")
+        current_app.logger.error(f"Login error: {str(e)}")
+        current_app.logger.error(traceback.format_exc())
         return jsonify({'error': 'An error occurred during login'}), 500
 
 @auth_bp.route('/logout', methods=['POST'])
