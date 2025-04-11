@@ -9,10 +9,10 @@ import ReservationsPage from './pages/ReservationsPage';
 import AboutPage from './pages/AboutPage';
 import GalleryPage from './pages/GalleryPage';
 import NotFoundPage from './pages/NotFoundPage';
-import ReservationManagement from './pages/ReservationManagement';
-import NewsletterManagement from './pages/NewsletterManagement';
-import MenuManagement from './pages/MenuManagement';
-import CustomerManagement from './pages/CustomerManagement';
+import ManageReservations from './pages/ManageReservations';
+import ManageSubscribers from './pages/ManageSubscribers';
+import MenuManagement from './pages/ManageMenus';
+import CustomerManagement from './pages/ManageCustomers';
 
 // Layout Components
 import Navigation from './components/Navigation';
@@ -27,10 +27,10 @@ const AppContent: React.FC = () => {
     <div className="App">
       <Routes>
         {/* Management Routes - Navigation is included in each page */}
-        <Route path="/customer/management" element={<CustomerManagement />} />
-        <Route path="/reservations/management" element={<ReservationManagement />} />
-        <Route path="/newsletter/management" element={<NewsletterManagement />} />
-        <Route path="/menu/management" element={<MenuManagement />} />
+        <Route path="/manage/customers" element={<CustomerManagement />} />
+        <Route path="/manage/reservations" element={<ManageReservations />} />
+        <Route path="/manage/subscribers" element={<ManageSubscribers />} />
+        <Route path="/manage/menus" element={<MenuManagement />} />
         
         {/* Regular Routes with standard Navigation */}
         <Route path="/" element={
