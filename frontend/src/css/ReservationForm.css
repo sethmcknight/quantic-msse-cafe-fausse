@@ -31,13 +31,15 @@
 .reservation-confirmation button {
   justify-self: center;
   padding: 0.5rem 1rem;
-  background-color: #007bff;
+  background-color: #8b5a2b;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .reservation-confirmation button:hover {
-  background-color: #0056b3;
+  background-color: #704726;
+  transform: translateY(-2px);
 }
