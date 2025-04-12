@@ -71,13 +71,18 @@
   width: 100%; /* Ensure it spans the section */
 }
 
-/* Ensure the form elements are aligned horizontally */
+/* Updated newsletter form styling to ensure error displays below */
 .newsletter-form {
-  display: grid;
-  grid-template-columns: 1fr auto; /* Input takes most space, button adjusts */
-  gap: var(--spacing-sm); /* Add spacing between input and button */
-  align-items: center; /* Vertically align input and button */
-  width: 100%; /* Ensure it spans the container */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Ensure the input and button are in a row */
+.newsletter-form .input-group {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
 }
 
 /* Ensure the input and button fit properly */
@@ -106,6 +111,14 @@
   background: var(--primary-color-dark); /* Darker shade for hover effect */
 }
 
+/* Ensure error message appears below the input group */
+.newsletter-form .error-text {
+  margin-top: var(--spacing-sm);
+  width: 100%;
+  display: block;
+  color: #e53935;
+}
+
 .footer-bottom {
   text-align: center;
   border-top: 1px solid #444;
@@ -129,8 +142,8 @@
       grid-column: span 1; /* Single-column layout */
   }
 
-  .newsletter-form {
-      grid-template-columns: 1fr; /* Stack input and button vertically */
+  .newsletter-form .input-group {
+      flex-direction: column;
       gap: var(--spacing-md); /* Add more space between stacked elements */
   }
 
@@ -155,9 +168,5 @@
 
   .newsletter-container {
       grid-column: span 2; /* Span across two columns */
-  }
-
-  .newsletter-form {
-      grid-template-columns: 2fr 1fr; /* Input takes more space than button */
   }
 }
