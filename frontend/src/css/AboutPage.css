@@ -1,35 +1,37 @@
+@import './variables.css';
+
 /* Default Styles (Large Screens) */
 .about-page {
-  padding: 2rem;
-  font-family: 'Montserrat', sans-serif;
-  color: #2c2c2c;
+  padding: var(--spacing-xl);
+  font-family: var(--font-body);
+  color: var(--text-dark);
   display: grid;
-  gap: 2rem;
+  gap: var(--spacing-xl);
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .about-page h1 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 2.5rem;
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--spacing-lg);
 }
 
 /* History Section */
 .history-section {
   display: grid;
-  gap: 1rem;
-  background-color: #f7f7f7;
-  padding: 1.5rem;
+  gap: var(--spacing-md);
+  background-color: var(--bg-light);
+  padding: var(--spacing-lg);
   border-radius: 8px;
 }
 
 .history-section h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 2rem;
   text-align: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--spacing-sm);
 }
 
 .history-section p {
@@ -41,11 +43,11 @@
 /* Founders Section */
 .founders-section {
   display: grid;
-  gap: 2rem;
+  gap: var(--spacing-xl);
 }
 
 .founders-section h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 2rem;
   text-align: center;
 }
@@ -54,9 +56,9 @@
 .founder-card {
   display: grid;
   grid-template-columns: 200px 1fr;
-  gap: 1rem;
-  background-color: #f7f7f7;
-  padding: 1.5rem;
+  gap: var(--spacing-md);
+  background-color: var(--bg-light);
+  padding: var(--spacing-lg);
   border-radius: 8px;
   align-items: center;
 }
@@ -66,13 +68,13 @@
   height: 200px;
   object-fit: cover;
   border-radius: 50%;
-  border: 2px solid #8b5a2b;
+  border: 2px solid var(--primary-color);
 }
 
 .founder-info h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 1.75rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--spacing-sm);
 }
 
 .founder-info p {
@@ -84,17 +86,17 @@
 /* Commitment Section */
 .commitment-section {
   display: grid;
-  gap: 1rem;
-  background-color: #f7f7f7;
-  padding: 1.5rem;
+  gap: var(--spacing-md);
+  background-color: var(--bg-light);
+  padding: var(--spacing-lg);
   border-radius: 8px;
 }
 
 .commitment-section h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--font-heading);
   font-size: 2rem;
   text-align: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--spacing-sm);
 }
 
 .commitment-section p {
@@ -112,9 +114,9 @@
 /* Responsive Adjustments */
 
 /* Small Screens (≤600px) */
-@media (max-width: 600px) {
+@media (max-width: var(--breakpoint-sm)) {
   .about-page {
-      padding: 1rem;
+      padding: var(--spacing-md);
   }
 
   .about-page h1 {
@@ -144,9 +146,9 @@
 }
 
 /* Medium Screens (601px–1199px) */
-@media (min-width: 601px) and (max-width: 1199px) {
+@media (min-width: calc(var(--breakpoint-sm) + 1px)) and (max-width: var(--breakpoint-xl)) {
   .about-page {
-      padding: 1.5rem;
+      padding: var(--spacing-lg);
   }
 
   .about-page h1 {
@@ -155,7 +157,7 @@
 
   .founder-card {
       grid-template-columns: 150px 1fr; /* Smaller image for medium screens */
-      gap: 1rem;
+      gap: var(--spacing-md);
   }
 
   .founder-image {

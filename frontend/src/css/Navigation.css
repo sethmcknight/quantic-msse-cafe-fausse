@@ -1,107 +1,109 @@
+@import './variables.css';
+
 .site-header {
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    padding: 0.5rem 2rem;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  
-  /* Use CSS Grid for the nav so items are well spaced */
+  background-color: var(--bg-white);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-sm) var(--spacing-xl);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Use CSS Grid for the nav so items are well spaced */
+.main-navigation {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+
+/* Navigation Logo */
+.nav-logo a {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+/* Mobile menu toggle styling */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.menu-icon {
+  width: 25px;
+  height: 3px;
+  background-color: var(--primary-color);
+  display: block;
+  position: relative;
+}
+
+.menu-icon::before,
+.menu-icon::after {
+  content: '';
+  width: 25px;
+  height: 3px;
+  background-color: var(--primary-color);
+  position: absolute;
+  left: 0;
+  transition: transform 0.3s ease;
+}
+
+.menu-icon::before {
+  top: -8px;
+}
+
+.menu-icon::after {
+  top: 8px;
+}
+
+/* Navigation Links */
+.nav-links {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-lg);
+  list-style: none;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--text-dark);
+  transition: color 0.3s ease;
+}
+
+.nav-links li a:hover,
+.nav-links li a.active {
+  color: var(--primary-color);
+}
+
+/* Responsive adjustments */
+@media (max-width: var(--breakpoint-md)) {
   .main-navigation {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: center;
+    grid-template-columns: 1fr auto;
   }
-  
-  /* Navigation Logo */
-  .nav-logo a {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    color: #8b5a2b;
-    text-decoration: none;
-  }
-  
-  /* Mobile menu toggle styling */
+
   .mobile-menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .menu-icon {
-    width: 25px;
-    height: 3px;
-    background-color: #8b5a2b;
     display: block;
-    position: relative;
   }
   
-  .menu-icon::before,
-  .menu-icon::after {
-    content: '';
-    width: 25px;
-    height: 3px;
-    background-color: #8b5a2b;
-    position: absolute;
-    left: 0;
-    transition: transform 0.3s ease;
-  }
-  
-  .menu-icon::before {
-    top: -8px;
-  }
-  
-  .menu-icon::after {
-    top: 8px;
-  }
-  
-  /* Navigation Links */
   .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-white);
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) 0;
+    display: none;
+  }
+  
+  .nav-links.show-mobile {
     display: flex;
-    justify-content: flex-end;
-    gap: 1.5rem;
-    list-style: none;
   }
-  
-  .nav-links li a {
-    text-decoration: none;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1rem;
-    color: #2c2c2c;
-    transition: color 0.3s ease;
-  }
-  
-  .nav-links li a:hover,
-  .nav-links li a.active {
-    color: #8b5a2b;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .main-navigation {
-      grid-template-columns: 1fr auto;
-    }
-  
-    .mobile-menu-toggle {
-      display: block;
-    }
-    
-    .nav-links {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: #fff;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-      padding: 1rem 0;
-      display: none;
-    }
-    
-    .nav-links.show-mobile {
-      display: flex;
-    }
-  }
+}

@@ -1,3 +1,5 @@
+@import './css/variables.css';
+
 /* Main App Layout */
 .App {
   display: grid;
@@ -7,31 +9,31 @@
 
 /* Main Content */
 .main-content {
-  padding: 2rem;
+  padding: var(--spacing-xl);
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
 }
 
-/* Footer Styles */
+/* Footer Styles - NOTE: These styles may be duplicates from Footer.css and should be reviewed for removal */
 .site-footer {
-  background-color: #333;
-  color: #fff;
-  padding: 3rem 2rem 1rem;
+  background-color: var(--bg-footer);
+  color: var(--text-light);
+  padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-md);
 }
 
 .footer-content {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
+  gap: var(--spacing-xl);
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .footer-section h3 {
   margin-top: 0;
-  margin-bottom: 1rem;
-  color: #fff;
+  margin-bottom: var(--spacing-md);
+  color: var(--text-light);
 }
 
 .footer-links {
@@ -41,7 +43,7 @@
 }
 
 .footer-links li {
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--spacing-sm);
 }
 
 .footer-links a {
@@ -50,21 +52,21 @@
 }
 
 .footer-links a:hover {
-  color: #fff;
+  color: var(--text-light);
   text-decoration: underline;
 }
 
 .footer-newsletter input {
-  padding: 0.5rem;
-  margin-right: 0.5rem;
+  padding: var(--spacing-sm);
+  margin-right: var(--spacing-sm);
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: var(--spacing-md);
 }
 
 .footer-newsletter button {
-  padding: 0.5rem 1rem;
-  background-color: #8b5a2b;
-  color: white;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--primary-color);
+  color: var(--text-light);
   border: none;
   cursor: pointer;
 }
@@ -72,8 +74,8 @@
 .social-links {
   display: grid;
   grid-template-columns: repeat(3, auto);
-  gap: 1rem;
-  margin-top: 1rem;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
 }
 
 .social-links a {
@@ -81,7 +83,7 @@
   width: 36px;
   height: 36px;
   background-color: #555;
-  color: white;
+  color: var(--text-light);
   text-align: center;
   line-height: 36px;
   border-radius: 50%;
@@ -90,7 +92,14 @@
 
 .footer-bottom {
   text-align: center;
-  padding-top: 2rem;
-  margin-top: 2rem;
+  padding-top: var(--spacing-xl);
+  margin-top: var(--spacing-xl);
   border-top: 1px solid #555;
+}
+
+/* Responsive adjustments */
+@media (max-width: var(--breakpoint-md)) {
+  .main-content {
+    padding: var(--spacing-md);
+  }
 }

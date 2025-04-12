@@ -19,7 +19,6 @@ import LoginPage from './pages/LoginPage';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
-import NotificationSystem from './components/NotificationSystem';
 
 // Context Provider
 import { AppProvider } from './context/AppContext';
@@ -28,9 +27,6 @@ import { AppProvider } from './context/AppContext';
 const AppContent: React.FC = () => {
   return (
     <div className="App">
-      {/* Global notification system */}
-      <NotificationSystem />
-      
       <Routes>
         {/* Management Routes - Protected */}
         <Route path="/manage/customers" element={<ProtectedRoute><ManageCustomers /></ProtectedRoute>} />
