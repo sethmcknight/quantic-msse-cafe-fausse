@@ -5,6 +5,11 @@ import { useAppContext } from '../context/AppContext';
 import '../css/ReservationsPage.css';
 import '../css/ReservationForm.css';
 
+// Add the onReservationAdded prop type
+interface ReservationFormProps {
+  onReservationAdded?: () => void;
+}
+
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   const options: Intl.DateTimeFormatOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
@@ -41,7 +46,7 @@ const ReservationConfirmation: React.FC<{ reservationDetails: any; onDismiss: ()
   );
 };
 
-const ReservationForm: React.FC = () => {
+const ReservationForm: React.FC<ReservationFormProps> = ({ onReservationAdded }) => {
   const { showNotification } = useAppContext();
   
   const [formData, setFormData] = useState({
@@ -174,6 +179,11 @@ const ReservationForm: React.FC = () => {
         });
         setAvailabilityChecked(false);
         setIsAvailable(false);
+        
+        // Call the onReservationAdded callback if provided
+        if (onReservationAdded) {
+          onReservationAdded();
+        }
       } else {
         displayNotification(response.message || 'Error creating reservation.', 'error');
       }

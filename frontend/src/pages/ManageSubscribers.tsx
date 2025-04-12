@@ -25,8 +25,8 @@ const NewsletterManagement: React.FC = () => {
   const [showAddForm, setShowAddForm] = useState<boolean>(false);
   const [newEmail, setNewEmail] = useState<string>('');
 
-  useEffect(() => {
-    // Fetch newsletter subscribers from the backend API
+  // Function to load subscribers from the backend
+  const loadSubscribers = () => {
     fetch('/api/newsletter/subscribers')
       .then(response => {
         if (!response.ok) {
@@ -46,6 +46,11 @@ const NewsletterManagement: React.FC = () => {
         console.error('Error fetching newsletter subscribers:', error);
         setSubscribers([]);
       });
+  };
+
+  useEffect(() => {
+    // Initial load of subscribers
+    loadSubscribers();
   }, []);
 
   // Format date to "Month day, Year" (e.g., "April 6, 2025")
@@ -88,13 +93,7 @@ const NewsletterManagement: React.FC = () => {
       .catch(error => {
         console.error('Error updating subscriber status:', error);
         // Revert the local change if the server update fails
-        fetch('/api/newsletter/subscribers')
-          .then(response => response.json())
-          .then(data => {
-            if (data.success && Array.isArray(data.subscribers)) {
-              setSubscribers(data.subscribers);
-            }
-          });
+        loadSubscribers();
       });
   };
 
@@ -164,14 +163,8 @@ const NewsletterManagement: React.FC = () => {
         setNewEmail('');
         setShowAddForm(false);
         
-        // Refresh the subscribers list
-        return fetch('/api/newsletter/subscribers');
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success && Array.isArray(data.subscribers)) {
-          setSubscribers(data.subscribers);
-        }
+        // Reload subscribers list with the dedicated function
+        loadSubscribers();
       })
       .catch(error => {
         console.error('Error adding subscriber:', error);
