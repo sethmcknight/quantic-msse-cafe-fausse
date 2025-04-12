@@ -20,9 +20,9 @@ type Category = {
   description: string;
 };
 
-type NotificationType = 'success' | 'error' | 'info';
+export type NotificationType = 'success' | 'error' | 'info';
 
-// Define the context type without notification state
+// Define the context type with a cleaner notification interface
 type AppContextType = {
   menuItems: MenuItem[];
   categories: Category[];
@@ -74,15 +74,13 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }
   };
 
-  // Show notification function - now just logs to console
+  // Simple notification function for consistent application notifications
   const showNotification = (message: string, type: NotificationType = 'info') => {
-    console.log(`${type.toUpperCase()}: ${message}`);
-    // We could implement a different notification mechanism here in the future
-  };
-
-  // Refresh menu data
-  const refreshMenuData = async () => {
-    await fetchMenuData();
+    // We'll implement a custom event that other components can listen for
+    const event = new CustomEvent('cafe-fausse-notification', { 
+      detail: { message, type }
+    });
+    document.dispatchEvent(event);
   };
 
   // Load menu data on component mount
@@ -97,7 +95,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     isLoading,
     error,
     showNotification,
-    refreshMenuData,
+    refreshMenuData: fetchMenuData,
   };
 
   return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>;

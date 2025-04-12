@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import '../css/ManagementNavigation.css';
 
@@ -7,13 +7,15 @@ const ManagementNavigation: React.FC = () => {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Simplified toggle function that uses the callback form of setState
   const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
+    setMobileMenuOpen(prevState => !prevState);
   };
 
-  const closeMobileMenu = () => {
+  // Close menu when location changes (i.e., user navigates to a new page)
+  useEffect(() => {
     setMobileMenuOpen(false);
-  };
+  }, [location.pathname]);
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -24,8 +26,7 @@ const ManagementNavigation: React.FC = () => {
     localStorage.removeItem('authToken');
     // Redirect to the login page
     navigate('/manage');
-    // Close mobile menu if open
-    closeMobileMenu();
+    // No need to explicitly close the mobile menu here since the useEffect will handle it
   };
 
   return (
@@ -39,6 +40,7 @@ const ManagementNavigation: React.FC = () => {
           className="mobile-menu-toggle" 
           onClick={toggleMobileMenu}
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileMenuOpen}
         >
           <span className="menu-icon"></span>
         </button>
@@ -48,7 +50,6 @@ const ManagementNavigation: React.FC = () => {
             <Link 
               to="/manage/customers" 
               className={isActive('/manage/customers') ? 'active' : ''}
-              onClick={closeMobileMenu}
             >
               Customers
             </Link>
@@ -57,7 +58,6 @@ const ManagementNavigation: React.FC = () => {
             <Link 
               to="/manage/reservations" 
               className={isActive('/manage/reservations') ? 'active' : ''}
-              onClick={closeMobileMenu}
             >
               Reservations
             </Link>
@@ -66,7 +66,6 @@ const ManagementNavigation: React.FC = () => {
             <Link 
               to="/manage/menus" 
               className={isActive('/manage/menus') ? 'active' : ''}
-              onClick={closeMobileMenu}
             >
               Menus
             </Link>
@@ -75,7 +74,6 @@ const ManagementNavigation: React.FC = () => {
             <Link 
               to="/manage/subscribers" 
               className={isActive('/manage/subscribers') ? 'active' : ''}
-              onClick={closeMobileMenu}
             >
               Newsletter
             </Link>
@@ -84,7 +82,6 @@ const ManagementNavigation: React.FC = () => {
             <Link 
               to="/" 
               className="back-to-site"
-              onClick={closeMobileMenu}
             >
               Back to Website
             </Link>
