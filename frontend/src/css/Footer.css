@@ -131,10 +131,18 @@
 
   .newsletter-form {
       grid-template-columns: 1fr; /* Stack input and button vertically */
+      gap: var(--spacing-md); /* Add more space between stacked elements */
   }
 
   .newsletter-form button {
       width: 100%; /* Full-width button */
+      padding: var(--spacing-sm); /* Ensure button has enough padding */
+  }
+  
+  /* Ensure content doesn't overflow */
+  .footer-section {
+      overflow-wrap: break-word;
+      word-wrap: break-word;
   }
 }
 

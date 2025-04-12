@@ -99,6 +99,7 @@
   background-size: cover;
   background-position: center;
   background-color: #ccc; /* Fallback color */
+  object-fit: cover; /* Ensures image maintains aspect ratio */
 }
 
 .highlight-caption {
@@ -162,6 +163,7 @@
   border-radius: 8px;
   margin-bottom: 0.75rem;
   background-color: #ccc; /* Fallback color */
+  object-fit: cover; /* Ensures image maintains aspect ratio */
 }
 
 /* Newsletter Section */

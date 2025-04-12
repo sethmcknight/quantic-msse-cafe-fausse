@@ -52,14 +52,36 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding: 10px; /* Add padding to prevent content touching edges */
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Ensure images in the lightbox fit within the viewport */
 .lightbox-content img {
-  max-width: 95vw; /* Maximum width is 95% of the viewport width */
-  max-height: 95vh; /* Maximum height is 95% of the viewport height */
+  max-width: 90vw; /* Maximum width is 90% of the viewport width */
+  max-height: 80vh; /* Maximum height is 80% of the viewport height */
   width: auto; /* Maintain aspect ratio */
   height: auto; /* Maintain aspect ratio */
+  object-fit: contain; /* Ensure the entire image is visible */
+}
+
+/* Close button for lightbox */
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+  z-index: 1001;
 }
 
 /* Awards Section */
@@ -141,6 +163,16 @@
 
   .testimonial {
       font-size: 0.9rem;
+  }
+
+  .lightbox-content img {
+    max-width: 95vw; /* Use more viewport space on small screens */
+    max-height: 70vh;
+  }
+  
+  .lightbox-close {
+    top: 10px;
+    right: 10px;
   }
 }
 

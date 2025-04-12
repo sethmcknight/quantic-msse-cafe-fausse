@@ -52,7 +52,7 @@
   gap: var(--spacing-md);
 }
 
-/* Each Menu Item styled more like a traditional menu row */
+/* Menu Item Styles */
 .menu-item {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -67,6 +67,12 @@
   background-color: #ececec;
 }
 
+/* Menu item title styling */
+.menu-item-title {
+  /*margin-bottom: var(--spacing-sm); /* Default spacing between title and description */
+  margin-right: 1.1rem;
+}
+
 .menu-item h3 {
   font-family: var(--font-heading);
   font-size: 1.5rem;
@@ -76,7 +82,7 @@
 .menu-item .description {
   font-size: 1rem;
   color: var(--text-muted);
-  margin: var(--spacing-sm) 0;
+  margin: 0; /* Reset margin since we control spacing through menu-item-title */
 }
 
 .menu-item .price {
@@ -109,10 +115,17 @@
   .menu-item {
     grid-template-columns: 1fr; /* Stack content vertically */
     text-align: center;
+    gap: var(--spacing-sm); /* Add gap between stacked elements */
+    word-break: break-word; /* Prevent text overflow */
   }
 
   .menu-item .price {
     margin-top: var(--spacing-sm); /* Add spacing for price */
+  }
+
+  .menu-item .description {
+    max-width: 100%; /* Ensure descriptions don't overflow */
+    overflow-wrap: break-word; /* Break long words if necessary */
   }
 
   .category-filter {
@@ -123,6 +136,10 @@
   .category-filter button {
     width: 100%; /* Full-width buttons */
     max-width: 300px;
+  }
+
+  .menu-page {
+    padding: var(--spacing-md); /* Reduce padding on small screens */
   }
 }
 
@@ -166,5 +183,19 @@
 
   .category-filter {
     justify-content: center; /* Center buttons */
+  }
+}
+
+/* Media query for screens under 800px */
+@media (max-width: 800px) {
+  .menu-item-title {
+    margin-bottom: var(--spacing-lg); /* Increased spacing for medium-small screens */
+  }
+}
+
+/* Media query for screens under 450px */
+@media (max-width: 450px) {
+  .menu-item-title {
+    margin-bottom: var(--spacing-xl); /* Maximum spacing for very small screens */
   }
 }

@@ -26,7 +26,7 @@ const Navigation: React.FC = () => {
         </div>
 
         <button 
-          className="mobile-menu-toggle" 
+          className={`mobile-menu-toggle ${mobileMenuOpen ? 'active' : ''}`}
           onClick={toggleMobileMenu}
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
         >

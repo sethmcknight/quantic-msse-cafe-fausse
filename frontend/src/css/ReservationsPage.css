@@ -186,5 +186,20 @@
     .form-group select,
     .form-group textarea {
       font-size: 0.9rem;
+      max-width: 100%; /* Ensure inputs don't overflow */
+      box-sizing: border-box; /* Include padding in width calculation */
+    }
+    
+    .newsletter-opt-in {
+      grid-template-columns: 24px 1fr; /* Fixed width for checkbox column */
+    }
+    
+    /* Ensure buttons don't overflow */
+    .form-submit button,
+    .make-new-reservation,
+    .check-availability button {
+      width: 100%;
+      max-width: 250px;
+      margin: 0 auto;
     }
   }
