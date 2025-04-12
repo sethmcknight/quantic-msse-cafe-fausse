@@ -18,8 +18,30 @@
   
   .input-group {
     display: flex;
-    align-items: left;
+    flex-direction: row;
+    align-items: center;
     gap: 0.2rem; /* Add space between the input field and the button */
+    width: 100%;
+  }
+
+  /* Error text styling - ensure it displays below the input group */
+  .error-text {
+    display: block !important;
+    width: 100% !important;
+    color: #e53935;
+    font-size: 0.875rem;
+    margin-top: 0.5rem !important;
+    text-align: left;
+    clear: both;
+    grid-column: 1 / -1 !important; /* Span all columns in grid layout */
+    order: 2 !important; /* Ensure it comes after the input group in flex layouts */
+  }
+
+  /* Newsletter form structure */
+  .newsletter-form {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100%;
   }
 
   /* Ensure the subscription-success container is left-aligned */

@@ -4,7 +4,7 @@ import InlineNotification from '../components/InlineNotification';
 import '../css/MenuPage.css';
 
 const MenuPage: React.FC = () => {
-  const { menuItems, categories, isLoading, error, showNotification, refreshMenuData } = useAppContext();
+  const { menuItems, categories, isLoading, error, refreshMenuData } = useAppContext();
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [notification, setNotification] = useState<{message: string; type: 'success' | 'error' | 'info'} | null>(null);
 
@@ -89,7 +89,9 @@ const MenuPage: React.FC = () => {
           <section className="menu-list">
             {filteredItems.map(item => (
               <div key={item.id} className="menu-item">
-                <h3>{item.name}</h3>
+                <div className="menu-item-title">
+                  <h3>{item.name}</h3>
+                </div>
                 <p className="description">{item.description}</p>
                 <p className="price">${item.price.toFixed(2)}</p>
               </div>
@@ -136,7 +138,9 @@ const MenuPage: React.FC = () => {
             <div className="menu-list">
               {categoryItems.map(item => (
                 <div key={item.id} className="menu-item">
-                  <h3>{item.name}</h3>
+                  <div className="menu-item-title">
+                    <h3>{item.name}</h3>
+                  </div>
                   <p className="description">{item.description}</p>
                   <p className="price">${item.price.toFixed(2)}</p>
                 </div>

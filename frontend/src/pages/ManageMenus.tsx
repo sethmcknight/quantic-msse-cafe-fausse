@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import '../css/MenuManagement.css';
+import '../css/ManageMenus.css';
 import ManagementNavigation from '../components/ManagementNavigation';
 import Footer from '../components/Footer';
 

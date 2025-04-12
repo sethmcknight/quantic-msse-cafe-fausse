@@ -249,44 +249,28 @@ def cancel_reservation(reservation_id):
 def get_reservations():
     """Get all reservations"""
     session = Session(db.engine)
-    reservations = session.query(Reservation).all()
-    reservations_with_customer = []
+    try:
+        reservations = session.query(Reservation).all()
+        reservations_with_customer = []
 
-    for reservation in reservations:
-        customer = session.get(Customer, reservation.customer_id)
-        reservation_dict = reservation.to_dict()
-        reservation_dict['customer_name'] = customer.name if customer else None
-        reservation_dict['customer_email'] = customer.email if customer else None
-        reservation_dict['customer_phone'] = customer.phone if customer else None
-        reservation_dict['reservation_id'] = reservation.id
-        reservations_with_customer.append(reservation_dict)
+        for reservation in reservations:
+            customer = session.get(Customer, reservation.customer_id)
+            reservation_dict = reservation.to_dict()
+            reservation_dict['customer_name'] = customer.name if customer else None
+            reservation_dict['customer_email'] = customer.email if customer else None
+            reservation_dict['customer_phone'] = customer.phone if customer else None
+            reservation_dict['reservation_id'] = reservation.id
+            reservations_with_customer.append(reservation_dict)
 
-    session.close()
-
-    return jsonify({
-        'success': True,
-        'reservations': reservations_with_customer
-    })
+        return jsonify({
+            'success': True,
+            'reservations': reservations_with_customer
+        })
+    finally:
+        session.close()
 
 @reservations_bp.route('', methods=['GET'])
 @reservations_bp.route('/', methods=['GET'])
 def get_all_reservations():
-    """Get all reservations"""
-    session = Session(db.engine)
-    reservations = session.query(Reservation).all()
-    reservations_with_customer = []
-
-    for reservation in reservations:
-        customer = session.get(Customer, reservation.customer_id)
-        reservation_dict = reservation.to_dict()
-        reservation_dict['customer_name'] = customer.name if customer else None
-        reservation_dict['customer_email'] = customer.email if customer else None
-        reservation_dict['customer_phone'] = customer.phone if customer else None
-        reservations_with_customer.append(reservation_dict)
-
-    session.close()
-
-    return jsonify({
-        'success': True,
-        'reservations': reservations_with_customer
-    })
+    """Get all reservations with customer details"""
+    return get_reservations()

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/LoginPage.css'; // Updated path to reflect the new location of LoginPage.css
-import apiClient from '../utils/apiClient';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');

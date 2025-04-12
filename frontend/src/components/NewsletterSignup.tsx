@@ -51,9 +51,22 @@ const NewsletterSignup: React.FC<NewsletterSignupProps> = ({ className, footerMo
           setErrorMessage(response.message || 'Error subscribing to newsletter');
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Newsletter subscription error:', error);
-      setErrorMessage('Failed to subscribe. Please try again later.');
+      
+      // Check if error has response data from API
+      if (error.response && error.response.data) {
+        const errorData = error.response.data;
+        
+        // Handle the specific case for invalid email format
+        if (errorData.message && errorData.message.toLowerCase().includes('invalid email format')) {
+          setErrorMessage('Please enter a valid email address');
+        } else {
+          setErrorMessage(errorData.message || 'Error subscribing to newsletter');
+        }
+      } else {
+        setErrorMessage('Failed to subscribe. Please try again later.');
+      }
     } finally {
       setIsSubmitting(false);
     }
