@@ -18,6 +18,13 @@ interface SortConfig {
   direction: 'asc' | 'desc';
 }
 
+interface NewCustomerData {
+  name: string;
+  email: string;
+  phone: string;
+  newsletter_signup: boolean;
+}
+
 const CustomerManagement: React.FC = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
   
@@ -27,9 +34,23 @@ const CustomerManagement: React.FC = () => {
   const [emailFilter, setEmailFilter] = useState<string>('');
   const [phoneFilter, setPhoneFilter] = useState<string>('');
   const [newsletterFilter, setNewsletterFilter] = useState<string>('');
+  
+  // New customer form states
+  const [showNewCustomerForm, setShowNewCustomerForm] = useState<boolean>(false);
+  const [newCustomer, setNewCustomer] = useState<NewCustomerData>({
+    name: '',
+    email: '',
+    phone: '',
+    newsletter_signup: false
+  });
+  const [formErrors, setFormErrors] = useState<Partial<NewCustomerData>>({});
 
   useEffect(() => {
     // Fetch customers from the backend API
+    fetchCustomers();
+  }, []);
+
+  const fetchCustomers = () => {
     fetch('/api/customers')
       .then(response => {
         if (!response.ok) {
@@ -49,7 +70,7 @@ const CustomerManagement: React.FC = () => {
         console.error('Error fetching customers:', error);
         setCustomers([]);
       });
-  }, []);
+  };
 
   const updateCustomer = async (id: number, updatedFields: Partial<Customer>) => {
     try {
@@ -132,6 +153,94 @@ const CustomerManagement: React.FC = () => {
     return ' ⇅';
   };
 
+  // Handle new customer form changes
+  const handleNewCustomerChange = (field: keyof NewCustomerData, value: string | boolean) => {
+    setNewCustomer(prev => ({ ...prev, [field]: value }));
+    
+    // Clear error for the field being changed
+    if (formErrors[field]) {
+      setFormErrors(prev => ({ ...prev, [field]: undefined }));
+    }
+  };
+
+  // Validate new customer form
+  const validateForm = (): boolean => {
+    const errors: Partial<NewCustomerData> = {};
+    
+    if (!newCustomer.name.trim()) {
+      errors.name = 'Name is required';
+    }
+    
+    if (!newCustomer.email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(newCustomer.email)) {
+      errors.email = 'Email is invalid';
+    }
+    
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  // Submit new customer
+  const handleSubmitNewCustomer = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+    
+    try {
+      const response = await fetch('/api/customers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newCustomer),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to create customer');
+      }
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        // Refresh customer list
+        fetchCustomers();
+        
+        // Reset form and hide it
+        setNewCustomer({
+          name: '',
+          email: '',
+          phone: '',
+          newsletter_signup: false
+        });
+        setShowNewCustomerForm(false);
+      } else {
+        console.error('Failed to create customer:', data.message);
+        alert(`Failed to create customer: ${data.message || 'Unknown error'}`);
+      }
+    } catch (error) {
+      console.error('Error creating customer:', error);
+      alert('Failed to create customer. Please try again.');
+    }
+  };
+
+  // Toggle new customer form
+  const toggleNewCustomerForm = () => {
+    setShowNewCustomerForm(!showNewCustomerForm);
+    // Reset form and errors when toggling
+    if (!showNewCustomerForm) {
+      setNewCustomer({
+        name: '',
+        email: '',
+        phone: '',
+        newsletter_signup: false
+      });
+      setFormErrors({});
+    }
+  };
+
   // Filter and sort customers
   const filteredAndSortedCustomers = useMemo(() => {
     let filtered = [...customers];
@@ -195,6 +304,76 @@ const CustomerManagement: React.FC = () => {
       <ManagementNavigation />
       <div className="customer-management">
         <h1>Manage Customers</h1>
+
+        <div className="customer-management-actions">
+          <button 
+            className="add-customer-button" 
+            onClick={toggleNewCustomerForm}
+          >
+            {showNewCustomerForm ? 'Cancel' : 'Add New Customer'}
+          </button>
+        </div>
+
+        {showNewCustomerForm && (
+          <div className="new-customer-form-container">
+            <h2>Add New Customer</h2>
+            <form onSubmit={handleSubmitNewCustomer} className="new-customer-form">
+              <div className="form-group">
+                <label htmlFor="name">Name*</label>
+                <input
+                  id="name"
+                  type="text"
+                  value={newCustomer.name}
+                  onChange={(e) => handleNewCustomerChange('name', e.target.value)}
+                  placeholder="Customer Name"
+                  className={formErrors.name ? 'error' : ''}
+                />
+                {formErrors.name && <div className="error-message">{formErrors.name}</div>}
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="email">Email*</label>
+                <input
+                  id="email"
+                  type="email"
+                  value={newCustomer.email}
+                  onChange={(e) => handleNewCustomerChange('email', e.target.value)}
+                  placeholder="customer@example.com"
+                  className={formErrors.email ? 'error' : ''}
+                />
+                {formErrors.email && <div className="error-message">{formErrors.email}</div>}
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="phone">Phone</label>
+                <input
+                  id="phone"
+                  type="tel"
+                  value={newCustomer.phone}
+                  onChange={(e) => handleNewCustomerChange('phone', e.target.value)}
+                  placeholder="(123) 456-7890"
+                />
+              </div>
+              
+              <div className="form-group checkbox-group">
+                <label htmlFor="newsletter">
+                  <input
+                    id="newsletter"
+                    type="checkbox"
+                    checked={newCustomer.newsletter_signup}
+                    onChange={(e) => handleNewCustomerChange('newsletter_signup', e.target.checked)}
+                  />
+                  Subscribe to Newsletter
+                </label>
+              </div>
+              
+              <div className="form-actions">
+                <button type="submit" className="submit-button">Add Customer</button>
+                <button type="button" onClick={toggleNewCustomerForm} className="cancel-button">Cancel</button>
+              </div>
+            </form>
+          </div>
+        )}
 
         <div className="filtered-count">
           <p>Showing {filteredAndSortedCustomers.length} of {customers.length} customers</p>

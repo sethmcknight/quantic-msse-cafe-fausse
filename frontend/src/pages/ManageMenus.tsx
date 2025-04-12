@@ -572,8 +572,8 @@ const MenuManagement: React.FC = () => {
             <div className="filtered-count">
               <p>Showing {filteredAndSortedMenuItems.length} of {menuItems.length} items</p>
             </div>
-            <div className="table-container" style={{ overflowX: "auto" }}>
-              <table>
+            <div className="table-grid-container">
+              <table className="items-table">
                 <thead>
                   <tr>
                     <th onClick={() => handleSort('id')}>
@@ -769,8 +769,8 @@ const MenuManagement: React.FC = () => {
               </div>
             )}
             
-            <div className="table-container" style={{ overflowX: "auto" }}>
-              <table>
+            <div className="table-grid-container">
+              <table className="categories-table">
                 <thead>
                   <tr>
                     <th>ID</th>

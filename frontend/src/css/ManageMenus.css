@@ -339,6 +339,54 @@
     text-decoration: underline;
 }
 
+/* Consistent table width styles using CSS Grid */
+.table-grid-container {
+    width: 100%;
+    margin-top: 1rem;
+    overflow-x: auto;
+}
+
+.table-grid-container table {
+    width: 100%;
+    table-layout: fixed; /* This ensures consistent column widths */
+}
+
+.categories-table th:first-child {
+    width: 15%;
+}
+
+.categories-table th:nth-child(2) {
+    width: 60%;
+}
+
+.categories-table th:last-child {
+    width: 25%;
+}
+
+.items-table th:first-child {
+    width: 10%;
+}
+
+.items-table th:nth-child(2) {
+    width: 20%;
+}
+
+.items-table th:nth-child(3) {
+    width: 30%;
+}
+
+.items-table th:nth-child(4) {
+    width: 10%;
+}
+
+.items-table th:nth-child(5) {
+    width: 15%;
+}
+
+.items-table th:last-child {
+    width: 15%;
+}
+
 /* Responsive design */
 @media (max-width: 992px) {
     .menu-management {
@@ -410,5 +458,23 @@
     .delete-confirmation button {
         width: 100%;
         margin-top: 0.25rem;
+    }
+
+    .table-grid-container {
+        overflow-x: auto;
+        width: 100%;
+    }
+    
+    /* On mobile, ensure tables take full width of the container and can scroll horizontally */
+    .table-grid-container table {
+        min-width: 100%;
+        width: auto;
+        table-layout: auto;
+    }
+    
+    /* Reset fixed width constraints on mobile for better responsive behavior */
+    .categories-table th,
+    .items-table th {
+        width: auto !important; /* Override the fixed widths on mobile */
     }
 }
