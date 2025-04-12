@@ -67,8 +67,20 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       setMenuItems(itemsResponse.items);
     } catch (err: any) {
       console.error('Error fetching menu data:', err);
-      setError(err.message || 'Failed to fetch menu data');
-      showNotification('Failed to load menu data. Please try again later.', 'error');
+      
+      // More user-friendly error message based on the error type
+      let errorMessage = 'Failed to fetch menu data. Please check your connection.';
+      
+      if (err.message && err.message.includes('Cannot connect to server')) {
+        errorMessage = 'Cannot connect to the restaurant server. Please make sure the backend service is running.';
+      } else if (err.message && err.message.includes('API error: 404')) {
+        errorMessage = 'The requested menu information could not be found.';
+      } else if (err.message && err.message.includes('API error: 500')) {
+        errorMessage = 'The restaurant server encountered an error. Please try again later.';
+      }
+      
+      setError(errorMessage);
+      showNotification(errorMessage, 'error');
     } finally {
       setIsLoading(false);
     }

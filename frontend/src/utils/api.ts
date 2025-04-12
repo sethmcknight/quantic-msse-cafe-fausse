@@ -2,12 +2,21 @@
  * API client for Café Fausse backend services
  */
 
-// Use environment variable for API base URL or default to localhost in development
+// Use environment variable for API base URL or default to localhost matching backend port
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api';
 
 // Ensure endpoints are properly formatted without duplicate slashes
 const formatEndpoint = (endpoint: string) => {
   return endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+};
+
+// Add error handling and logging for better debugging
+const handleApiError = (error: any, endpoint: string) => {
+  console.error(`API Error calling ${endpoint}:`, error);
+  if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+    return new Error('Cannot connect to server. Please ensure the backend is running and accessible.');
+  }
+  return error;
 };
 
 /**
@@ -18,33 +27,58 @@ const apiClient = {
    * Send a GET request to the API
    */
   async get<T>(endpoint: string): Promise<T> {
-    const response = await fetch(`${API_BASE_URL}${formatEndpoint(endpoint)}`);
-    
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status} ${response.statusText}`);
+    try {
+      const url = `${API_BASE_URL}${formatEndpoint(endpoint)}`;
+      console.log(`Making GET request to: ${url}`);
+      
+      const response = await fetch(url, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        mode: 'cors', // Explicitly request CORS
+      });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`API responded with status ${response.status}: ${errorText}`);
+        throw new Error(`API error: ${response.status} ${response.statusText}`);
+      }
+      
+      return response.json();
+    } catch (error) {
+      throw handleApiError(error, endpoint);
     }
-    
-    return response.json();
   },
   
   /**
    * Send a POST request to the API
    */
   async post<T>(endpoint: string, data: any): Promise<T> {
-    const response = await fetch(`${API_BASE_URL}${formatEndpoint(endpoint)}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => null);
-      throw new Error(errorData?.message || `API error: ${response.status} ${response.statusText}`);
+    try {
+      const url = `${API_BASE_URL}${formatEndpoint(endpoint)}`;
+      console.log(`Making POST request to: ${url}`, data);
+      
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        mode: 'cors', // Explicitly request CORS
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        console.error(`API responded with status ${response.status}:`, errorData);
+        throw new Error(errorData?.message || `API error: ${response.status} ${response.statusText}`);
+      }
+      
+      return response.json();
+    } catch (error) {
+      throw handleApiError(error, endpoint);
     }
-    
-    return response.json();
   },
 };
 

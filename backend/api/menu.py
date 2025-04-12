@@ -147,3 +147,78 @@ def update_menu_category(category_id):
     except Exception as e:
         session.rollback()
         return jsonify({'success': False, 'message': str(e)}), 500
+
+@menu_bp.route('/categories', methods=['POST'])
+@jwt_required()
+def add_menu_category():
+    """Add a new menu category"""
+    data = request.json
+
+    if 'name' not in data or not data['name']:
+        return jsonify({'success': False, 'message': 'Missing required field: name'}), 400
+
+    try:
+        # Check if category with the same name already exists
+        existing_category = Category.query.filter_by(name=data['name']).first()
+        if existing_category:
+            return jsonify({'success': False, 'message': 'A category with this name already exists'}), 400
+
+        category = Category(name=data['name'])
+        db.session.add(category)
+        db.session.commit()
+
+        return jsonify({
+            'success': True, 
+            'message': 'Category added successfully', 
+            'category': category.to_dict()
+        }), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'message': f'An error occurred: {str(e)}'}), 500
+
+@menu_bp.route('/items/<int:item_id>', methods=['DELETE'])
+@jwt_required()
+def delete_menu_item(item_id):
+    """Delete a specific menu item by ID"""
+    try:
+        session = db.session
+        item = session.get(MenuItem, item_id)
+        
+        if not item:
+            return jsonify({'success': False, 'message': 'Menu item not found'}), 404
+            
+        session.delete(item)
+        session.commit()
+        
+        return jsonify({'success': True, 'message': 'Menu item deleted successfully'})
+    except Exception as e:
+        session.rollback()
+        return jsonify({'success': False, 'message': f'An error occurred: {str(e)}'}), 500
+
+@menu_bp.route('/categories/<int:category_id>', methods=['DELETE'])
+@jwt_required()
+def delete_menu_category(category_id):
+    """Delete a specific menu category by ID"""
+    try:
+        session = db.session
+        category = session.get(Category, category_id)
+        
+        if not category:
+            return jsonify({'success': False, 'message': 'Category not found'}), 404
+            
+        # Check if there are menu items using this category
+        items_using_category = MenuItem.query.filter_by(category_id=category_id).count()
+        if items_using_category > 0:
+            return jsonify({
+                'success': False, 
+                'message': f'Cannot delete category that has {items_using_category} menu items. Please reassign or delete those items first.'
+            }), 400
+            
+        session.delete(category)
+        session.commit()
+        
+        return jsonify({'success': True, 'message': 'Category deleted successfully'})
+    except Exception as e:
+        session.rollback()
+        return jsonify({'success': False, 'message': f'An error occurred: {str(e)}'}), 500
