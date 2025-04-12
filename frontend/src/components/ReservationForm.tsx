@@ -58,8 +58,8 @@ const ReservationForm: React.FC = () => {
   const [availabilityChecked, setAvailabilityChecked] = useState(false);
   const [isAvailable, setIsAvailable] = useState(false);
   const [isCheckingAvailability, setIsCheckingAvailability] = useState(false);
-  const [tablesRemaining, setTablesRemaining] = useState(0);
-  const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
+  // Removed unused tablesRemaining state variable
+  // Removed unused notification state variable
   const [availabilityNotification, setAvailabilityNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [reservationDetails, setReservationDetails] = useState<any | null>(null);
@@ -76,13 +76,11 @@ const ReservationForm: React.FC = () => {
   };
 
   const displayNotification = (message: string, type: 'success' | 'error' | 'info') => {
-    setNotification({ message, type });
+    showNotification(message, type);
     showNotification(message, type);
   };
 
-  const clearNotification = () => {
-    setNotification(null);
-  };
+  // Removed unused clearNotification function
 
   const checkAvailability = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,7 +100,7 @@ const ReservationForm: React.FC = () => {
       );
 
       const remainingTables = response.tables_remaining || 0;
-      setTablesRemaining(remainingTables);
+      // Removed unused setTablesRemaining call
       setIsAvailable(response.available);
       setAvailabilityChecked(true);
 
