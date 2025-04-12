@@ -2,6 +2,7 @@ import pytest
 from backend.api.menu import get_menu_items, add_menu_item
 from ..app import create_app
 from ..init_db import init_db
+from flask_jwt_extended import create_access_token
 
 @pytest.fixture
 def client():
@@ -40,6 +41,14 @@ def clear_database():
         drop_db()
         init_db(app, populate_sample_data=False)
 
+@pytest.fixture
+def auth_headers(client):
+    """Fixture to provide authentication headers with a valid JWT token."""
+    with client.application.app_context():
+        # Create a test user identity for the token
+        access_token = create_access_token(identity="test_user")
+        return {"Authorization": f"Bearer {access_token}"}
+
 def test_get_menu_items(client, init_database_with_sample_data):
     # Test retrieving menu items (should include sample data)
     response = client.get('/api/menu/items')
@@ -55,20 +64,20 @@ def valid_category_id(client, init_database_with_sample_data):
     assert len(categories) > 0  # Ensure at least one category exists
     return categories[0]["id"]  # Return the first category ID
 
-def test_add_menu_item(client, init_database_with_sample_data, valid_category_id):
+def test_add_menu_item(client, init_database_with_sample_data, valid_category_id, auth_headers):
     # Test adding a valid menu item
     response = client.post('/api/menu/items', json={
         "name": "Caesar Salad",
         "description": "Crisp romaine lettuce with Caesar dressing.",
         "price": 12.99,
         "category_id": valid_category_id  # Use dynamically fetched category ID
-    })
+    }, headers=auth_headers)  # Include authentication headers
     assert response.status_code == 201
     assert response.json["message"] == "Menu item added successfully"
 
     # Test adding a menu item with missing fields
-    response = client.post('/api/menu/items', json={  # Corrected endpoint for adding menu items
+    response = client.post('/api/menu/items', json={
         "name": "Incomplete Item"
-    })
+    }, headers=auth_headers)  # Include authentication headers
     assert response.status_code == 400
     assert "message" in response.json
