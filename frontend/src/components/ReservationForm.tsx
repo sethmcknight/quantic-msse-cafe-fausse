@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import InlineNotification from './InlineNotification';
 import { reservationApi } from '../utils/api';
+import { useAppContext } from '../context/AppContext';
 import '../css/ReservationsPage.css';
 import '../css/ReservationForm.css';
 
@@ -40,9 +41,9 @@ const ReservationConfirmation: React.FC<{ reservationDetails: any; onDismiss: ()
   );
 };
 
-const ReservationForm: React.FC<{
-  showNotification: (message: string, type: 'success' | 'error' | 'info') => void;
-}> = ({ showNotification }) => {
+const ReservationForm: React.FC = () => {
+  const { showNotification } = useAppContext();
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',

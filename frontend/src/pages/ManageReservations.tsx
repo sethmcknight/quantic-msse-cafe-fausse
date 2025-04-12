@@ -22,7 +22,6 @@ interface Reservation {
 
 const ManageReservations = () => {
     const [reservations, setReservations] = useState<Reservation[]>([]);
-    const [searchQuery, setSearchQuery] = useState('');
     const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
     const [statusFilter, setStatusFilter] = useState<string>('');
     const [timeSlotFilter, setTimeSlotFilter] = useState<string>('');
@@ -54,10 +53,6 @@ const ManageReservations = () => {
                 setReservations([]);
             });
     }, []);
-
-    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchQuery(event.target.value);
-    };
 
     // Filter handlers
     const handleTableFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -152,30 +147,13 @@ const ManageReservations = () => {
                 (reservation.customer_phone || '').includes(phoneFilter) : 
                 true;
 
-            const customerName = typeof reservation.customer_name === 'string' ? reservation.customer_name.toLowerCase() : '';
-            const customerId = typeof reservation.customer_id === 'string' ? reservation.customer_id.toLowerCase() : '';
-            const guests = reservation.guests ? reservation.guests.toString() : '';
-            const tableNumber = reservation.table_number ? reservation.table_number.toString() : '';
-            const timeSlot = typeof reservation.time_slot === 'string' ? reservation.time_slot : '';
-            const specialRequests = typeof reservation.special_requests === 'string' ? reservation.special_requests.toLowerCase() : '';
-            const status = typeof reservation.status === 'string' ? reservation.status.toLowerCase() : '';
-
             return (
                 matchesStatus &&
                 matchesTimeSlot &&
                 matchesTable &&
                 matchesCustomerName &&
                 matchesEmail &&
-                matchesPhone &&
-                (
-                    customerName.includes(searchQuery.toLowerCase()) ||
-                    customerId.includes(searchQuery.toLowerCase()) ||
-                    guests.includes(searchQuery) ||
-                    tableNumber.includes(searchQuery) ||
-                    timeSlot.includes(searchQuery) ||
-                    specialRequests.includes(searchQuery.toLowerCase()) ||
-                    status.includes(searchQuery.toLowerCase())
-                )
+                matchesPhone
             );
         });
 
@@ -195,7 +173,7 @@ const ManageReservations = () => {
         }
 
         return filtered;
-    }, [reservations, searchQuery, statusFilter, timeSlotFilter, tableFilter, customerNameFilter, emailFilter, phoneFilter, sortConfig]);
+    }, [reservations, statusFilter, timeSlotFilter, tableFilter, customerNameFilter, emailFilter, phoneFilter, sortConfig]);
 
     const handleSort = (key: string) => {
         setSortConfig(prevConfig => {
@@ -232,17 +210,13 @@ const ManageReservations = () => {
                 </button>
                
                 {showReservationForm && (
-                    <ReservationForm
-                        showNotification={(message, type) => {
-                            console.log(`${type.toUpperCase()}: ${message}`);
-                        }}
-                    />
+                    <ReservationForm />
                 )}
                 
                 <div className="filtered-count">
                     <p>Showing {filteredAndSortedReservations.length} of {reservations.length} reservations</p>
                 </div>
-
+                
                 <div className="table-container" style={{ overflowX: "auto" }}>
                     <table>
                         <thead>
