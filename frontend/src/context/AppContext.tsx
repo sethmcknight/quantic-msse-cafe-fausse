@@ -86,10 +86,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }
   };
 
-  // Show notification function - now just logs to console
+  // Show notification function
   const showNotification = (message: string, type: NotificationType = 'info') => {
     console.log(`${type.toUpperCase()}: ${message}`);
-    // We could implement a different notification mechanism here in the future
   };
 
   // Refresh menu data

@@ -79,7 +79,6 @@ const Navigation: React.FC = () => {
               Gallery
             </Link>
           </li>
-          {/* <li><a href="/reservations/management">Manage Reservations</a></li> */}
         </ul>
       </nav>
     </header>

@@ -63,8 +63,6 @@ const ReservationForm: React.FC<ReservationFormProps> = ({ onReservationAdded })
   const [availabilityChecked, setAvailabilityChecked] = useState(false);
   const [isAvailable, setIsAvailable] = useState(false);
   const [isCheckingAvailability, setIsCheckingAvailability] = useState(false);
-  // Removed unused tablesRemaining state variable
-  // Removed unused notification state variable
   const [availabilityNotification, setAvailabilityNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [reservationDetails, setReservationDetails] = useState<any | null>(null);
@@ -81,7 +79,6 @@ const ReservationForm: React.FC<ReservationFormProps> = ({ onReservationAdded })
   };
 
   const displayNotification = (message: string, type: 'success' | 'error' | 'info') => {
-    showNotification(message, type);
     showNotification(message, type);
   };
 

@@ -224,9 +224,6 @@ const MenuManagement: React.FC = () => {
     });
   };
 
-  // Get category name from id
-  // Removed unused getCategoryName function to resolve the compile error
-
   // Handle filter changes
   const handleNameFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNameFilter(e.target.value);
