@@ -336,7 +336,7 @@ def cancel_reservation(reservation_id):
         return jsonify({'success': False, 'message': 'Reservation not found'}), 404
 
     reservation.status = 'canceled'
-    db.session.commit()
+    session.commit()
     session.close()
 
     return jsonify({
