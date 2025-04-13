@@ -1,3 +1,12 @@
+/**
+ * Navigation Component
+ * 
+ * Provides the main navigation menu for the Café Fausse website.
+ * Features responsive design with mobile menu toggle functionality.
+ * Highlights the active page in the navigation based on the current route.
+ * 
+ * @component
+ */
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import '../css/Navigation.css';
@@ -6,14 +15,28 @@ const Navigation: React.FC = () => {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  /**
+   * Toggles the mobile menu open/closed state
+   */
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
+  /**
+   * Closes the mobile menu
+   * Used when a navigation link is clicked
+   */
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
   };
 
+  /**
+   * Determines if the given path matches the current location
+   * Used to highlight the active navigation item
+   * 
+   * @param path - The path to check against current location
+   * @returns boolean indicating if the path is active
+   */
   const isActive = (path: string) => {
     return location.pathname === path;
   };

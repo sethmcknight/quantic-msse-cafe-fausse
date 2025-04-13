@@ -1,3 +1,9 @@
+/**
+ * Main App Component
+ * 
+ * Root component for the Café Fausse restaurant website.
+ * Sets up routing, context providers, and the application structure.
+ */
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
@@ -23,7 +29,13 @@ import ProtectedRoute from './components/ProtectedRoute';
 // Context Provider
 import { AppProvider } from './context/AppContext';
 
-// App Content Component
+/**
+ * AppContent Component
+ * 
+ * Contains the routes and page structure for the application.
+ * Separates routes into protected management routes and public routes.
+ * Wraps public routes with Navigation and Footer components.
+ */
 const AppContent: React.FC = () => {
   return (
     <div className="App">
@@ -97,7 +109,14 @@ const AppContent: React.FC = () => {
   );
 };
 
-// Main App Component
+/**
+ * App Component
+ * 
+ * The root component that wraps the entire application with necessary providers.
+ * Sets up the Router and AppProvider context.
+ * 
+ * @returns The fully configured React application
+ */
 const App: React.FC = () => {
   return (
     <AppProvider>
