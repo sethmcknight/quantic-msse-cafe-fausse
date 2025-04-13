@@ -264,8 +264,13 @@ export const newsletterApi = {
   },
 };
 
-export default {
+/**
+ * Combined API client object that provides access to all API services
+ */
+const apiServices = {
   menu: menuApi,
   reservation: reservationApi,
   newsletter: newsletterApi,
 };
+
+export default apiServices;

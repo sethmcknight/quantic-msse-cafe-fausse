@@ -5,7 +5,7 @@
  * managing shared state like menu items, categories, loading states, and notifications.
  * It serves as a centralized state management solution using React Context API.
  */
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { menuApi } from '../utils/api';
 
 /**
@@ -108,10 +108,21 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [error, setError] = useState<string | null>(null);
 
   /**
+   * Shows a notification message to the user
+   * 
+   * @param message - The message to display
+   * @param type - The type of notification: success, error, or info
+   */
+  const showNotification = (message: string, type: NotificationType = 'info') => {
+    console.log(`${type.toUpperCase()}: ${message}`);
+    // In a real application, this would display a visual notification
+  };
+
+  /**
    * Fetches menu data from the API
    * Gets both categories and menu items
    */
-  const fetchMenuData = async () => {
+  const fetchMenuData = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     
@@ -142,18 +153,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     } finally {
       setIsLoading(false);
     }
-  };
-
-  /**
-   * Shows a notification message to the user
-   * 
-   * @param message - The message to display
-   * @param type - The type of notification: success, error, or info
-   */
-  const showNotification = (message: string, type: NotificationType = 'info') => {
-    console.log(`${type.toUpperCase()}: ${message}`);
-    // In a real application, this would display a visual notification
-  };
+  }, [showNotification]); // Add showNotification as a dependency
 
   /**
    * Refreshes menu data from the API
@@ -166,7 +166,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   // Load menu data on component mount
   useEffect(() => {
     fetchMenuData();
-  }, []);
+  }, [fetchMenuData]); // Add fetchMenuData as a dependency
 
   // Context value
   const contextValue: AppContextType = {
