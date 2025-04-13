@@ -64,17 +64,6 @@ const MenuManagement: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   
-  // Auth token (in a real app, this would come from your auth system)
-  const [authToken, setAuthToken] = useState<string>('');
-
-  // Get auth token on component mount
-  useEffect(() => {
-    // For demo purposes, you might want to set a token here
-    // In a real app, this would come from your authentication system
-    const token = localStorage.getItem('auth_token') || 'demo-token';
-    setAuthToken(token);
-  }, []);
-
   // Fetch both menu items and categories
   const fetchMenuData = async () => {
     setIsLoading(true);
@@ -322,7 +311,6 @@ const MenuManagement: React.FC = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authToken}`
         },
         body: JSON.stringify({
           name: newItem.name,
@@ -370,7 +358,6 @@ const MenuManagement: React.FC = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authToken}`
         },
         body: JSON.stringify({
           name: newCategory.name
@@ -395,7 +382,7 @@ const MenuManagement: React.FC = () => {
     }
   };
   
-  // Delete menu item
+  // Delete menu item - with improved error handling
   const handleDeleteMenuItem = async (id: number) => {
     setIsLoading(true);
     setErrorMessage('');
@@ -403,19 +390,27 @@ const MenuManagement: React.FC = () => {
     try {
       const response = await fetch(`/api/menu/items/${id}`, {
         method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${authToken}`
-        }
       });
       
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to delete menu item');
+      // First check if the response is JSON
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.indexOf("application/json") !== -1) {
+        // It's JSON, so we can parse it
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to delete menu item');
+        }
+        
+        // Success - update UI
+        setMenuItems(prevItems => prevItems.filter(item => item.id !== id));
+        setItemToDelete(null);
+      } else {
+        // Not JSON, handle as text
+        const text = await response.text();
+        console.error('Non-JSON response:', text);
+        throw new Error(`Server error: ${response.status} ${response.statusText}`);
       }
-      
-      // Success - update UI and fetch updated data
-      setMenuItems(prevItems => prevItems.filter(item => item.id !== id));
-      setItemToDelete(null);
     } catch (error) {
       console.error('Error deleting menu item:', error);
       setErrorMessage(`Failed to delete menu item: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -438,9 +433,6 @@ const MenuManagement: React.FC = () => {
       
       const response = await fetch(`/api/menu/categories/${id}`, {
         method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${authToken}`
-        }
       });
       
       if (!response.ok) {

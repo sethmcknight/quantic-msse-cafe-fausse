@@ -9,7 +9,6 @@ from ..extensions import db
 from ..models.menu_item import MenuItem
 from ..models.category import Category
 from sqlalchemy.orm import Session
-from flask_jwt_extended import jwt_required
 
 menu_bp = Blueprint('menu', __name__)
 
@@ -108,12 +107,9 @@ def get_items_by_category(category_id):
     })
 
 @menu_bp.route('/items', methods=['POST'])
-@jwt_required()
 def add_menu_item():
     """
     Add a new menu item
-    
-    Requires JWT authentication.
     
     Request Body:
         name (str): Name of the menu item
@@ -161,12 +157,9 @@ def add_menu_item():
         return jsonify({'success': False, 'message': f'An error occurred: {str(e)}'}), 500
 
 @menu_bp.route('/items/<int:item_id>', methods=['PUT'])
-@jwt_required()
 def update_menu_item(item_id):
     """
     Update a specific menu item by ID
-    
-    Requires JWT authentication.
     
     Parameters:
         item_id (int): The ID of the menu item to update
@@ -210,12 +203,9 @@ def update_menu_item(item_id):
         return jsonify({'success': False, 'message': str(e)}), 500
 
 @menu_bp.route('/categories/<int:category_id>', methods=['PUT'])
-@jwt_required()
 def update_menu_category(category_id):
     """
     Update a specific menu category by ID
-    
-    Requires JWT authentication.
     
     Parameters:
         category_id (int): The ID of the category to update
@@ -250,12 +240,9 @@ def update_menu_category(category_id):
         return jsonify({'success': False, 'message': str(e)}), 500
 
 @menu_bp.route('/categories', methods=['POST'])
-@jwt_required()
 def add_menu_category():
     """
     Add a new menu category
-    
-    Requires JWT authentication.
     
     Request Body:
         name (str): Name of the category
@@ -294,12 +281,9 @@ def add_menu_category():
         return jsonify({'success': False, 'message': f'An error occurred: {str(e)}'}), 500
 
 @menu_bp.route('/items/<int:item_id>', methods=['DELETE'])
-@jwt_required()
 def delete_menu_item(item_id):
     """
     Delete a specific menu item by ID
-    
-    Requires JWT authentication.
     
     Parameters:
         item_id (int): The ID of the menu item to delete
@@ -313,27 +297,35 @@ def delete_menu_item(item_id):
         500: Server error
     """
     try:
+        print(f"Attempting to delete menu item with ID: {item_id}")
         session = db.session
         item = session.get(MenuItem, item_id)
         
         if not item:
+            print(f"Menu item with ID {item_id} not found")
             return jsonify({'success': False, 'message': 'Menu item not found'}), 404
             
+        print(f"Found menu item: {item.name}. Deleting...")
         session.delete(item)
         session.commit()
+        print(f"Menu item with ID {item_id} deleted successfully")
         
         return jsonify({'success': True, 'message': 'Menu item deleted successfully'})
     except Exception as e:
         session.rollback()
-        return jsonify({'success': False, 'message': f'An error occurred: {str(e)}'}), 500
+        error_message = f"Error deleting menu item: {str(e)}"
+        print(error_message)
+        # Ensure we always return a proper JSON response
+        return jsonify({
+            'success': False, 
+            'message': 'An error occurred while deleting the menu item',
+            'error': str(e)
+        }), 500
 
 @menu_bp.route('/categories/<int:category_id>', methods=['DELETE'])
-@jwt_required()
 def delete_menu_category(category_id):
     """
     Delete a specific menu category by ID
-    
-    Requires JWT authentication.
     
     Parameters:
         category_id (int): The ID of the category to delete

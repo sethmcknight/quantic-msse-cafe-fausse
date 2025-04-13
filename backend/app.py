@@ -32,8 +32,8 @@ def create_app(config_name='development'):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
     
-    # Enable CORS for the frontend
-    CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
+    # Enable CORS for the frontend - update to be more permissive for development
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
     
     # Sample route
     @app.route('/')
@@ -48,6 +48,21 @@ def create_app(config_name='development'):
             'message': 'Welcome to Café Fausse API',
             'status': 'online'
         })
+    
+    # Add global error handlers to ensure consistent JSON responses
+    @app.errorhandler(404)
+    def not_found(error):
+        return jsonify({'success': False, 'message': 'Resource not found'}), 404
+        
+    @app.errorhandler(500)
+    def server_error(error):
+        return jsonify({'success': False, 'message': 'Internal server error', 'error': str(error)}), 500
+    
+    @app.errorhandler(Exception)
+    def handle_exception(error):
+        # Log the error
+        app.logger.error(f'Unhandled exception: {str(error)}')
+        return jsonify({'success': False, 'message': 'An unexpected error occurred', 'error': str(error)}), 500
     
     # Register blueprints
     from .api.menu import menu_bp
