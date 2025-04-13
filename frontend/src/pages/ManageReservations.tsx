@@ -31,8 +31,8 @@ const ManageReservations = () => {
     const [phoneFilter, setPhoneFilter] = useState<string>('');
     const [showReservationForm, setShowReservationForm] = useState(false);
 
-    useEffect(() => {
-        // Fetch reservations from the backend API
+    // Function to load reservations from the backend
+    const loadReservations = () => {
         fetch('/api/reservations')
             .then(response => {
                 if (!response.ok) {
@@ -52,7 +52,18 @@ const ManageReservations = () => {
                 console.error('Error fetching reservations:', error);
                 setReservations([]);
             });
+    };
+
+    useEffect(() => {
+        // Initial load of reservations
+        loadReservations();
     }, []);
+
+    // Function to handle successful reservation submission
+    const handleReservationAdded = () => {
+        loadReservations();
+        setShowReservationForm(false); // Optionally hide the form after successful submission
+    };
 
     // Filter handlers
     const handleTableFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -210,7 +221,7 @@ const ManageReservations = () => {
                 </button>
                
                 {showReservationForm && (
-                    <ReservationForm />
+                    <ReservationForm onReservationAdded={handleReservationAdded} />
                 )}
                 
                 <div className="filtered-count">

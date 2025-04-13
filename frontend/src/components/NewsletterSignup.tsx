@@ -1,13 +1,33 @@
+/**
+ * NewsletterSignup Component
+ * 
+ * A responsive form component that allows users to subscribe to the Café Fausse newsletter.
+ * This component can be displayed in two modes: as a standalone form or in footer mode.
+ * It includes validation, error handling, and success feedback.
+ */
 import React, { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { newsletterApi } from '../utils/api';
 import '../css/NewsletterSignup.css';
 
+/**
+ * Props for the NewsletterSignup component
+ */
 interface NewsletterSignupProps {
+  /** Optional CSS class name to apply to the component */
   className?: string;
+  /** Whether the component is displayed in the footer (compact mode) */
   footerMode?: boolean;
 }
 
+/**
+ * NewsletterSignup Component
+ * 
+ * Provides a form for users to subscribe to the restaurant's newsletter.
+ * Handles email validation, API communication, and displays appropriate feedback.
+ * 
+ * @component
+ */
 const NewsletterSignup: React.FC<NewsletterSignupProps> = ({ className, footerMode }) => {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -15,16 +35,35 @@ const NewsletterSignup: React.FC<NewsletterSignupProps> = ({ className, footerMo
   const [errorMessage, setErrorMessage] = useState('');
   const { showNotification } = useAppContext();
 
+  /**
+   * Updates the email state when the input field changes
+   * 
+   * @param e - Change event from email input field
+   */
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
 
+  /**
+   * Validates the email format using regex
+   * 
+   * @param email - The email address to validate
+   * @returns Boolean indicating if the email is valid
+   */
   const validateEmail = (email: string): boolean => {
     // Simple email validation regex
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
   };
 
+  /**
+   * Handles form submission for newsletter subscription
+   * 
+   * Validates the email, makes API request to subscribe, and handles
+   * success and error states appropriately.
+   * 
+   * @param e - Form submit event
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     

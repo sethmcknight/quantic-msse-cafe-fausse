@@ -1,5 +1,12 @@
 """
 Database initialization script for Café Fausse application
+
+This module provides functionality to initialize the database with the required
+schema and optionally populate it with sample data for development and testing.
+It creates tables for all models and adds initial categories, menu items, customers,
+newsletter subscribers, reservations, and employee accounts.
+
+This script can be run directly or imported and used programmatically.
 """
 import os
 import sys
@@ -13,7 +20,17 @@ from .models.employee import Employee  # Import Employee model directly
 from datetime import datetime, timedelta
 
 def init_db(app, populate_sample_data=True):
-    """Initialize the database with optional sample data"""
+    """
+    Initialize the database with optional sample data
+    
+    This function creates all database tables based on the SQLAlchemy models
+    and optionally populates them with sample data for development and testing.
+    
+    Args:
+        app (Flask): The Flask application instance
+        populate_sample_data (bool): Whether to populate the database with sample data.
+                                    Defaults to True.
+    """
     print("Initializing database...")
 
     with app.app_context():
@@ -240,7 +257,13 @@ def init_db(app, populate_sample_data=True):
         print("Database initialization complete!")
 
 def drop_db():
-    """Drop all tables in the database."""
+    """
+    Drop all tables in the database
+    
+    This function removes all tables from the database, effectively
+    resetting it to an empty state. Use with caution as it permanently
+    deletes all data.
+    """
     print("Dropping all tables...")
     db.drop_all()
     db.session.commit()

@@ -155,6 +155,238 @@
     color: #333;
 }
 
+/* New Form Styles */
+.action-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.add-button {
+    background-color: #8b5a2b;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.add-button:hover {
+    background-color: #704726;
+    transform: translateY(-2px);
+}
+
+.new-item-form,
+.new-category-form {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid #8b5a2b;
+}
+
+.new-item-form h3,
+.new-category-form h3 {
+    color: #8b5a2b;
+    font-size: 1.3rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.form-actions button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.submit-button {
+    background-color: #8b5a2b;
+    color: white;
+    border: none;
+}
+
+.submit-button:hover {
+    background-color: #704726;
+    transform: translateY(-2px);
+}
+
+.form-actions button:not(.submit-button) {
+    background-color: #f5f5f5;
+    color: #555;
+    border: 1px solid #ddd;
+}
+
+.form-actions button:not(.submit-button):hover {
+    background-color: #e5e5e5;
+}
+
+/* Delete confirmation styles */
+.delete-button {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.delete-button:hover {
+    background-color: #c9302c;
+}
+
+.delete-confirmation {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.delete-confirmation span {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #d9534f;
+}
+
+.confirm-delete,
+.cancel-delete {
+    padding: 0.25rem 0.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.confirm-delete {
+    background-color: #d9534f;
+    color: white;
+}
+
+.confirm-delete:hover {
+    background-color: #c9302c;
+}
+
+.cancel-delete {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+}
+
+.cancel-delete:hover {
+    background-color: #e5e5e5;
+}
+
+/* Error message styling */
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    border-left: 4px solid #f5c6cb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.error-message button {
+    background-color: transparent;
+    border: none;
+    color: #721c24;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.error-message button:hover {
+    text-decoration: underline;
+}
+
+/* Consistent table width styles using CSS Grid */
+.table-grid-container {
+    width: 100%;
+    margin-top: 1rem;
+    overflow-x: auto;
+}
+
+.table-grid-container table {
+    width: 100%;
+    table-layout: fixed; /* This ensures consistent column widths */
+}
+
+.categories-table th:first-child {
+    width: 15%;
+}
+
+.categories-table th:nth-child(2) {
+    width: 60%;
+}
+
+.categories-table th:last-child {
+    width: 25%;
+}
+
+.items-table th:first-child {
+    width: 10%;
+}
+
+.items-table th:nth-child(2) {
+    width: 20%;
+}
+
+.items-table th:nth-child(3) {
+    width: 30%;
+}
+
+.items-table th:nth-child(4) {
+    width: 10%;
+}
+
+.items-table th:nth-child(5) {
+    width: 15%;
+}
+
+.items-table th:last-child {
+    width: 15%;
+}
+
 /* Responsive design */
 @media (max-width: 992px) {
     .menu-management {
@@ -201,5 +433,48 @@
     .price-filter .clear-filter {
         grid-row: 1;
         grid-column: 3;
+    }
+    
+    .action-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .form-actions button {
+        width: 100%;
+    }
+    
+    .delete-confirmation {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .delete-confirmation button {
+        width: 100%;
+        margin-top: 0.25rem;
+    }
+
+    .table-grid-container {
+        overflow-x: auto;
+        width: 100%;
+    }
+    
+    /* On mobile, ensure tables take full width of the container and can scroll horizontally */
+    .table-grid-container table {
+        min-width: 100%;
+        width: auto;
+        table-layout: auto;
+    }
+    
+    /* Reset fixed width constraints on mobile for better responsive behavior */
+    .categories-table th,
+    .items-table th {
+        width: auto !important; /* Override the fixed widths on mobile */
     }
 }

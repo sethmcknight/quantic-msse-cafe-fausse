@@ -1,3 +1,9 @@
+/**
+ * ReservationForm Component
+ * 
+ * Provides a form interface for users to make restaurant reservations.
+ * Handles availability checking, form validation, and reservation submission.
+ */
 import React, { useState } from 'react';
 import InlineNotification from './InlineNotification';
 import { reservationApi } from '../utils/api';
@@ -5,12 +11,32 @@ import { useAppContext } from '../context/AppContext';
 import '../css/ReservationsPage.css';
 import '../css/ReservationForm.css';
 
+/**
+ * Props for the ReservationForm component
+ */
+interface ReservationFormProps {
+  /** Optional callback function called after a reservation is successfully created */
+  onReservationAdded?: () => void;
+}
+
+/**
+ * Formats a date string into a more readable format
+ * 
+ * @param dateString - The date string in YYYY-MM-DD format
+ * @returns A formatted date string (e.g., "Monday, January 1, 2025")
+ */
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   const options: Intl.DateTimeFormatOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
   return date.toLocaleDateString(undefined, options);
 };
 
+/**
+ * Formats a time string into a more readable format
+ * 
+ * @param timeString - The time string in 24-hour format (HH:MM)
+ * @returns A formatted time string in 12-hour format with AM/PM
+ */
 const formatTime = (timeString: string) => {
   const [hour, minute] = timeString.split(':').map(Number);
   const ampm = hour >= 12 ? 'PM' : 'AM';
@@ -18,6 +44,14 @@ const formatTime = (timeString: string) => {
   return `${formattedHour}:${minute.toString().padStart(2, '0')} ${ampm}`;
 };
 
+/**
+ * ReservationConfirmation Component
+ * 
+ * Displays a confirmation message after a reservation is successfully created.
+ * Shows all the details of the reservation.
+ * 
+ * @component
+ */
 const ReservationConfirmation: React.FC<{ reservationDetails: any; onDismiss: () => void }> = ({ reservationDetails, onDismiss }) => {
   const formattedDate = formatDate(reservationDetails.date);
   const formattedTime = formatTime(reservationDetails.time);
@@ -41,9 +75,18 @@ const ReservationConfirmation: React.FC<{ reservationDetails: any; onDismiss: ()
   );
 };
 
-const ReservationForm: React.FC = () => {
+/**
+ * ReservationForm Component
+ * 
+ * A multi-step form for making restaurant reservations.
+ * First checks availability for the selected date/time, then collects user details.
+ * 
+ * @component
+ */
+const ReservationForm: React.FC<ReservationFormProps> = ({ onReservationAdded }) => {
   const { showNotification } = useAppContext();
   
+  // Form state
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -55,19 +98,26 @@ const ReservationForm: React.FC = () => {
     newsletterOptIn: false
   });
 
+  // Availability checking state
   const [availabilityChecked, setAvailabilityChecked] = useState(false);
   const [isAvailable, setIsAvailable] = useState(false);
   const [isCheckingAvailability, setIsCheckingAvailability] = useState(false);
-  // Removed unused tablesRemaining state variable
-  // Removed unused notification state variable
   const [availabilityNotification, setAvailabilityNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  
+  // Form submission state
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [reservationDetails, setReservationDetails] = useState<any | null>(null);
 
+  /**
+   * Handles changes to form inputs
+   * 
+   * @param e - Change event from a form input
+   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
 
+    // Reset availability checks when date, time, or guests change
     if (name === 'date' || name === 'time' || name === 'guests') {
       setAvailabilityChecked(false);
       setIsAvailable(false);
@@ -75,13 +125,21 @@ const ReservationForm: React.FC = () => {
     }
   };
 
+  /**
+   * Displays a notification message
+   * 
+   * @param message - The message to display
+   * @param type - The type of notification (success, error, info)
+   */
   const displayNotification = (message: string, type: 'success' | 'error' | 'info') => {
-    showNotification(message, type);
     showNotification(message, type);
   };
 
-  // Removed unused clearNotification function
-
+  /**
+   * Checks availability for the selected date, time, and party size
+   * 
+   * @param e - Form event
+   */
   const checkAvailability = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -100,7 +158,6 @@ const ReservationForm: React.FC = () => {
       );
 
       const remainingTables = response.tables_remaining || 0;
-      // Removed unused setTablesRemaining call
       setIsAvailable(response.available);
       setAvailabilityChecked(true);
 
@@ -119,25 +176,34 @@ const ReservationForm: React.FC = () => {
     }
   };
 
+  /**
+   * Handles form submission to create a reservation
+   * 
+   * @param e - Form event
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Validate required fields
     if (!formData.name || !formData.email || !formData.date || !formData.time || !formData.guests) {
       displayNotification('Please fill in all required fields.', 'error');
       return;
     }
 
+    // Validate email format
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(formData.email)) {
       displayNotification('Please enter a valid email address.', 'error');
       return;
     }
 
+    // Ensure availability was checked
     if (!availabilityChecked) {
       displayNotification('Please check availability before submitting.', 'error');
       return;
     }
 
+    // Ensure the time slot is available
     if (!isAvailable) {
       displayNotification('This time slot is not available. Please select another time.', 'error');
       return;
@@ -152,16 +218,18 @@ const ReservationForm: React.FC = () => {
 
       if (response.success) {
         setReservationDetails({
-          id: response.reservation_id, // Correctly map reservation_id from the backend
+          id: response.reservation_id,
           name: formData.name,
           date: formData.date,
           time: formData.time,
           guests: formData.guests,
-          tableNumber: response.table_number, // Correctly map table_number from the backend
+          tableNumber: response.table_number,
           email: formData.email,
           specialRequests: formData.specialRequests,
         });
         displayNotification('Reservation created successfully!', 'success');
+        
+        // Reset the form
         setFormData({
           name: '',
           email: '',
@@ -174,6 +242,11 @@ const ReservationForm: React.FC = () => {
         });
         setAvailabilityChecked(false);
         setIsAvailable(false);
+        
+        // Call the onReservationAdded callback if provided
+        if (onReservationAdded) {
+          onReservationAdded();
+        }
       } else {
         displayNotification(response.message || 'Error creating reservation.', 'error');
       }
@@ -185,6 +258,11 @@ const ReservationForm: React.FC = () => {
     }
   };
 
+  /**
+   * Generates time slot options for the time dropdown
+   * 
+   * @returns An array of option elements for the time select input
+   */
   const generateTimeOptions = () => {
     const options = [];
     for (let hour = 17; hour < 22; hour++) {
@@ -199,10 +277,12 @@ const ReservationForm: React.FC = () => {
     return options;
   };
 
+  // Show confirmation after successful reservation
   if (reservationDetails) {
     return <ReservationConfirmation reservationDetails={reservationDetails} onDismiss={() => setReservationDetails(null)} />;
   }
 
+  // Main reservation form
   return (
     <form className="reservation-form" onSubmit={handleSubmit}>
       <div className="form-group">
@@ -269,6 +349,7 @@ const ReservationForm: React.FC = () => {
         )}
       </div>
 
+      {/* User details form - only shown after availability check passes */}
       {availabilityChecked && isAvailable && (
         <>
           <div className="form-group">

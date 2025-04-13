@@ -22,9 +22,11 @@ const NewsletterManagement: React.FC = () => {
   const [dateFilter, setDateFilter] = useState<string>('');
   const [emailSearch, setEmailSearch] = useState<string>('');
   const [sortConfig, setSortConfig] = useState<SortConfig | null>(null);
+  const [showAddForm, setShowAddForm] = useState<boolean>(false);
+  const [newEmail, setNewEmail] = useState<string>('');
 
-  useEffect(() => {
-    // Fetch newsletter subscribers from the backend API
+  // Function to load subscribers from the backend
+  const loadSubscribers = () => {
     fetch('/api/newsletter/subscribers')
       .then(response => {
         if (!response.ok) {
@@ -44,6 +46,11 @@ const NewsletterManagement: React.FC = () => {
         console.error('Error fetching newsletter subscribers:', error);
         setSubscribers([]);
       });
+  };
+
+  useEffect(() => {
+    // Initial load of subscribers
+    loadSubscribers();
   }, []);
 
   // Format date to "Month day, Year" (e.g., "April 6, 2025")
@@ -86,13 +93,7 @@ const NewsletterManagement: React.FC = () => {
       .catch(error => {
         console.error('Error updating subscriber status:', error);
         // Revert the local change if the server update fails
-        fetch('/api/newsletter/subscribers')
-          .then(response => response.json())
-          .then(data => {
-            if (data.success && Array.isArray(data.subscribers)) {
-              setSubscribers(data.subscribers);
-            }
-          });
+        loadSubscribers();
       });
   };
 
@@ -133,6 +134,41 @@ const NewsletterManagement: React.FC = () => {
   // Clear email search
   const clearEmailSearch = () => {
     setEmailSearch('');
+  };
+
+  // Handle adding a new subscriber
+  const handleAddSubscriber = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!newEmail || !newEmail.includes('@')) {
+      alert('Please enter a valid email address');
+      return;
+    }
+    
+    fetch('/api/newsletter/subscribers', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: newEmail }),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to add subscriber');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Subscriber added successfully:', data);
+        setNewEmail('');
+        setShowAddForm(false);
+        
+        // Reload subscribers list with the dedicated function
+        loadSubscribers();
+      })
+      .catch(error => {
+        console.error('Error adding subscriber:', error);
+      });
   };
 
   // Get filtered and sorted subscribers
@@ -192,6 +228,44 @@ const NewsletterManagement: React.FC = () => {
       <ManagementNavigation />
       <div className="newsletter-management">
         <h1>Manage Subscribers</h1>
+        
+        {/* Add Subscriber action bar */}
+        <div className="action-bar">
+          <button 
+            className="add-button"
+            onClick={() => setShowAddForm(!showAddForm)}
+          >
+            {showAddForm ? 'Cancel' : 'Add Subscriber'}
+          </button>
+        </div>
+        
+        {/* Add Subscriber form */}
+        {showAddForm && (
+          <div className="new-item-form">
+            <h3>Add New Subscriber</h3>
+            <form onSubmit={handleAddSubscriber}>
+              <div className="form-group">
+                <label htmlFor="email">Email Address:</label>
+                <input
+                  type="email"
+                  id="email"
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
+                  required
+                  placeholder="email@example.com"
+                />
+              </div>
+              <div className="form-actions">
+                <button type="submit" className="submit-button">
+                  Add Subscriber
+                </button>
+                <button type="button" onClick={() => setShowAddForm(false)}>
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
 
         <div className="subscribers-count">
           <p>Total: {filteredAndSortedSubscribers.length} subscribers</p>

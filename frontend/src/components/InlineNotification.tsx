@@ -1,16 +1,52 @@
+/**
+ * InlineNotification Component
+ * 
+ * A reusable notification component that displays messages with different
+ * visual styles based on their type (success, error, info).
+ * Features configurable auto-dismiss functionality and optional status symbols.
+ */
 import React, { useState, useEffect } from 'react';
 import '../css/InlineNotification.css';
 
+/**
+ * Types of notifications that can be displayed
+ */
 type NotificationType = 'success' | 'error' | 'info';
 
+/**
+ * Props for the InlineNotification component
+ */
 interface InlineNotificationProps {
+  /** The message to display in the notification */
   message: string;
+  /** The type of notification which determines its styling */
   type: NotificationType;
-  duration?: number; // Auto-dismiss duration in ms, 0 for no auto-dismiss
+  /** Duration in milliseconds before auto-dismissing (0 to disable) */
+  duration?: number;
+  /** Optional callback function when notification is dismissed */
   onDismiss?: () => void;
-  showSymbol?: boolean; // Whether to show the ✓ or ✗ symbol
+  /** Whether to show a visual symbol indicating the notification type */
+  showSymbol?: boolean;
 }
 
+/**
+ * InlineNotification Component
+ * 
+ * Displays temporary notifications to users with appropriate styling.
+ * Can be configured to auto-dismiss after a specified duration or remain
+ * until manually dismissed.
+ * 
+ * @component
+ * @example
+ * ```tsx
+ * <InlineNotification 
+ *   message="Your changes have been saved!" 
+ *   type="success" 
+ *   duration={3000} 
+ *   showSymbol={true}
+ * />
+ * ```
+ */
 const InlineNotification: React.FC<InlineNotificationProps> = ({ 
   message, 
   type, 
@@ -40,12 +76,19 @@ const InlineNotification: React.FC<InlineNotificationProps> = ({
 
   if (!visible || !message) return null;
 
+  /**
+   * Handles the manual closing of the notification
+   */
   const handleClose = () => {
     setVisible(false);
     if (onDismiss) onDismiss();
   };
 
-  // Add symbol based on type
+  /**
+   * Returns the appropriate symbol based on notification type
+   * 
+   * @returns The symbol character string or empty string if symbols are disabled
+   */
   const getSymbol = () => {
     if (!showSymbol) return '';
     
