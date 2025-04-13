@@ -57,7 +57,9 @@ const apiClient = {
   async get<T>(endpoint: string): Promise<T> {
     try {
       const url = `${API_BASE_URL}${formatEndpoint(endpoint)}`;
-      console.log(`Making GET request to: ${url}`);
+      if (process.env.NODE_ENV !== 'production') {
+        console.log(`Making GET request to: ${url}`);
+      }
       
       const response = await fetch(url, {
         headers: {
