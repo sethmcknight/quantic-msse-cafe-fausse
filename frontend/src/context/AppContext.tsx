@@ -113,10 +113,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
    * @param message - The message to display
    * @param type - The type of notification: success, error, or info
    */
-  const showNotification = (message: string, type: NotificationType = 'info') => {
+  const showNotification = useCallback((message: string, type: NotificationType = 'info') => {
     console.log(`${type.toUpperCase()}: ${message}`);
     // In a real application, this would display a visual notification
-  };
+  }, []);
 
   /**
    * Fetches menu data from the API
