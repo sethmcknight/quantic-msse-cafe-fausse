@@ -2,7 +2,7 @@
 
 In developing the Cafe Fausse website we used Github Copilot, including Agent mode, with multiple models.
 
-Thie site repo is available at https://github.com/sethmcknight/quantic-msse-cafe-fausse
+This site repo is available at https://github.com/sethmcknight/quantic-msse-cafe-fausse
 
 We started by creating a git repo, uploading a copy of the Project Rubric and Software Requirements Specification documents as markdown files, and creating a copilot-instructions markdown document that outlines the main technical constraints from the Requirements document. We then prompted Copilot Agent to create a project plan and share the steps and components. 
 
