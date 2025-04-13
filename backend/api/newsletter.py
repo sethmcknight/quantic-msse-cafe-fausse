@@ -1,5 +1,9 @@
 """
 Newsletter API Blueprint for Café Fausse
+
+This module provides API endpoints for managing newsletter subscriptions
+for the Café Fausse restaurant application, allowing customers to 
+subscribe to, unsubscribe from, and manage their newsletter preferences.
 """
 from flask import Blueprint, jsonify, request
 from ..extensions import db
@@ -16,7 +20,24 @@ logger = logging.getLogger(__name__)
 newsletter_bp = Blueprint('newsletter', __name__)
 
 def subscribe_to_newsletter(email):
-    """Helper function to subscribe an email to the newsletter"""
+    """
+    Helper function to subscribe an email to the newsletter
+    
+    This internal function is used by other modules to subscribe
+    a customer's email to the newsletter. It handles validation,
+    checks for existing subscriptions, and manages subscription state.
+    
+    Parameters:
+        email (str): The email address to subscribe
+        
+    Returns:
+        tuple: A tuple containing (response_dict, status_code)
+            - response_dict (dict): Contains success status and message
+            - status_code (int): HTTP status code
+            
+    Raises:
+        EmailNotValidError: If the email format is invalid
+    """
     logger.debug(f"Attempting to subscribe email: {email}")
 
     # Validate email format using email_validator
@@ -51,7 +72,26 @@ def subscribe_to_newsletter(email):
 
 @newsletter_bp.route('/subscribe', methods=['POST'])
 def subscribe():
-    """Subscribe to the newsletter"""
+    """
+    Subscribe to the newsletter
+    
+    Adds an email address to the newsletter subscription list.
+    If the email belongs to an existing customer, updates their
+    newsletter preference as well.
+    
+    Request Body:
+        email (str): The email address to subscribe
+    
+    Returns:
+        JSON: Object containing success status and message
+        
+    Responses:
+        201: Successfully subscribed to the newsletter
+        200: Subscription reactivated
+        400: Invalid email format or missing email
+        409: Email already subscribed
+        500: Server error
+    """
     data = request.json
 
     if not data or 'email' not in data:
@@ -108,7 +148,25 @@ def subscribe():
 
 @newsletter_bp.route('/unsubscribe', methods=['POST'])
 def unsubscribe():
-    """Unsubscribe from the newsletter"""
+    """
+    Unsubscribe from the newsletter
+    
+    Deactivates an email subscription in the newsletter system.
+    If the email belongs to an existing customer, updates their
+    newsletter preference as well.
+    
+    Request Body:
+        email (str): The email address to unsubscribe
+    
+    Returns:
+        JSON: Object containing success status and message
+        
+    Responses:
+        200: Successfully unsubscribed from the newsletter
+        400: Missing email
+        404: Email not found in subscription list
+        500: Server error
+    """
     data = request.json
     
     if not data or 'email' not in data:
@@ -146,7 +204,18 @@ def unsubscribe():
 
 @newsletter_bp.route('/subscribers', methods=['GET'])
 def get_subscribers():
-    """Get all active newsletter subscribers"""
+    """
+    Get all newsletter subscribers
+    
+    Retrieves a list of all newsletter subscribers, both active and inactive.
+    This endpoint would typically be restricted to admin users.
+    
+    Returns:
+        JSON: Object containing success status, total count, and list of subscribers
+        
+    Responses:
+        200: Successfully retrieved subscribers list
+    """
     # This endpoint would typically be restricted to admin users
     subscribers = Newsletter.query.all()  # Get all subscribers, not just active ones
     return jsonify({
@@ -157,7 +226,27 @@ def get_subscribers():
 
 @newsletter_bp.route('/subscribers/<int:subscriber_id>', methods=['PUT'])
 def update_subscriber(subscriber_id):
-    """Update a newsletter subscriber"""
+    """
+    Update a newsletter subscriber
+    
+    Updates the details of an existing newsletter subscriber,
+    typically their active/inactive status.
+    
+    Parameters:
+        subscriber_id (int): The ID of the subscriber to update
+        
+    Request Body:
+        is_active (bool, optional): Whether the subscription should be active
+    
+    Returns:
+        JSON: Object containing success status, message, and updated subscriber data
+        
+    Responses:
+        200: Subscriber updated successfully
+        400: No data provided
+        404: Subscriber not found
+        500: Server error
+    """
     try:
         # Get the subscriber from the database
         subscriber = Newsletter.query.get(subscriber_id)

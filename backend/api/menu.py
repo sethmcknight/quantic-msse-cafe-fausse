@@ -1,5 +1,8 @@
 """
 Menu API Blueprint for Café Fausse
+
+This module provides API endpoints for managing menu items and categories
+for the Café Fausse restaurant application.
 """
 from flask import Blueprint, jsonify, request
 from ..extensions import db
@@ -12,7 +15,14 @@ menu_bp = Blueprint('menu', __name__)
 
 @menu_bp.route('/categories', methods=['GET'])
 def get_categories():
-    """Get all menu categories"""
+    """
+    Get all menu categories
+    
+    Returns a list of all menu categories available in the restaurant.
+    
+    Returns:
+        JSON: Object containing success status and a list of category objects
+    """
     categories = Category.query.all()
     return jsonify({
         'success': True,
@@ -21,7 +31,15 @@ def get_categories():
 
 @menu_bp.route('/items', methods=['GET'])
 def get_menu_items():
-    """Get all menu items, optionally filtered by category"""
+    """
+    Get all menu items, optionally filtered by category
+    
+    Query Parameters:
+        category_id (int, optional): Filter items by category ID
+    
+    Returns:
+        JSON: Object containing success status and a list of menu item objects
+    """
     category_id = request.args.get('category_id', type=int)
     
     if category_id:
@@ -36,7 +54,18 @@ def get_menu_items():
 
 @menu_bp.route('/items/<int:item_id>', methods=['GET'])
 def get_menu_item(item_id):
-    """Get a specific menu item by ID"""
+    """
+    Get a specific menu item by ID
+    
+    Parameters:
+        item_id (int): The ID of the menu item to retrieve
+    
+    Returns:
+        JSON: Object containing success status and the requested menu item
+        
+    Responses:
+        404: Menu item not found
+    """
     session = Session(db.engine)
     item = session.get(MenuItem, item_id)
     session.close()
@@ -51,7 +80,18 @@ def get_menu_item(item_id):
 
 @menu_bp.route('/categories/<int:category_id>/items', methods=['GET'])
 def get_items_by_category(category_id):
-    """Get all menu items for a specific category"""
+    """
+    Get all menu items for a specific category
+    
+    Parameters:
+        category_id (int): The ID of the category to retrieve items for
+    
+    Returns:
+        JSON: Object containing success status, category name, and a list of menu items
+        
+    Responses:
+        404: Category not found
+    """
     session = Session(db.engine)
     category = session.get(Category, category_id)
     session.close()
@@ -70,7 +110,29 @@ def get_items_by_category(category_id):
 @menu_bp.route('/items', methods=['POST'])
 @jwt_required()
 def add_menu_item():
-    """Add a new menu item"""
+    """
+    Add a new menu item
+    
+    Requires JWT authentication.
+    
+    Request Body:
+        name (str): Name of the menu item
+        price (float): Price of the menu item
+        category_id (int): ID of the category this item belongs to
+        description (str, optional): Description of the menu item
+        is_vegetarian (bool, optional): Whether the item is vegetarian
+        is_vegan (bool, optional): Whether the item is vegan
+        is_gluten_free (bool, optional): Whether the item is gluten-free
+        image_url (str, optional): URL to the menu item image
+    
+    Returns:
+        JSON: Object containing success status, message, and the created menu item
+        
+    Responses:
+        201: Menu item created successfully
+        400: Missing required field
+        500: Server error
+    """
     data = request.json
 
     required_fields = ['name', 'price', 'category_id']
@@ -101,7 +163,28 @@ def add_menu_item():
 @menu_bp.route('/items/<int:item_id>', methods=['PUT'])
 @jwt_required()
 def update_menu_item(item_id):
-    """Update a specific menu item by ID"""
+    """
+    Update a specific menu item by ID
+    
+    Requires JWT authentication.
+    
+    Parameters:
+        item_id (int): The ID of the menu item to update
+        
+    Request Body:
+        name (str, optional): Updated name of the menu item
+        description (str, optional): Updated description of the menu item
+        price (float, optional): Updated price of the menu item
+        category_id (int, optional): Updated category ID for the menu item
+    
+    Returns:
+        JSON: Object containing success status and message
+        
+    Responses:
+        200: Menu item updated successfully
+        404: Menu item not found
+        500: Server error
+    """
     data = request.get_json()
     session = db.session
 
@@ -129,7 +212,25 @@ def update_menu_item(item_id):
 @menu_bp.route('/categories/<int:category_id>', methods=['PUT'])
 @jwt_required()
 def update_menu_category(category_id):
-    """Update a specific menu category by ID"""
+    """
+    Update a specific menu category by ID
+    
+    Requires JWT authentication.
+    
+    Parameters:
+        category_id (int): The ID of the category to update
+        
+    Request Body:
+        name (str, optional): Updated name of the category
+    
+    Returns:
+        JSON: Object containing success status and message
+        
+    Responses:
+        200: Category updated successfully
+        404: Category not found
+        500: Server error
+    """
     data = request.get_json()
     session = db.session
 
@@ -151,7 +252,22 @@ def update_menu_category(category_id):
 @menu_bp.route('/categories', methods=['POST'])
 @jwt_required()
 def add_menu_category():
-    """Add a new menu category"""
+    """
+    Add a new menu category
+    
+    Requires JWT authentication.
+    
+    Request Body:
+        name (str): Name of the category
+    
+    Returns:
+        JSON: Object containing success status, message, and the created category
+        
+    Responses:
+        201: Category created successfully
+        400: Missing required field or category with same name already exists
+        500: Server error
+    """
     data = request.json
 
     if 'name' not in data or not data['name']:
@@ -180,7 +296,22 @@ def add_menu_category():
 @menu_bp.route('/items/<int:item_id>', methods=['DELETE'])
 @jwt_required()
 def delete_menu_item(item_id):
-    """Delete a specific menu item by ID"""
+    """
+    Delete a specific menu item by ID
+    
+    Requires JWT authentication.
+    
+    Parameters:
+        item_id (int): The ID of the menu item to delete
+    
+    Returns:
+        JSON: Object containing success status and message
+        
+    Responses:
+        200: Menu item deleted successfully
+        404: Menu item not found
+        500: Server error
+    """
     try:
         session = db.session
         item = session.get(MenuItem, item_id)
@@ -199,7 +330,23 @@ def delete_menu_item(item_id):
 @menu_bp.route('/categories/<int:category_id>', methods=['DELETE'])
 @jwt_required()
 def delete_menu_category(category_id):
-    """Delete a specific menu category by ID"""
+    """
+    Delete a specific menu category by ID
+    
+    Requires JWT authentication.
+    
+    Parameters:
+        category_id (int): The ID of the category to delete
+    
+    Returns:
+        JSON: Object containing success status and message
+        
+    Responses:
+        200: Category deleted successfully
+        404: Category not found
+        400: Cannot delete category with existing menu items
+        500: Server error
+    """
     try:
         session = db.session
         category = session.get(Category, category_id)

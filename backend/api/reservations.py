@@ -1,5 +1,9 @@
 """
 Reservations API Blueprint for Café Fausse
+
+This module provides API endpoints for managing table reservations
+at the Café Fausse restaurant application, including creating, updating,
+canceling, and checking availability of table reservations.
 """
 from flask import Blueprint, jsonify, request, current_app
 from datetime import datetime, timedelta
@@ -20,7 +24,32 @@ MOCK_DATE = datetime.strptime("2025-04-01", "%Y-%m-%d")  # Earlier mock date for
 @reservations_bp.route('', methods=['POST'])
 @reservations_bp.route('/', methods=['POST'])
 def create_reservation():
-    """Create a new reservation"""
+    """
+    Create a new reservation
+    
+    Creates a new table reservation for the specified date and time.
+    Handles customer creation if the customer doesn't exist and
+    optionally subscribes the customer to the newsletter.
+    
+    Request Body:
+        name (str): Customer's name
+        email (str): Customer's email address
+        phone (str, optional): Customer's phone number
+        date (str): Reservation date in YYYY-MM-DD format
+        time (str): Reservation time in HH:MM format
+        guests (int): Number of guests
+        special_requests (str, optional): Any special requests
+        newsletter_opt_in (bool, optional): Whether to subscribe to the newsletter
+    
+    Returns:
+        JSON: Object containing reservation details and confirmation message
+        
+    Responses:
+        201: Reservation created successfully
+        400: Missing required fields or invalid date format
+        409: Fully booked for the requested time slot
+        500: Server error
+    """
     data = request.json
 
     # Log the incoming payload
@@ -126,7 +155,24 @@ def create_reservation():
 
 @reservations_bp.route('/check-availability', methods=['POST'])
 def check_availability():
-    """Check if a reservation is available for a specific date, time and party size"""
+    """
+    Check if a reservation is available for a specific date, time and party size
+    
+    Verifies if tables are available for the requested date, time, and number of guests.
+    
+    Request Body:
+        date (str): Requested date in YYYY-MM-DD format
+        time (str): Requested time in HH:MM format
+        guests (int): Number of guests in the party
+    
+    Returns:
+        JSON: Object with availability status and number of tables remaining
+        
+    Responses:
+        200: Availability check successful
+        400: Missing required fields, invalid date format, or invalid number of guests
+        500: Server error
+    """
     data = request.json
     
     try:
@@ -163,7 +209,22 @@ def check_availability():
 
 @reservations_bp.route('/<int:reservation_id>', methods=['GET'])
 def get_reservation(reservation_id):
-    """Get a specific reservation"""
+    """
+    Get a specific reservation by ID
+    
+    Retrieves detailed information about a specific reservation,
+    including customer details.
+    
+    Parameters:
+        reservation_id (int): The ID of the reservation to retrieve
+    
+    Returns:
+        JSON: Object containing the reservation details and customer information
+        
+    Responses:
+        200: Reservation found and returned
+        404: Reservation not found
+    """
     session = Session(db.engine)
     reservation = session.get(Reservation, reservation_id)
 
@@ -185,7 +246,32 @@ def get_reservation(reservation_id):
 
 @reservations_bp.route('/<int:reservation_id>', methods=['PUT'])
 def update_reservation(reservation_id):
-    """Update an existing reservation"""
+    """
+    Update an existing reservation
+    
+    Updates the details of an existing reservation and/or customer information.
+    
+    Parameters:
+        reservation_id (int): The ID of the reservation to update
+        
+    Request Body:
+        table_number (int, optional): Updated table number
+        time_slot (str, optional): Updated date and time for the reservation
+        guests (int, optional): Updated number of guests
+        special_requests (str, optional): Updated special requests
+        status (str, optional): Updated reservation status
+        customer_name (str, optional): Updated customer name
+        customer_email (str, optional): Updated customer email
+        customer_phone (str, optional): Updated customer phone
+    
+    Returns:
+        JSON: Object with success status and message
+        
+    Responses:
+        200: Reservation updated successfully
+        404: Reservation not found
+        500: Server error
+    """
     data = request.json
     session = Session(db.engine)
     reservation = session.get(Reservation, reservation_id)
@@ -227,7 +313,21 @@ def update_reservation(reservation_id):
 
 @reservations_bp.route('/cancel/<int:reservation_id>', methods=['POST'])
 def cancel_reservation(reservation_id):
-    """Cancel a reservation"""
+    """
+    Cancel a reservation
+    
+    Changes the status of a reservation to 'canceled'.
+    
+    Parameters:
+        reservation_id (int): The ID of the reservation to cancel
+    
+    Returns:
+        JSON: Object with success status, message, and reservation ID
+        
+    Responses:
+        200: Reservation canceled successfully
+        404: Reservation not found
+    """
     session = Session(db.engine)
     reservation = session.get(Reservation, reservation_id)
 
@@ -247,7 +347,17 @@ def cancel_reservation(reservation_id):
 
 @reservations_bp.route('/all', methods=['GET'])
 def get_reservations():
-    """Get all reservations"""
+    """
+    Get all reservations
+    
+    Retrieves all reservations with associated customer details.
+    
+    Returns:
+        JSON: Object containing a list of all reservations with customer information
+        
+    Responses:
+        200: Reservations retrieved successfully
+    """
     session = Session(db.engine)
     try:
         reservations = session.query(Reservation).all()
@@ -272,5 +382,13 @@ def get_reservations():
 @reservations_bp.route('', methods=['GET'])
 @reservations_bp.route('/', methods=['GET'])
 def get_all_reservations():
-    """Get all reservations with customer details"""
+    """
+    Get all reservations with customer details
+    
+    Alias for the get_reservations function.
+    Retrieves all reservations with associated customer details.
+    
+    Returns:
+        JSON: Object containing a list of all reservations with customer information
+    """
     return get_reservations()
